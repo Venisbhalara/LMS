@@ -5,11 +5,11 @@ import {
   ClockIcon,
   AwardIcon,
 } from "../../components/Icons/Icons";
+import CreateCourseModal from "../../components/CreateCourseModal/CreateCourseModal";
 import "./InstructorDashboard.css";
 
 const InstructorDashboard = () => {
   const [showModal, setShowModal] = useState(false);
-
   const [courses, setCourses] = useState([
     {
       id: 1,
@@ -69,6 +69,10 @@ const InstructorDashboard = () => {
 
   const addCourse = (course) => {
     setCourses((prev) => [course, ...prev]);
+  };
+  
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
 
   return (
@@ -159,13 +163,11 @@ const InstructorDashboard = () => {
           </div>
         </section>
       </div>
-
-      {showModal && (
-        <CreateCourseModal
-          onClose={() => setShowModal(false)}
-          onCreate={addCourse}
-        />
-      )}
+      <CreateCourseModal
+        isOpen={showModal}
+        onClose={handleCloseModal}
+        onAddCourse={addCourse}
+      />
     </div>
   );
 };

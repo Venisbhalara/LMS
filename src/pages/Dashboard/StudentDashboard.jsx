@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { coursesData } from "../../data/coursesData";
 
 import {
   ClockIcon,
@@ -13,51 +13,22 @@ import { getCourseImage } from "../../utils/images";
 import "./Dashboard.css";
 
 const StudentDashboard = () => {
-  const { user } = useAuth();
+  const { user, unenrollFromCourse } = useAuth();
+  const navigate = useNavigate();
 
-  // Mock enrolled courses with progress
-  const enrolledCourses = [
-    {
-      id: 1,
-      title: "Complete React Mastery",
-      progress: 65,
-      category: "web",
-      lastAccessed: "2 days ago",
-      instructor: "John Doe",
-      duration: "40 hours",
-      currentLesson: "Lesson 12: State Management",
-    },
-    {
-      id: 2,
-      title: "Python for Data Science",
-      progress: 30,
-      category: "data",
-      lastAccessed: "1 week ago",
-      instructor: "Jane Smith",
-      duration: "50 hours",
-      currentLesson: "Lesson 8: Data Cleaning",
-    },
-    {
-      id: 3,
-      title: "UI/UX Design Fundamentals",
-      progress: 90,
-      category: "design",
-      lastAccessed: "Yesterday",
-      instructor: "Sarah Johnson",
-      duration: "30 hours",
-      currentLesson: "Lesson 18: Prototyping",
-    },
-    {
-      id: 4,
-      title: "AWS Cloud Practitioner",
-      progress: 45,
-      category: "cloud",
-      lastAccessed: "3 days ago",
-      instructor: "Jennifer Lopez",
-      duration: "40 hours",
-      currentLesson: "Lesson 10: EC2 Basics",
-    },
-  ];
+  // Get enrolled courses from centralized data using user's enrolled IDs
+  const enrolledCourses = user?.enrolledCourses?.map(id => {
+    const course = coursesData.find(c => c.id === parseInt(id));
+    if (course) {
+        return {
+            ...course,
+            progress: 0, // In a real app, this would come from a progress tracker
+            lastAccessed: "Just now",
+            currentLesson: course.curriculum[0]?.lessons[0]?.title || "Introduction"
+        };
+    }
+    return null;
+  }).filter(Boolean) || [];
 
   const lastAccessedCourse = enrolledCourses[0];
 
@@ -105,7 +76,6 @@ const StudentDashboard = () => {
     currentStreak: 7,
   };
 
-  const navigate = useNavigate();
   const handleStartQuiz = () => {
     // Redirect to first course quiz (example)
     const courseId = enrolledCourses[0]?.id;
@@ -210,7 +180,7 @@ const StudentDashboard = () => {
                 <div className="continue-course-info">
                   <h3>{lastAccessedCourse.title}</h3>
                   <p className="continue-course-instructor">
-                    by {lastAccessedCourse.instructor}
+                    by {lastAccessedCourse.instructor.name}
                   </p>
                   <p className="continue-course-lesson">
                     {lastAccessedCourse.currentLesson}
@@ -253,7 +223,7 @@ const StudentDashboard = () => {
               {enrolledCourses.map((course) => (
                 <Link
                   key={course.id}
-                  to={`/courses/${course.id}`}
+                  to={`/courses/${course.id}/lessons/1`}
                   className="course-card"
                 >
                   <div className="course-card-image">
@@ -270,7 +240,7 @@ const StudentDashboard = () => {
                   <div className="course-card-content">
                     <h3 className="course-card-title">{course.title}</h3>
                     <p className="course-card-instructor">
-                      by {course.instructor}
+                      by {course.instructor.name}
                     </p>
                     <p className="course-last-accessed">
                       Last accessed: {course.lastAccessed}
@@ -288,6 +258,18 @@ const StudentDashboard = () => {
                     </div>
                     <div className="course-card-footer">
                       <span className="continue-link">Continue Learning →</span>
+                      <button 
+                        className="btn-text-danger"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if(window.confirm('Are you sure you want to remove this course?')) {
+                            unenrollFromCourse(course.id);
+                          }
+                        }}
+                        style={{ fontSize: '0.8rem', color: '#ef4444', padding: '4px 8px' }}
+                      >
+                        Remove
+                      </button>
                     </div>
                   </div>
                 </Link>

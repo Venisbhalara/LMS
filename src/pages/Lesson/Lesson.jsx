@@ -1,40 +1,38 @@
-import { useParams, Link } from 'react-router-dom'
-import { useState } from 'react'
+import { useParams, Link, useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { coursesData } from '../../data/coursesData'
 import './Lesson.css'
 
 const Lesson = () => {
   const { id, lessonId } = useParams()
+  const navigate = useNavigate()
   const [isComplete, setIsComplete] = useState(false)
 
-  // Mock lesson data - in real app, fetch from API
-  const lesson = {
-    id: 1,
-    title: 'Introduction to React',
-    duration: '15:30',
-    description: 'Learn the fundamentals of React and understand why it has become one of the most popular JavaScript libraries for building user interfaces.',
-    videoUrl: 'https://example.com/video.mp4', // In real app, use actual video URL
-    content: `
-      <h3>What is React?</h3>
-      <p>React is a JavaScript library for building user interfaces, particularly web applications. It was developed by Facebook and is now maintained by Facebook and the community.</p>
-      
-      <h3>Key Features</h3>
-      <ul>
-        <li>Component-based architecture</li>
-        <li>Virtual DOM for performance</li>
-        <li>One-way data binding</li>
-        <li>Declarative programming</li>
-      </ul>
-    `,
-    resources: [
-      { name: 'React Official Documentation', url: 'https://react.dev' },
-      { name: 'Code Examples', url: '#' }
-    ]
-  }
+  // Fetch course and lesson data
+  const course = coursesData.find(c => c.id === parseInt(id))
+  
+  if (!course) return <div>Course not found</div>
+
+  // Flatten lessons to find the current one easily
+  const allLessons = course.curriculum.flatMap(section => section.lessons)
+  const currentLesson = allLessons.find(l => l.id === parseInt(lessonId))
+  
+  // If lesson not found, default to first or show error
+  const lesson = currentLesson || allLessons[0]
+
+  useEffect(() => {
+    // Reset state on lesson change if needed
+    setIsComplete(false)
+  }, [id, lessonId])
 
   const handleComplete = () => {
     setIsComplete(!isComplete)
-    // In real app, mark lesson as complete via API
   }
+
+  // Find next lesson for navigation
+  const currentIndex = allLessons.findIndex(l => l.id === lesson.id)
+  const nextLesson = allLessons[currentIndex + 1]
+  const prevLesson = allLessons[currentIndex - 1]
 
   return (
     <div className="lesson-page">
@@ -49,10 +47,19 @@ const Lesson = () => {
         <div className="lesson-content">
           <div className="lesson-main">
             <div className="video-container">
-              <div className="video-placeholder">
-                <div className="play-icon">▶</div>
-                <p>Video Player</p>
-                <p className="video-note">In production, this would be an actual video player component</p>
+              <div 
+                className="video-placeholder" 
+                onClick={() => window.open(lesson.videoUrl || 'https://www.youtube.com', '_blank')}
+                style={{ cursor: 'pointer', position: 'relative' }}
+              >
+                <div className="play-icon-wrapper">
+                  <svg viewBox="0 0 24 24" className="youtube-icon" fill="currentColor">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                  </svg>
+                </div>
+                <p>Click to Watch Video</p>
+                <p className="video-note">Playing: {lesson.title}</p>
+                <p className="video-subnote" style={{ fontSize: '0.8rem', opacity: 0.7, marginTop: '5px' }}>(Opens in new tab)</p>
               </div>
             </div>
 
@@ -66,19 +73,6 @@ const Lesson = () => {
               dangerouslySetInnerHTML={{ __html: lesson.content }}
             />
 
-            <div className="lesson-resources">
-              <h3>Resources</h3>
-              <ul>
-                {lesson.resources.map((resource, index) => (
-                  <li key={index}>
-                    <a href={resource.url} target="_blank" rel="noopener noreferrer">
-                      {resource.name} →
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
             <div className="lesson-actions">
               <button
                 className={`btn ${isComplete ? 'btn-success' : 'btn-primary'} btn-large`}
@@ -86,22 +80,41 @@ const Lesson = () => {
               >
                 {isComplete ? '✓ Lesson Completed' : 'Mark as Complete'}
               </button>
+              
+              <div className="lesson-nav-buttons" style={{ marginTop: '20px', display: 'flex', gap: '10px' }}>
+                 {prevLesson && (
+                    <button onClick={() => navigate(`/courses/${id}/lessons/${prevLesson.id}`)} className="btn btn-outline">
+                       Previous
+                    </button>
+                 )}
+                 {nextLesson && (
+                    <button onClick={() => navigate(`/courses/${id}/lessons/${nextLesson.id}`)} className="btn btn-outline">
+                       Next
+                    </button>
+                 )}
+              </div>
             </div>
           </div>
 
           <aside className="lesson-sidebar">
             <div className="lesson-navigation">
-              <h3>Course Content</h3>
+              <h3>{course.title} Content</h3>
               <div className="nav-lessons">
-                {[1, 2, 3, 4, 5].map((num) => (
-                  <Link
-                    key={num}
-                    to={`/courses/${id}/lessons/${num}`}
-                    className={`nav-lesson ${num === parseInt(lessonId) ? 'active' : ''}`}
-                  >
-                    <span className="nav-lesson-number">{num}</span>
-                    <span className="nav-lesson-title">Lesson {num}</span>
-                  </Link>
+                {course.curriculum.map((section) => (
+                    <div key={section.id} className="nav-section">
+                        <h4 style={{ padding: '0 15px', color: '#64748b', fontSize: '0.9rem' }}>{section.title}</h4>
+                         {section.lessons.map(l => (
+                            <Link
+                                key={l.id}
+                                to={`/courses/${id}/lessons/${l.id}`}
+                                className={`nav-lesson ${l.id === lesson.id ? 'active' : ''}`}
+                            >
+                                <span className="nav-lesson-number">{l.id}</span>
+                                <span className="nav-lesson-title">{l.title}</span>
+                                <span className="nav-lesson-duration" style={{ marginLeft: 'auto', fontSize: '0.8rem', color: '#94a3b8' }}>{l.duration}</span>
+                            </Link>
+                         ))}
+                    </div>
                 ))}
               </div>
             </div>
@@ -113,4 +126,3 @@ const Lesson = () => {
 }
 
 export default Lesson
-

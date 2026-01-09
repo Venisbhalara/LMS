@@ -4,129 +4,42 @@ import { motion } from 'framer-motion'
 import { useAuth } from '../../context/AuthContext'
 import { StarIcon, PlayIcon, BookIcon, ClockIcon, UsersIcon, CertificateIcon } from '../../components/Icons/Icons'
 import { getCourseImage, getInstructorAvatar } from '../../utils/images'
+import { coursesData } from '../../data/coursesData'
 import './CourseDetail.css'
 
 const CourseDetail = () => {
   const { id } = useParams()
   const navigate = useNavigate()
   const { user, isAuthenticated, enrollInCourse, isEnrolled } = useAuth()
+  
+  const course = coursesData.find(c => c.id === parseInt(id))
+  
+  const handleEnroll = () => {
+    if (!user) {
+        navigate('/login')
+        return
+    }
+    enrollInCourse(course.id)
+    navigate('/dashboard')
+  }
   const courseId = parseInt(id)
   const enrolled = isEnrolled(courseId)
   const [isWishlisted, setIsWishlisted] = useState(false)
   const [expandedSections, setExpandedSections] = useState({})
 
   // Mock course data - in real app, fetch from API
-  const course = {
-    id: 1,
-    title: 'Complete React Mastery',
-    instructor: {
-      name: 'John Doe',
-      title: 'Senior Frontend Engineer',
-      bio: 'John is a seasoned frontend developer with over 10 years of experience building scalable web applications. He has worked at top tech companies including Google and Facebook, and has taught over 50,000 students worldwide.',
-      avatar: getInstructorAvatar('John Doe'),
-      credentials: ['Ex-Google Engineer', 'React Core Contributor', 'Author of "Modern React Patterns"'],
-      rating: 4.9,
-      students: 125000,
-      courses: 12
-    },
-    category: 'Web Development',
-    rating: 4.8,
-    totalRatings: 3420,
-    students: 12500,
-    price: 2599,
-    image: getCourseImage(1, 'web', 'Complete React Mastery'),
-    duration: '40 hours',
-    level: 'Intermediate',
-    description: 'Master React from fundamentals to advanced patterns. Build real-world applications and learn best practices from industry experts. This comprehensive course covers everything you need to become a React expert, from basic concepts to production-ready applications.',
-    whatYouWillLearn: [
-      'React fundamentals and core concepts',
-      'State management with hooks and Context API',
-      'Routing with React Router',
-      'Performance optimization techniques',
-      'Testing React applications',
-      'Deploying React apps to production',
-      'Advanced patterns and best practices',
-      'Working with APIs and data fetching'
-    ],
-    curriculum: [
-      {
-        id: 1,
-        title: 'Getting Started with React',
-        lessons: [
-          { id: 1, title: 'Introduction to React', duration: '15:30', type: 'video', preview: true },
-          { id: 2, title: 'Setting Up Your Development Environment', duration: '12:45', type: 'video', preview: true },
-          { id: 3, title: 'Your First React Component', duration: '18:20', type: 'video', preview: false },
-          { id: 4, title: 'JSX Fundamentals', duration: '22:10', type: 'video', preview: false }
-        ]
-      },
-      {
-        id: 2,
-        title: 'Components and Props',
-        lessons: [
-          { id: 5, title: 'Understanding Components', duration: '14:25', type: 'video', preview: false },
-          { id: 6, title: 'Working with Props', duration: '16:40', type: 'video', preview: false },
-          { id: 7, title: 'Component Composition', duration: '19:15', type: 'video', preview: false },
-          { id: 8, title: 'Practice Exercise: Building a Card Component', duration: '25:00', type: 'exercise', preview: false }
-        ]
-      },
-      {
-        id: 3,
-        title: 'State and Lifecycle',
-        lessons: [
-          { id: 9, title: 'Introduction to State', duration: '20:30', type: 'video', preview: false },
-          { id: 10, title: 'useState Hook Deep Dive', duration: '24:45', type: 'video', preview: false },
-          { id: 11, title: 'useEffect Hook', duration: '28:20', type: 'video', preview: false },
-          { id: 12, title: 'Component Lifecycle', duration: '16:10', type: 'video', preview: false }
-        ]
-      },
-      {
-        id: 4,
-        title: 'Advanced React Patterns',
-        lessons: [
-          { id: 13, title: 'Custom Hooks', duration: '22:30', type: 'video', preview: false },
-          { id: 14, title: 'Context API', duration: '26:15', type: 'video', preview: false },
-          { id: 15, title: 'Higher-Order Components', duration: '18:45', type: 'video', preview: false },
-          { id: 16, title: 'Render Props Pattern', duration: '21:20', type: 'video', preview: false }
-        ]
-      }
-    ],
-    reviews: [
-      {
-        id: 1,
-        user: { name: 'Sarah Johnson', avatar: 'https://ui-avatars.com/api/?name=Sarah+Johnson&size=200&background=0c88ff&color=fff&bold=true' },
-        rating: 5,
-        date: '2024-01-15',
-        comment: 'Excellent course! John explains everything clearly and the projects are very practical. I learned so much and was able to apply it immediately at work.'
-      },
-      {
-        id: 2,
-        user: { name: 'Michael Chen', avatar: 'https://ui-avatars.com/api/?name=Michael+Chen&size=200&background=0c88ff&color=fff&bold=true' },
-        rating: 5,
-        date: '2024-01-10',
-        comment: 'Best React course I\'ve taken. The instructor is knowledgeable and the curriculum is well-structured. Highly recommend!'
-      },
-      {
-        id: 3,
-        user: { name: 'Emily Rodriguez', avatar: 'https://ui-avatars.com/api/?name=Emily+Rodriguez&size=200&background=0c88ff&color=fff&bold=true' },
-        rating: 4,
-        date: '2024-01-08',
-        comment: 'Great content and explanations. Some sections could use more examples, but overall a solid course.'
-      },
-      {
-        id: 4,
-        user: { name: 'David Kim', avatar: 'https://ui-avatars.com/api/?name=David+Kim&size=200&background=0c88ff&color=fff&bold=true' },
-        rating: 5,
-        date: '2024-01-05',
-        comment: 'Perfect for intermediate developers. The advanced patterns section was particularly helpful. Worth every penny!'
-      },
-      {
-        id: 5,
-        user: { name: 'Lisa Anderson', avatar: 'https://ui-avatars.com/api/?name=Lisa+Anderson&size=200&background=0c88ff&color=fff&bold=true' },
-        rating: 4,
-        date: '2024-01-03',
-        comment: 'Good course with comprehensive coverage. The instructor is engaging and the material is up-to-date.'
-      }
-    ]
+  // Mock course data - in real app, fetch from API
+  // const course = coursesData.find(c => c.id === courseId) // This line is now redundant due to the change above
+
+  if (!course) {
+    return (
+      <div className="course-detail-error" style={{ textAlign: 'center', padding: '100px' }}>
+        <h2>Course not found</h2>
+        <Link to="/courses" className="btn btn-primary" style={{ marginTop: '20px', display: 'inline-block' }}>
+          Back to Courses
+        </Link>
+      </div>
+    )
   }
 
   const toggleSection = (sectionId) => {
@@ -180,7 +93,7 @@ const CourseDetail = () => {
             </div>
 
             <div className="course-actions">
-              {isAuthenticated && enrolled ? (
+              {enrolled ? (
                 <>
                   <Link to={`/courses/${id}/lessons/1`} className="btn btn-primary btn-large">
                     <PlayIcon size={20} style={{ marginRight: '8px' }} />
@@ -193,14 +106,11 @@ const CourseDetail = () => {
                     {isWishlisted ? '❤️' : '🤍'} Wishlist
                   </button>
                 </>
-              ) : isAuthenticated ? (
+              ) : (
                 <>
                   <button 
                     className="btn btn-primary btn-large"
-                    onClick={() => {
-                      enrollInCourse(courseId)
-                      navigate(`/courses/${id}/lessons/1`)
-                    }}
+                    onClick={handleEnroll}
                   >
                     Enroll Now - ₹{course.price}
                   </button>
@@ -210,13 +120,6 @@ const CourseDetail = () => {
                   >
                     {isWishlisted ? '❤️' : '🤍'} Wishlist
                   </button>
-                </>
-              ) : (
-                <>
-                  <Link to="/login" className="btn btn-primary btn-large">
-                    Login to Enroll - ₹{course.price}
-                  </Link>
-                  <button className="btn btn-outline btn-large">Add to Wishlist</button>
                 </>
               )}
             </div>

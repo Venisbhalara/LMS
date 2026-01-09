@@ -106,6 +106,17 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  const unenrollFromCourse = (courseId) => {
+    if (!user || !user.enrolledCourses) return
+
+    const updatedUser = {
+      ...user,
+      enrolledCourses: user.enrolledCourses.filter(id => id !== courseId)
+    }
+    setUser(updatedUser)
+    localStorage.setItem('lms_user', JSON.stringify(updatedUser))
+  }
+
   const isEnrolled = (courseId) => {
     return user?.enrolledCourses?.includes(courseId) || false
   }
@@ -122,6 +133,7 @@ export const AuthProvider = ({ children }) => {
     logout,
     updateUser,
     enrollInCourse,
+    unenrollFromCourse,
     isEnrolled,
     hasRole,
     isAuthenticated: !!user,

@@ -66,7 +66,8 @@ const POPULAR_COURSES = [
     students: 11200,
     price: '₹999',
     duration: '35 hours',
-    thumbnail: '/images/courses/javascript.png'
+    thumbnail: '/images/courses/javascript.png',
+    badge: 'Free'
   }
 
 ]

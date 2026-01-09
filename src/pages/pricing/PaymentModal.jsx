@@ -1,6 +1,14 @@
 import "./PaymentModal.css";
+import { useNavigate } from "react-router-dom";
 
 const PaymentModal = ({ isOpen, onClose, plan }) => {
+  const navigate = useNavigate();
+
+  const handleProceed = () => {
+    onClose();
+    navigate("/payment", { state: { plan, price: plan === "Pro Plan" ? 1999 : 5000 } });
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -36,7 +44,7 @@ const PaymentModal = ({ isOpen, onClose, plan }) => {
 
         <div className="lms-payment-actions">
           {plan === "Pro Plan" ? (
-            <button className="lms-payment-pay-btn">
+            <button className="lms-payment-pay-btn" onClick={handleProceed}>
               Proceed to Pay
             </button>
           ) : (

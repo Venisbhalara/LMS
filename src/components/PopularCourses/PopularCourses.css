@@ -147,6 +147,10 @@
   background: linear-gradient(135deg, #22c55e, #4ade80);
 }
 
+.courses-badge.free {
+  background: linear-gradient(135deg, #00b894, #3b82f6);
+}
+
 /* ---------- Category Tag ---------- */
 
 .course-category-badge {

@@ -28,7 +28,7 @@ const Profile = () => {
     if (role === "instructor") {
       navigate("/instructor/dashboard");
     }
-  };  
+  };
 
   return (
     <div className="profile-page">
@@ -51,9 +51,7 @@ const Profile = () => {
             <p className="profile-role">
               Role: <span className="role-badge">{user.role}</span>
             </p>
-            <p className="profile-join-date">
-              Member since {user.joinDate}
-            </p>
+            <p className="profile-join-date">Member since {user.joinDate}</p>
           </div>
 
           <div className="profile-stats">
@@ -70,9 +68,7 @@ const Profile = () => {
               <div className="stat-label">Completed</div>
             </div>
             <div className="profile-stat">
-              <div className="stat-value">
-                {user.certificates?.length || 0}
-              </div>
+              <div className="stat-value">{user.certificates?.length || 0}</div>
               <div className="stat-label">Certificates</div>
             </div>
           </div>
@@ -81,29 +77,37 @@ const Profile = () => {
 
       {/* 🔁 SWITCH MODAL */}
       {showSwitchModal && (
-        <div className="profile-switch-overlay">
-          <div className="profile-switch-modal">
+        <div
+          className="profile-switch-overlay"
+          onClick={() => setShowSwitchModal(false)}
+        >
+          <div
+            className="profile-switch-modal"
+            role="dialog"
+            aria-modal="true"
+            onClick={(e) => e.stopPropagation()}
+          >
             <h3>Switch Profile</h3>
             <p>Select how you want to continue</p>
 
             <div className="profile-switch-options">
-              <div
+              <button
                 className="switch-card"
                 onClick={() => handleSwitch("student")}
               >
-                🎓
+                <span className="icon">🎓</span>
                 <h4>Student</h4>
                 <p>Learn courses & attempt quizzes</p>
-              </div>
+              </button>
 
-              <div
+              <button
                 className="switch-card"
                 onClick={() => handleSwitch("instructor")}
               >
-                👨‍🏫
+                <span className="icon">👨‍🏫</span>
                 <h4>Instructor</h4>
                 <p>Create courses & manage students</p>
-              </div>
+              </button>
             </div>
 
             <button

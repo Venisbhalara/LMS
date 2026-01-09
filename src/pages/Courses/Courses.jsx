@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { coursesData } from '../../data/coursesData'
 import { getCourseImage } from '../../utils/images'
 import './Courses.css'
 
 const Courses = () => {
   const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || 'all')
   const [selectedLevel, setSelectedLevel] = useState('all')
   const [selectedDuration, setSelectedDuration] = useState('all')
@@ -55,26 +57,10 @@ const Courses = () => {
     { id: '3.5', name: '3.5+ Stars' }
   ]
 
-  const allCourses = [
-    { id: 1, title: 'Complete React Mastery', instructor: 'John Doe', category: 'web', rating: 4.8, students: 12500, price: '2599', duration: '40 hours', level: 'Intermediate', enrolled: false },
-    { id: 2, title: 'Python for Data Science', instructor: 'Jane Smith', category: 'data', rating: 4.9, students: 8900, price: '1899', duration: '50 hours', level: 'Beginner', enrolled: false },
-    { id: 3, title: 'UI/UX Design Fundamentals', instructor: 'Sarah Johnson', category: 'design', rating: 4.7, students: 15200, price: 799, duration: '30 hours', level: 'Beginner', enrolled: false },
-    { id: 4, title: 'Business Strategy & Growth', instructor: 'Michael Brown', category: 'business', rating: 4.6, students: 6700, price: 1099, duration: '45 hours', level: 'Advanced', enrolled: false },
-    { id: 5, title: 'Flutter Development', instructor: 'David Wilson', category: 'mobile', rating: 4.8, students: 9800, price: 949, duration: '55 hours', level: 'Intermediate', enrolled: false },
-    { id: 6, title: 'Advanced JavaScript', instructor: 'Emily Davis', category: 'web', rating: 4.9, students: 11200, price: 849, duration: '35 hours', level: 'Advanced', enrolled: false },
-    { id: 7, title: 'Node.js Backend Development', instructor: 'Robert Taylor', category: 'web', rating: 4.8, students: 10200, price: 899, duration: '42 hours', level: 'Intermediate', enrolled: false },
-    { id: 8, title: 'Vue.js Complete Guide', instructor: 'Lisa Anderson', category: 'web', rating: 4.7, students: 8500, price: 799, duration: '38 hours', level: 'Intermediate', enrolled: false },
-    { id: 9, title: 'Angular Framework Mastery', instructor: 'James White', category: 'web', rating: 4.6, students: 7200, price: 949, duration: '48 hours', level: 'Advanced', enrolled: false },
-    { id: 10, title: 'Machine Learning with Python', instructor: 'Dr. Alex Chen', category: 'ai', rating: 4.9, students: 15600, price: 1199, duration: '60 hours', level: 'Intermediate', enrolled: false },
-    { id: 11, title: 'Deep Learning Fundamentals', instructor: 'Dr. Maria Garcia', category: 'ai', rating: 4.8, students: 9800, price: 1299, duration: '65 hours', level: 'Advanced', enrolled: false },
-    { id: 12, title: 'Data Analysis with Pandas', instructor: 'Chris Lee', category: 'data', rating: 4.7, students: 11200, price: 899, duration: '35 hours', level: 'Beginner', enrolled: false },
-    { id: 18, title: 'Ethical Hacking', instructor: 'Kevin Brown', category: 'cyber', rating: 4.9, students: 15200, price: 1399, duration: '55 hours', level: 'Advanced', enrolled: false },
-    { id: 19, title: 'Cybersecurity Essentials', instructor: 'Nicole Davis', category: 'cyber', rating: 4.8, students: 11800, price: 1199, duration: '42 hours', level: 'Intermediate', enrolled: false },
-    { id: 20, title: 'iOS Development with Swift', instructor: 'Daniel Lee', category: 'mobile', rating: 4.7, students: 8700, price: 1049, duration: '50 hours', level: 'Intermediate', enrolled: false },
-    { id: 23, title: 'Figma UI Design', instructor: 'Emma Johnson', category: 'design', rating: 4.8, students: 14200, price: 799, duration: '28 hours', level: 'Beginner', enrolled: false },
-    { id: 24, title: 'Adobe XD Mastery', instructor: 'William Smith', category: 'design', rating: 4.6, students: 7800, price: 849, duration: '30 hours', level: 'Intermediate', enrolled: false },
-    { id: 35, title: 'TypeScript Advanced', instructor: 'Brian O\'Connor', category: 'web', rating: 4.8, students: 10200, price: 849, duration: '38 hours', level: 'Advanced', enrolled: false }
-  ]
+  
+  
+  // Use centralized data
+  const allCourses = coursesData
 
   const getDurationCategory = (duration) => {
     const hours = parseInt(duration)
@@ -90,7 +76,7 @@ const Courses = () => {
     const matchesRating = selectedRating === 'all' || course.rating >= parseFloat(selectedRating)
     const matchesSearch = searchQuery === '' || 
       course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      course.instructor.toLowerCase().includes(searchQuery.toLowerCase())
+      course.instructor.name.toLowerCase().includes(searchQuery.toLowerCase())
     return matchesCategory && matchesLevel && matchesDuration && matchesRating && matchesSearch
   })
 
@@ -116,8 +102,33 @@ const Courses = () => {
             placeholder="Search courses, instructors..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                const results = allCourses.filter(course => 
+                  course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                  course.instructor.name.toLowerCase().includes(searchQuery.toLowerCase())
+                )
+                if (results.length > 0) {
+                  navigate(`/courses/${results[0].id}`)
+                }
+              }
+            }}
             className="search-input"
           />
+          <button 
+            className="search-btn"
+            onClick={() => {
+              const results = allCourses.filter(course => 
+                course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                course.instructor.name.toLowerCase().includes(searchQuery.toLowerCase())
+              )
+              if (results.length > 0) {
+                navigate(`/courses/${results[0].id}`)
+              }
+            }}
+          >
+            Search
+          </button>
         </div>
 
         <div className="courses-filters-container">
@@ -207,7 +218,7 @@ const Courses = () => {
                     <div className="course-card-content">
                       <div className="course-card-category">{categories.find(c => c.id === course.category)?.name}</div>
                       <h3 className="course-card-title">{course.title}</h3>
-                      <p className="course-card-instructor">by {course.instructor}</p>
+                      <p className="course-card-instructor">by {course.instructor.name}</p>
                       <div className="course-card-meta">
                         <div className="course-rating">
                           <svg width="16" height="16" viewBox="0 0 24 24" fill="#fbbf24" stroke="#fbbf24" strokeWidth="2">

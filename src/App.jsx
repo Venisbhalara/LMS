@@ -19,6 +19,7 @@ import Pricing from "./pages/pricing/pricing";
 import Quiz from "./pages/Quiz/Quiz";
 import QuizResult from "./pages/Quiz/QuizResult";
 import InstructorDashboard from "./pages/InstructorDashboard/InstructorDashboard";
+import PaymentPage from "./pages/Payment/PaymentPage";
 import "./App.css";
 
 function App() {
@@ -45,7 +46,9 @@ function App() {
           <Route path="quiz" element={<Quiz />} />
           <Route path="quiz/result" element={<QuizResult />} />
           <Route path="/course/:courseId/quiz/:quizId" element={<Quiz />} />
+          <Route path="/course/:courseId/quiz/:quizId" element={<Quiz />} />
           <Route path="/course/:courseId/quiz/:quizId/result" element={<QuizResult />} />
+          <Route path="/payment" element={<PaymentPage />} />
           <Route path="/instructor/dashboard" element={<InstructorDashboard />} />
           
           
