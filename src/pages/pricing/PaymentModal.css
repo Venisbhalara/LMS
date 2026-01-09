@@ -1,0 +1,83 @@
+.lms-payment-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+  
+  .lms-payment-modal {
+    background: #ffffff;
+    width: 420px;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 30px 60px rgba(15, 23, 42, 0.25);
+    animation: lmsPaymentFade 0.3s ease;
+  }
+  
+  @keyframes lmsPaymentFade {
+    from {
+      opacity: 0;
+      transform: translateY(10px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  
+  .lms-payment-modal h2 {
+    margin-bottom: 10px;
+    color: #0f172a;
+  }
+  
+  .lms-payment-plan {
+    color: #64748b;
+    margin-bottom: 20px;
+  }
+  
+  .lms-payment-summary {
+    background: #f8fafc;
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 25px;
+  }
+  
+  .lms-payment-summary p {
+    margin: 6px 0;
+    color: #334155;
+  }
+  
+  .lms-payment-summary h3 {
+    margin-top: 12px;
+    color: #0c88ff;
+  }
+  
+  .lms-payment-actions {
+    display: flex;
+    gap: 12px;
+  }
+  
+  .lms-payment-pay-btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(135deg, #a0e9fd, #0c88ff);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  
+  .lms-payment-cancel-btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid #cbd5e1;
+    background: transparent;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  

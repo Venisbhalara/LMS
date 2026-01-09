@@ -1,0 +1,54 @@
+.scroll-to-top {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #a0e9fd, #0c88ff);
+  filter: drop-shadow(0 0 6px rgba(160, 233, 253, 0.6));  
+  box-shadow: 0 5px 15px rgba(12, 136, 255, 0.4);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.scroll-to-top.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.scroll-to-top:hover {
+  transform: translateY(-3px) scale(1.1);
+  box-shadow: 0 8px 20px rgba(12, 136, 255, 0.6);
+}
+
+/* Arrow */
+.scroll-to-top .arrow {
+  position: absolute;
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #fff;
+  pointer-events: none;
+}
+
+/* Progress Ring */
+.scroll-to-top .progress-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: rotate(-90deg);
+}
+
+.progress-ring__circle {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.85);
+  stroke-width: 3.5;
+  transition: stroke-dashoffset 0.25s ease;
+}

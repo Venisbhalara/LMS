@@ -1,0 +1,265 @@
+.careers-page {
+  font-family: "Inter", sans-serif;
+  background-color: #f9fbff;
+  color: #1f2937;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* full viewport height */
+}
+
+.main-content {
+  flex: 1; /* takes all available space, pushes footer down */
+}
+
+/* HERO */
+.careers-hero {
+  padding: 60px 20px;
+  text-align: center;
+  background: linear-gradient(135deg, #eef2ff, #f7f9ff);
+}
+
+.careers-hero h1 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  background: linear-gradient(90deg, #5b5ef7, #8f92ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.careers-hero p {
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #6b7280;
+}
+
+/* SECTION HEADINGS */
+.careers-section {
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.careers-section h2 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  font-weight: 700;
+}
+
+/* GRIDS: 3 cards per row */
+.benefits-grid,
+.jobs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+/* PREMIUM CARDS */
+.benefit-card,
+.job-card {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 22px;
+  padding: 28px 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(91, 94, 247, 0.3);
+  transition: all 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.benefit-card:hover,
+.job-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.15);
+}
+
+/* 3D ICONS */
+.icon {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.benefit-card:hover .icon,
+.job-card:hover .icon {
+  transform: rotateY(20deg) rotateX(10deg);
+}
+
+/* JOB DETAILS */
+.job-card span {
+  display: block;
+  font-size: 0.9rem;
+  color: #9ca3af;
+  margin: 12px 0 18px;
+}
+
+.job-card button {
+  padding: 10px 22px;
+  border-radius: 30px;
+  border: none;
+  background: linear-gradient(90deg, #5b5ef7, #8f92ff);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.job-card button:hover {
+  transform: scale(1.05);
+  background: linear-gradient(90deg, #8f92ff, #5b5ef7);
+}
+
+/* CTA */
+.careers-cta {
+  padding: 60px 20px;
+  text-align: center;
+  background: linear-gradient(135deg, #f7f9ff, #eef2ff);
+}
+
+.cta-btn {
+  padding: 14px 38px;
+  border-radius: 50px;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(90deg, #5b5ef7, #8f92ff);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cta-btn:hover {
+  transform: scale(1.05);
+  background: linear-gradient(90deg, #8f92ff, #5b5ef7);
+}
+
+/* MODAL */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  background: rgba(15, 23, 42, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-card {
+  background: white;
+  border-radius: 24px;
+  padding: 36px 28px;
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.15);
+}
+
+.modal-card h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.modal-role {
+  color: #5b5ef7;
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+
+.modal-text {
+  color: #6b7280;
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+
+.modal-btn {
+  padding: 12px 30px;
+  border-radius: 30px;
+  border: none;
+  background: linear-gradient(90deg, #5b5ef7, #8f92ff);
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+}
+
+.modal-btn:hover {
+  transform: scale(1.05);
+  background: linear-gradient(90deg, #8f92ff, #5b5ef7);
+}
+
+/* FOOTER */
+footer {
+  margin-top: auto;
+  background: #111827;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .benefits-grid,
+  .jobs-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .benefits-grid,
+  .jobs-grid {
+    grid-template-columns: 1fr;
+  }
+  .careers-hero h1 {
+    font-size: 2rem;
+  }
+}
+.icon-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.icon-3d {
+  font-size: 3rem;
+  background: linear-gradient(135deg, #5b5ef7, #8f92ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transform: perspective(500px) rotateX(15deg) rotateY(15deg);
+  transition: transform 0.4s ease, filter 0.4s ease;
+}
+
+.benefit-card:hover .icon-3d,
+.job-card:hover .icon-3d {
+  transform: perspective(500px) rotateX(0deg) rotateY(0deg) scale(1.1);
+  filter: drop-shadow(0 8px 15px rgba(91, 94, 247, 0.4));
+}
+
+/* Cards (glass + gradient border) */
+.benefit-card,
+.job-card {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 22px;
+  padding: 28px 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(91, 94, 247, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: all 0.4s ease;
+}

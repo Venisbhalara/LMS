@@ -1,0 +1,220 @@
+/* ===============================
+   PREMIUM TESTIMONIALS SECTION
+================================ */
+
+.testimonials {
+  padding: clamp(5rem, 8vw, 7rem) var(--spacing-6);
+  background: linear-gradient(
+    180deg,
+    #F9FAFB 0%,
+    #FFFFFF 100%
+  );
+}
+
+@media (min-width: 768px) {
+  .testimonials {
+    padding: clamp(6rem, 9vw, 8rem) var(--spacing-8);
+  }
+}
+
+/* ===============================
+   HEADER
+================================ */
+
+.testimonials-header {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto var(--spacing-16);
+}
+
+.testimonials-title {
+  font-size: clamp(2.25rem, 4vw, 3rem);
+  font-weight: 800;
+  margin-bottom: var(--spacing-4);
+  color: var(--gray-900);
+  letter-spacing: -0.03em;
+}
+
+.testimonials-subtitle {
+  font-size: 1.125rem;
+  color: var(--gray-600);
+  line-height: 1.75;
+}
+
+/* ===============================
+   CAROUSEL WRAPPER
+================================ */
+
+.testimonials-carousel {
+  max-width: 880px;
+  margin: 0 auto var(--spacing-10);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+}
+
+/* ===============================
+   NAV BUTTONS (MINIMAL & CLASSY)
+================================ */
+
+.testimonials-nav-btn {
+  background: #ffffff;
+  border: 1px solid var(--gray-200);
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  font-size: 1.25rem;
+  color: var(--gray-600);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+.testimonials-nav-btn:hover {
+  color: var(--primary-600);
+  border-color: var(--primary-200);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+.testimonials-nav-btn:active {
+  transform: translateY(0);
+}
+
+/* ===============================
+   TESTIMONIAL CARD
+================================ */
+
+.testimonial-card {
+  background: #ffffff;
+  border-radius: var(--radius-2xl);
+  padding: clamp(2rem, 4vw, 2.75rem);
+  text-align: center;
+  flex: 1;
+  border: 1px solid var(--gray-200);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.05);
+  transition: all 0.35s ease;
+}
+
+.testimonial-card:hover {
+  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.08);
+  transform: translateY(-3px);
+}
+
+/* ===============================
+   RATING
+================================ */
+
+.testimonial-rating {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: var(--spacing-6);
+}
+
+.testimonial-star {
+  color: #FACC15;
+  fill: #FACC15;
+  width: 18px;
+  height: 18px;
+}
+
+/* ===============================
+   TEXT
+================================ */
+
+.testimonial-text {
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  color: var(--gray-700);
+  margin-bottom: var(--spacing-10);
+  font-style: italic;
+}
+
+/* ===============================
+   AUTHOR
+================================ */
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-4);
+}
+
+.testimonial-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, #6366F1, #A5B4FC);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.25rem;
+  box-shadow: 0 10px 28px rgba(99, 102, 241, 0.25);
+}
+
+.testimonial-info {
+  text-align: left;
+}
+
+.testimonial-name {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: 2px;
+}
+
+.testimonial-role {
+  font-size: 0.9375rem;
+  color: var(--gray-600);
+}
+
+/* ===============================
+   DOTS (PREMIUM)
+================================ */
+
+.testimonials-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.testimonial-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  border: none;
+  background: var(--gray-300);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.testimonial-dot:hover {
+  background: var(--primary-400);
+}
+
+.testimonial-dot.active {
+  width: 32px;
+  background: linear-gradient(90deg, #6366F1, #A5B4FC);
+}
+
+/* ===============================
+   MOBILE
+================================ */
+
+@media (max-width: 640px) {
+  .testimonials-nav-btn {
+    display: none;
+  }
+
+  .testimonial-text {
+    font-size: 1rem;
+  }
+}

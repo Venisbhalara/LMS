@@ -1,0 +1,161 @@
+/* Container */
+.help-widget-container {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    z-index: 9999;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  /* Floating Button Wrapper */
+  .help-button-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+  
+  /* Floating Button */
+  .help-button {
+    width: 55px;
+    height: 55px;
+    border-radius: 40%;
+    border: none;
+    cursor: pointer;
+    background: linear-gradient(135deg, #a0e9fd, #0c88ff);
+    box-shadow: 0 5px 15px rgba(12, 136, 255, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+  
+  .help-button:hover {
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: 0 8px 20px rgba(12, 136, 255, 0.6);
+  }
+  
+  /* Mini Hide Button */
+  .hide-button {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: none;
+    background: #ff6b6b;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    transition: all 0.2s ease;
+  }
+  
+  .hide-button:hover {
+    transform: scale(1.1);
+    background: #ff3b3b;
+  }
+  
+  /* Popup */
+  .help-popup {
+    width: 300px;
+    max-width: 90vw;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+    animation: slideIn 0.3s ease forwards;
+  }
+  
+  /* Popup Header */
+  .help-popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .help-popup-header h4 {
+    font-size: 1.25rem;
+    color: #0c88ff;
+    margin: 0;
+  }
+  
+  .close-button {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+    color: #555;
+    font-weight: bold;
+    transition: color 0.2s ease;
+  }
+  
+  .close-button:hover {
+    color: #0c88ff;
+  }
+  
+  /* Popup Text */
+  .help-popup-text {
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 15px;
+  }
+  
+  /* Form */
+  .help-popup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .help-popup-form input,
+  .help-popup-form textarea {
+    padding: 10px 15px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.2s ease;
+  }
+  
+  .help-popup-form input:focus,
+  .help-popup-form textarea:focus {
+    border-color: #0c88ff;
+    box-shadow: 0 0 0 3px rgba(12, 136, 255, 0.1);
+  }
+  
+  .help-popup-form textarea {
+    resize: none;
+    min-height: 70px;
+  }
+  
+  /* Submit Button */
+  .btn-submit {
+    padding: 10px 15px;
+    background: linear-gradient(135deg, #0c88ff, #4db6ff);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(12, 136, 255, 0.4);
+  }
+  
+  /* Animation */
+  @keyframes slideIn {
+    0% {
+      opacity: 0;
+      transform: translateX(-40px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  

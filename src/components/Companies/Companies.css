@@ -1,0 +1,133 @@
+/* Premium Companies Section - Creative Border Radius */
+
+.companies {
+  padding: var(--spacing-32) var(--spacing-6);
+  background: var(--bg-secondary);
+}
+
+@media (min-width: 768px) {
+  .companies {
+    padding: var(--spacing-40) var(--spacing-8);
+  }
+}
+
+.companies-header {
+  text-align: center;
+  margin-bottom: var(--spacing-12);
+}
+
+.companies-title {
+  font-size: 2.75rem;
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--spacing-4);
+  color: var(--gray-900);
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 768px) {
+  .companies-title {
+    font-size: 3rem;
+  }
+}
+
+.companies-subtitle {
+  font-size: 1.125rem;
+  color: var(--gray-600);
+  line-height: 1.7;
+  font-weight: var(--font-weight-normal);
+}
+
+.companies-marquee {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+}
+.companies-marquee:hover .companies-track {
+  animation-play-state: paused;
+}
+
+.companies-track {
+  display: flex;
+  gap: 50px;
+  animation: scroll 20s linear infinite;
+  will-change: transform;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.company-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-4);
+  min-width: 160px;
+  padding: var(--spacing-6);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+  flex-shrink: 0;
+  border: 1px solid var(--gray-200);
+}
+
+.company-item:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.company-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 60px;
+  margin-bottom: var(--spacing-2);
+  overflow: hidden;
+}
+
+.company-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  transition: transform var(--transition-base);
+  filter: grayscale(20%) opacity(0.8);
+}
+
+.company-item:hover .company-image {
+  opacity: 1;
+}
+
+.company-name {
+  font-size: 0.875rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--gray-700);
+  text-align: center;
+}
+
+.company-item:hover .company-name {
+  color: var(--primary-600);
+  opacity: 1;
+}

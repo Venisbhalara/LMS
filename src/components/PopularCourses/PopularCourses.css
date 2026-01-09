@@ -1,0 +1,250 @@
+/* =====================================
+   PREMIUM POPULAR COURSES (REFINED)
+===================================== */
+
+.popular-courses {
+  padding: var(--spacing-32) var(--spacing-6);
+  background: linear-gradient(
+    180deg,
+    var(--bg-secondary) 0%,
+    var(--white) 100%
+  );
+}
+
+@media (min-width: 768px) {
+  .popular-courses {
+    padding: var(--spacing-40) var(--spacing-8);
+  }
+}
+
+/* ---------- Section Header ---------- */
+
+.courses-header {
+  text-align: center;
+  margin-bottom: var(--spacing-14);
+  max-width: 720px;
+  margin-inline: auto;
+}
+
+.courses-title {
+  font-size: 2.75rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--gray-900);
+  letter-spacing: -0.025em;
+  margin-bottom: var(--spacing-4);
+}
+
+@media (min-width: 768px) {
+  .courses-title {
+    font-size: 3.25rem;
+  }
+}
+
+.courses-subtitle {
+  font-size: 1.125rem;
+  color: var(--gray-600);
+  line-height: 1.75;
+}
+
+/* ---------- Grid ---------- */
+
+.courses-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-8);
+  max-width: 1400px;
+  margin-inline: auto;
+  margin-bottom: var(--spacing-14);
+}
+
+@media (min-width: 640px) {
+  .courses-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .courses-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ---------- Course Card ---------- */
+
+.course-card {
+  position: relative;
+  background: var(--white);
+  border-radius: var(--radius-2xl);
+  border: 1.5px solid var(--gray-200);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: var(--shadow-sm);
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.course-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--light-blue-300);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
+}
+
+/* ---------- Image Area (PNG Friendly) ---------- */
+
+.course-card-image {
+  position: relative;
+  height: 190px;
+  background: linear-gradient(
+    135deg,
+    #f8fafc,
+    #f1f5f9
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.course-card-image img {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+  transition: transform 0.4s ease;
+}
+
+.course-card:hover .course-card-image img {
+  transform: scale(1.06);
+}
+
+/* ---------- Badges ---------- */
+
+.courses-badge {
+  position: absolute;
+  top: 3px;
+  right: 1px;
+  padding: 6px 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border-radius: 999px;
+  color: #fff;
+  letter-spacing: 0.02em;
+}
+
+.courses-badge.bestseller {
+  background: linear-gradient(135deg, #f59e0b, #fbbf24);
+}
+
+.courses-badge.trending {
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+}
+
+.courses-badge.new {
+  background: linear-gradient(135deg, #22c55e, #4ade80);
+}
+
+/* ---------- Category Tag ---------- */
+
+.course-category-badge {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--gray-700);
+  backdrop-filter: blur(6px);
+}
+
+/* ---------- Content ---------- */
+
+.course-card-content {
+  padding: var(--spacing-6);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.course-card-title {
+  font-size: 1.2rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--gray-900);
+  line-height: 1.4;
+  margin-bottom: var(--spacing-2);
+}
+
+.course-card-instructor {
+  font-size: 0.875rem;
+  color: var(--gray-600);
+  margin-bottom: var(--spacing-4);
+}
+
+/* ---------- Meta ---------- */
+
+.course-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-4);
+  font-size: 0.85rem;
+  color: var(--gray-600);
+  margin-bottom: var(--spacing-5);
+}
+
+.course-rating {
+  color: #f59e0b;
+  font-weight: var(--font-weight-semibold);
+}
+
+.course-rating svg {
+  fill: #f59e0b;
+}
+
+/* ---------- Footer ---------- */
+
+.course-card-footer {
+  margin-top: auto;
+  padding-top: var(--spacing-4);
+  border-top: 1px solid var(--gray-200);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.course-price {
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--primary-600);
+}
+
+.course-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-size: 0.9rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--primary-600);
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.course-card:hover .course-link {
+  transform: translateX(4px);
+  color: var(--primary-700);
+}
+
+/* ---------- CTA ---------- */
+
+.courses-cta {
+  text-align: center;
+}
+
+.courses-cta .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}

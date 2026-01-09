@@ -1,0 +1,241 @@
+.lesson-page {
+  padding: var(--spacing-12) var(--spacing-6);
+  min-height: calc(100vh - 80px);
+  background: var(--white);
+}
+
+@media (min-width: 768px) {
+  .lesson-page {
+    padding: var(--spacing-16) var(--spacing-8);
+  }
+}
+
+.lesson-header {
+  margin-bottom: var(--spacing-2xl);
+}
+
+.back-link {
+  color: var(--primary-600);
+  text-decoration: none;
+  font-weight: 500;
+  margin-bottom: var(--spacing-md);
+  display: inline-block;
+  transition: all var(--transition-base);
+}
+
+.back-link:hover {
+  text-decoration: underline;
+  transform: translateX(-4px);
+}
+
+.lesson-header h1 {
+  font-size: 2rem;
+  margin-top: var(--spacing-md);
+}
+
+.lesson-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-2xl);
+}
+
+@media (min-width: 1024px) {
+  .lesson-content {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+.lesson-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xl);
+}
+
+.video-container {
+  background: var(--gray-900);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  position: relative;
+}
+
+.video-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  gap: var(--spacing-md);
+}
+
+.play-icon {
+  font-size: 4rem;
+  opacity: 0.8;
+}
+
+.video-note {
+  font-size: 0.875rem;
+  opacity: 0.6;
+}
+
+.lesson-description {
+  padding: var(--spacing-xl);
+  background: var(--gray-50);
+  border-radius: var(--radius-lg);
+}
+
+.lesson-description h2 {
+  font-size: 1.5rem;
+  margin-bottom: var(--spacing-md);
+}
+
+.lesson-text-content {
+  padding: var(--spacing-xl);
+  background: white;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--gray-200);
+  line-height: 1.8;
+  color: var(--gray-700);
+}
+
+.lesson-text-content h3 {
+  font-size: 1.5rem;
+  margin-top: var(--spacing-xl);
+  margin-bottom: var(--spacing-md);
+  color: var(--gray-900);
+}
+
+.lesson-text-content h3:first-child {
+  margin-top: 0;
+}
+
+.lesson-text-content ul {
+  margin-left: var(--spacing-xl);
+  margin-bottom: var(--spacing-md);
+}
+
+.lesson-text-content li {
+  margin-bottom: var(--spacing-sm);
+}
+
+.lesson-resources {
+  padding: var(--spacing-xl);
+  background: var(--primary-50);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--primary-200);
+}
+
+.lesson-resources h3 {
+  font-size: 1.25rem;
+  margin-bottom: var(--spacing-md);
+  color: var(--gray-900);
+}
+
+.lesson-resources ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.lesson-resources a {
+  color: var(--primary-700);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all var(--transition-base);
+  display: inline-block;
+}
+
+.lesson-resources a:hover {
+  text-decoration: underline;
+  transform: translateX(4px);
+}
+
+.lesson-actions {
+  padding-top: var(--spacing-xl);
+  border-top: 2px solid var(--gray-200);
+}
+
+.btn-success {
+  background: var(--success);
+  color: white;
+}
+
+.btn-success:hover {
+  background: #059669;
+}
+
+.lesson-sidebar {
+  position: sticky;
+  top: 90px;
+  height: fit-content;
+}
+
+.lesson-navigation {
+  background: var(--white);
+  border: 2px solid var(--gray-200);
+  border-radius: var(--radius-2xl);
+  padding: var(--spacing-6);
+  box-shadow: var(--shadow-premium);
+}
+
+.lesson-navigation h3 {
+  font-size: 1.25rem;
+  margin-bottom: var(--spacing-lg);
+  color: var(--gray-900);
+}
+
+.nav-lessons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.nav-lesson {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--gray-700);
+  transition: all var(--transition-base);
+  border: 1px solid transparent;
+}
+
+.nav-lesson:hover {
+  background: var(--gray-50);
+  border-color: var(--gray-200);
+}
+
+.nav-lesson.active {
+  background: var(--primary-50);
+  border-color: var(--primary-300);
+  color: var(--primary-700);
+  font-weight: 600;
+}
+
+.nav-lesson-number {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: var(--gray-200);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+.nav-lesson.active .nav-lesson-number {
+  background: var(--primary-600);
+  color: white;
+}
+
+.nav-lesson-title {
+  flex: 1;
+}
+

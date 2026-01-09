@@ -1,0 +1,292 @@
+/* =========================
+   PREMIUM FOOTER – LIGHT THEME
+========================= */
+
+.footer {
+  background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
+  padding: 4rem 1.5rem 2rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.footer-container {
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+/* =========================
+   TOP LAYOUT
+========================= */
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.2fr 2fr 1.2fr;
+  gap: 3rem;
+  margin-bottom: 2.5rem;
+}
+
+/* =========================
+   BRAND
+========================= */
+
+.footer-logo {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #4f46e5;
+  margin-bottom: 0.75rem;
+}
+
+.footer-description {
+  font-size: 0.95rem;
+  color: #6b7280;
+  line-height: 1.7;
+  max-width: 320px;
+}
+
+/* =========================
+   TRUST STATS
+========================= */
+
+.footer-stats {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.footer-stats div {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-stats strong {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #111827;
+}
+
+.footer-stats span {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+/* =========================
+   LINKS
+========================= */
+
+.footer-links-wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.footer-section h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #111827;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-section li {
+  margin-bottom: 0.6rem;
+}
+
+.footer-section a {
+  font-size: 0.9rem;
+  color: #6b7280;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.footer-section a:hover {
+  color: #4f46e5;
+  transform: translateX(4px);
+}
+
+/* =========================
+   NEWSLETTER
+========================= */
+
+.footer-newsletter h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #111827;
+}
+
+.footer-newsletter p {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-bottom: 1rem;
+}
+
+.footer-newsletter-form {
+  display: flex;
+  background: white;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1.5px solid #e5e7eb;
+}
+
+.footer-newsletter-form input {
+  flex: 1;
+  border: none;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.footer-newsletter-form button {
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  color: white;
+  border: none;
+  padding: 0 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.footer-newsletter-form button:hover {
+  background: linear-gradient(135deg, #4338ca, #4f46e5);
+}
+
+/* =========================
+   DIVIDER
+========================= */
+
+.footer-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #e5e7eb, transparent);
+  margin: 2rem 0 1.5rem;
+}
+
+/* =========================
+   BOTTOM
+========================= */
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* text left, icons right */
+  gap: 16px;
+}
+
+.footer-social {
+  display: flex;
+  gap: 14px;
+}
+
+/* Base 3D Icon */
+.social-3d {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #ffffff;
+
+  cursor: pointer;
+  background: linear-gradient(135deg, #1f2937, #111827);
+
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.15);
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+/* FIXED HOVER */
+.social-3d:hover {
+  transform: translateY(-6px) scale(1.05);
+  filter: brightness(1.2); /* prevents darkening */
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45),
+    0 0 18px rgba(255, 255, 255, 0.35); /* glow */
+}
+
+/* Prevent icon color change */
+.social-3d svg {
+  color: inherit;
+}
+
+/* Brand Colors */
+.facebook {
+  background: linear-gradient(135deg, #1877f2, #0f5dc4);
+}
+
+.twitter {
+  background: linear-gradient(135deg, #1da1f2, #0d8ddb);
+}
+
+.linkedin {
+  background: linear-gradient(135deg, #0077b5, #005a8c);
+}
+
+.instagram {
+  background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af);
+}
+
+/* =========================
+   SOFT DARK MODE (OPTIONAL)
+   (still light – not black)
+========================= */
+
+.footer.soft-dark {
+  background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+}
+
+.footer.soft-dark .footer-logo {
+  color: #4338ca;
+}
+
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+
+@media (max-width: 1024px) {
+  .footer-top {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footer-newsletter {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 640px) {
+  .footer {
+    padding: 3rem 1.25rem 2rem;
+  }
+
+  .footer-top {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .footer-links-wrapper {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-social {
+    justify-content: center;
+  }
+
+  .footer-newsletter-form {
+    flex-direction: column;
+    border-radius: 12px;
+  }
+
+  .footer-newsletter-form button {
+    padding: 0.75rem;
+  }
+}
