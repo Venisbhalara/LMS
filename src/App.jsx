@@ -20,7 +20,7 @@ import Quiz from "./pages/Quiz/Quiz";
 import QuizResult from "./pages/Quiz/QuizResult";
 import InstructorDashboard from "./pages/InstructorDashboard/InstructorDashboard";
 import PaymentPage from "./pages/Payment/PaymentPage";
-import "./App.css";
+import "./App.css"; 
 
 function App() {
   return (
