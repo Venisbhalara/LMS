@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Pricing.css";
+import "./pricing.css";
 import PaymentModal from "./PaymentModal";
 
 const Pricing = () => {
