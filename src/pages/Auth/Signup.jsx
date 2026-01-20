@@ -9,7 +9,8 @@ const Signup = () => {
     name: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    role: 'student'
   })
   const [errors, setErrors] = useState({})
   const navigate = useNavigate()
@@ -47,7 +48,7 @@ const Signup = () => {
     return newErrors
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const newErrors = validate()
     if (Object.keys(newErrors).length > 0) {
@@ -56,8 +57,13 @@ const Signup = () => {
     }
     // Signup using auth context
     try {
-      signup(formData.name, formData.email, formData.password)
-      navigate('/dashboard')
+      const result = await signup(formData.name, formData.email, formData.password, formData.role)
+      if (result.success) {
+        // Redirect to main page on successful signup
+        navigate('/')
+      } else {
+        setErrors({ submit: result.message || 'Error creating account. Please try again.' })
+      }
     } catch (error) {
       setErrors({ submit: 'Error creating account. Please try again.' })
     }
@@ -160,6 +166,30 @@ const Signup = () => {
                   {errors.confirmPassword}
                 </span>
               )}
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="role">Sign up as</label>
+              <select
+                id="role"
+                name="role"
+                value={formData.role}
+                onChange={handleChange}
+                className="form-input"
+                style={{
+                  padding: '0.85rem 1rem',
+                  borderRadius: '14px',
+                  border: '1.6px solid #e2e8f0',
+                  background: '#f9fbff',
+                  fontSize: '0.95rem',
+                  color: '#0f172a',
+                  cursor: 'pointer'
+                }}
+              >
+                <option value="student">Student</option>
+                <option value="instructor">Instructor</option>
+                <option value="admin">Admin (Developer Mode)</option>
+              </select>
             </div>
 
             <div className="form-options">

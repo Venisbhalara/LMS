@@ -28,7 +28,7 @@ const PaymentModal = ({ isOpen, onClose, plan }) => {
               <p>✔ Unlimited Courses</p>
               <p>✔ Certificates</p>
               <p>✔ Premium Content</p>
-              <h3>₹1,999 / year</h3>
+              <h3>₹1999 / year</h3>
             </>
           )}
 

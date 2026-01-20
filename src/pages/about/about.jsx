@@ -123,9 +123,10 @@ const About = () => {
         <p>
           Join thousands of learners building real-world skills with EduMaster.
         </p>
-        <button className="cta-btn">Explore Courses</button>
+        <button className="cta-btn" onClick={() => navigate("/courses")}>
+          Explore Courses
+        </button>
       </section>
-
     </div>
   );
 };

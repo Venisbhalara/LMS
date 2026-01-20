@@ -24,11 +24,11 @@ const Footer = () => {
                 <strong>50K+</strong>
                 <span>Students</span>
               </div>
-              <div>
+              <div> 
                 <strong>120+</strong>
                 <span>Courses</span>
               </div>
-              <div>
+              <div> 
                 <strong>4.9★</strong>
                 <span>Rating</span>
               </div>

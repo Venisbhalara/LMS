@@ -1,78 +1,149 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   BookIcon,
   PlayIcon,
   ClockIcon,
   AwardIcon,
+  TrashIcon,
 } from "../../components/Icons/Icons";
+import { FiLock, FiUnlock } from "react-icons/fi";
 import CreateCourseModal from "../../components/CreateCourseModal/CreateCourseModal";
 import "./InstructorDashboard.css";
 
 const InstructorDashboard = () => {
   const [showModal, setShowModal] = useState(false);
-  const [courses, setCourses] = useState([
-    {
-      id: 1,
-      title: "React Mastery",
-      studentsEnrolled: 120,
-      lessons: 40,
-      quizzes: 10,
-      earnings: 1200,
-      lastUpdated: "2 days ago",
-    },
-    {
-      id: 2,
-      title: "Python for Data Science",
-      studentsEnrolled: 90,
-      lessons: 50,
-      quizzes: 8,
-      earnings: 900,
-      lastUpdated: "1 week ago",
-    },
-    {
-      id: 3,
-      title: "Node.js for Beginners",
-      studentsEnrolled: 70,
-      lessons: 60,
-      quizzes: 9,
-      earnings: 2900,
-      lastUpdated: "2 weeks ago",
-    },
-    {
-      id: 4,
-      title: "JavaScript for Beginners",
-      studentsEnrolled: 80,
-      lessons: 70,
-      quizzes: 10,
-      earnings: 3500,
-      lastUpdated: "3 weeks ago",
-    },
-    {
-      id: 5,
-      title: "Mern Stack",
-      studentsEnrolled: 90,
-      lessons: 80,
-      quizzes: 12,
-      earnings: 4000,
-      lastUpdated: "4 weeks ago",
-    },
-    {
-      id: 6,
-      title: "fullstack with developement",
-      studentsEnrolled: 100,
-      lessons: 90,
-      quizzes: 15,
-      earnings: 4500,
-      lastUpdated: "5 weeks ago",
-    },
-  ]);
+  const [showManageModal, setShowManageModal] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const addCourse = (course) => {
-    setCourses((prev) => [course, ...prev]);
+  // Fetch courses from backend
+  useEffect(() => {
+    fetchCourses();
+  }, []);
+
+  const fetchCourses = async () => {
+    try {
+      const response = await fetch("/api/courses");
+      const data = await response.json();
+      if (data.success) {
+        setCourses(data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+    } finally {
+      setLoading(false);
+    }
   };
-  
+
+  const addCourse = async (courseData) => {
+    try {
+      // API call to create course
+      const response = await fetch("/api/courses", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(courseData),
+      });
+      const data = await response.json();
+
+      if (data.success) {
+        // Refresh list or add to state
+        setCourses((prev) => [data.data, ...prev]);
+      } else {
+        alert("Failed to create course: " + data.message);
+      }
+    } catch (error) {
+      console.error("Error creating course:", error);
+      alert("Error connecting to server");
+    }
+  };
+
+  const updateCourse = async (courseData) => {
+    try {
+      const response = await fetch(`/api/courses/${courseData.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(courseData),
+      });
+      const data = await response.json();
+
+      if (data.success) {
+        setCourses((prev) =>
+          prev.map((c) => (c.id === courseData.id ? data.data : c))
+        );
+      } else {
+        alert("Failed to update course: " + data.message);
+      }
+    } catch (error) {
+      console.error("Error updating course:", error);
+      alert("Error connecting to server");
+    }
+  };
+
+  const deleteCourse = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this course?")) return;
+
+    try {
+      const response = await fetch(`/api/courses/${id}`, {
+        method: "DELETE",
+      });
+      const data = await response.json();
+
+      if (data.success) {
+        setCourses((prev) => prev.filter((c) => c.id !== id));
+      } else {
+        alert("Failed to delete course: " + data.message);
+      }
+    } catch (error) {
+      console.error("Error deleting course:", error);
+      alert("Error connecting to server");
+    }
+  };
+
+  const toggleLock = async (course) => {
+    try {
+      const newLockStatus = !course.is_locked;
+      const response = await fetch(`/api/courses/${course.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...course, is_locked: newLockStatus }),
+      });
+      const data = await response.json();
+
+      if (data.success) {
+        setCourses((prev) =>
+          prev.map((c) =>
+            c.id === course.id ? { ...c, is_locked: newLockStatus } : c
+          )
+        );
+      } else {
+        alert("Failed to update lock status: " + data.message);
+      }
+    } catch (error) {
+      console.error("Error updating lock status:", error);
+      alert("Error connecting to server");
+    }
+  };
+
+  const handleEditClick = (course) => {
+    setSelectedCourse(course);
+    setShowModal(true);
+  };
+
+  const handleCreateClick = () => {
+    setSelectedCourse(null);
+    setShowModal(true);
+  };
+
   const handleCloseModal = () => {
     setShowModal(false);
+    setSelectedCourse(null);
   };
 
   return (
@@ -100,7 +171,7 @@ const InstructorDashboard = () => {
             <PlayIcon size={28} />
             <div>
               <span>
-                {courses.reduce((a, c) => a + c.studentsEnrolled, 0)}
+                {courses.reduce((a, c) => a + (c.studentsEnrolled || 0), 0)}
               </span>
               <p>Students</p>
             </div>
@@ -109,7 +180,12 @@ const InstructorDashboard = () => {
           <div className="stat-card">
             <ClockIcon size={28} />
             <div>
-              <span>{courses.reduce((a, c) => a + c.lessons, 0)}</span>
+              <span>
+                {courses.reduce(
+                  (a, c) => a + (c.lessons_count || c.lessons || 0),
+                  0
+                )}
+              </span>
               <p>Lessons</p>
             </div>
           </div>
@@ -117,8 +193,13 @@ const InstructorDashboard = () => {
           <div className="stat-card">
             <AwardIcon size={28} />
             <div>
-              <span>₹{courses.reduce((a, c) => a + c.earnings, 0)}</span>
-              <p>Earnings</p>
+              <span>
+                ₹
+                {courses
+                  .reduce((a, c) => a + (parseFloat(c.price) || 0), 0)
+                  .toFixed(2)}
+              </span>
+              <p>Potential Earnings</p>
             </div>
           </div>
         </div>
@@ -127,46 +208,86 @@ const InstructorDashboard = () => {
         <section className="dashboard-section">
           <div className="section-header">
             <h2>My Courses</h2>
-            <button
-              className="btn btn-primary"
-              onClick={() => setShowModal(true)}
-            >
+            <button className="btn btn-primary" onClick={handleCreateClick}>
               + Create Course
             </button>
           </div>
 
-          <div className="courses-grid">
-            {courses.map((course) => (
-              <div key={course.id} className="course-card">
-                <div className="course-top">
-                  <h3>{course.title}</h3>
-                  <span className="course-badge">Active</span>
-                </div>
+          {loading ? (
+            <p>Loading courses...</p>
+          ) : (
+            <div className="courses-grid">
+              {courses.map((course) => (
+                <div key={course.id} className="course-card">
+                  <div className="course-top">
+                    <h3>{course.title}</h3>
+                    <span className="course-badge">Active</span>
+                  </div>
 
-                <div className="course-info">
-                  <p>👥 {course.studentsEnrolled} Students</p>
-                  <p>📚 {course.lessons} Lessons</p>
-                  <p>📝 {course.quizzes} Quizzes</p>
-                  <p>💰 ₹{course.earnings}</p>
-                </div>
+                  <div className="course-info">
+                    <p>👥 {course.studentsEnrolled || 0} Students</p>
+                    <p>
+                      📚 {course.lessons_count || course.lessons || 0} Lessons
+                    </p>
+                    <p>
+                      📝 {course.quizzes_count || course.quizzes || 0} Quizzes
+                    </p>
+                    <p>💰 ₹{course.price}</p>
+                  </div>
 
-                <p className="course-update">
-                  Updated {course.lastUpdated}
-                </p>
+                  <p className="course-update">
+                    Category: {course.category || "General"}
+                  </p>
 
-                <div className="course-actions">
-                  <button className="btn btn-outline">Edit</button>
-                  <button className="btn btn-outline">Students</button>
+                  <div className="course-actions">
+                    <button
+                      className="btn btn-outline"
+                      onClick={() => handleEditClick(course)}
+                    >
+                      Manage
+                    </button>
+                    <button
+                      className="btn btn-outline"
+                      onClick={() => toggleLock(course)}
+                      title={course.is_locked ? "Unlock Course" : "Lock Course"}
+                    >
+                      {course.is_locked ? (
+                        <FiUnlock size={18} />
+                      ) : (
+                        <FiLock size={18} />
+                      )}
+                      {course.is_locked ? " Unlock" : " Lock"}
+                    </button>
+                    <button
+                      className="btn btn-icon delete-btn"
+                      onClick={() => deleteCourse(course.id)}
+                      title="Delete Course"
+                      style={{
+                        border: "none",
+                        background: "transparent",
+                        cursor: "pointer",
+                        color: "#ef4444",
+                        padding: "14px",
+                      }}
+                    >
+                      <TrashIcon size={20} />
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+              {courses.length === 0 && (
+                <p>No courses found. Create your first course!</p>
+              )}
+            </div>
+          )}
         </section>
       </div>
       <CreateCourseModal
         isOpen={showModal}
         onClose={handleCloseModal}
         onAddCourse={addCourse}
+        onEditCourse={updateCourse}
+        initialData={selectedCourse}
       />
     </div>
   );

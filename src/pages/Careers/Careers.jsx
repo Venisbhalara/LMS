@@ -1,14 +1,15 @@
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
 
 import { FaLaptopCode, FaPaintBrush, FaBookOpen } from "react-icons/fa";
 import "./Careers.css";
 
 const Careers = () => {
-  const [selectedRole, setSelectedRole] = useState(null);
+  const navigate = useNavigate();
 
-  const openModal = (role) => setSelectedRole(role);
-  const closeModal = () => setSelectedRole(null);
+  const handleApply = (role) => {
+    navigate("/apply", { state: { role } });
+  };
 
   const benefits = [
     {
@@ -93,7 +94,7 @@ const Careers = () => {
                 <h3>{j.title}</h3>
                 <p>{j.description}</p>
                 <span>{j.type}</span>
-                <button onClick={() => openModal(j.title)}>Apply Now</button>
+                <button onClick={() => handleApply(j.title)}>Apply Now</button>
               </div>
             ))}
           </div>
@@ -105,33 +106,13 @@ const Careers = () => {
           <p>We’re always happy to connect with talented individuals.</p>
           <button
             className="cta-btn"
-            onClick={() => openModal("General Application")}
+            onClick={() => handleApply("General Application")}
           >
             Send Your Resume
           </button>
         </section>
-
-        {/* MODAL */}
-        {selectedRole && (
-          <div className="modal-overlay active" onClick={closeModal}>
-            <div className="modal-card" onClick={(e) => e.stopPropagation()}>
-              <h3>Application Submitted</h3>
-              <p className="modal-role">
-                Role: <strong>{selectedRole}</strong>
-              </p>
-              <p className="modal-text">
-                Thank you for your interest in joining EduMaster. Our team has
-                received your application and will reach out shortly.
-              </p>
-              <button className="modal-btn" onClick={closeModal}>
-                Close
-              </button>
-            </div>
-          </div>
-        )}
       </div>
       <Footer />
-
     </div>
   );
 };

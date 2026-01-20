@@ -1,22 +1,22 @@
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { MailIcon, CheckIcon } from '../Icons/Icons'
-import './Newsletter.css'
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { MailIcon, CheckIcon } from "../Icons/Icons";
+import "./Newsletter.css";
 
 const Newsletter = () => {
-  const [email, setEmail] = useState('')
-  const [submitted, setSubmitted] = useState(false)
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    if (!email) return
+    e.preventDefault();
+    if (!email) return;
 
-    console.log('Newsletter signup:', email)
-    setSubmitted(true)
-    setEmail('')
+    console.log("Newsletter signup:", email);
+    setSubmitted(true);
+    setEmail("");
 
-    setTimeout(() => setSubmitted(false), 3500)
-  }
+    setTimeout(() => setSubmitted(false), 3500);
+  };
 
   return (
     <section className="newsletter">
@@ -26,26 +26,24 @@ const Newsletter = () => {
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
         >
           <div className="newsletter-icon">
             <MailIcon size={42} />
           </div>
 
-          <h2 className="newsletter-title">
-            Join 25,000+ Learners
-          </h2>
+          <h2 className="newsletter-title">Join 25,000+ Learners</h2>
 
           <p className="newsletter-description">
-            Weekly insights, new course launches, and exclusive learning resources —
-            delivered straight to your inbox.
+            Weekly insights, new course launches, and exclusive learning
+            resources — delivered straight to your inbox.
           </p>
 
           <form onSubmit={handleSubmit} className="newsletter-form">
             <input
               type="email"
               placeholder="Enter your email address"
-              value={email}
+              value={email} 
               onChange={(e) => setEmail(e.target.value)}
               className="newsletter-input"
               required
@@ -62,7 +60,7 @@ const Newsletter = () => {
                   Subscribed
                 </>
               ) : (
-                'Get Updates'
+                "Get Updates"
               )}
             </button>
           </form>
@@ -85,7 +83,7 @@ const Newsletter = () => {
         </motion.div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default Newsletter
+export default Newsletter;

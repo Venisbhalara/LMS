@@ -9,9 +9,3 @@ Payment gateway (Stripe/Razorpay)
 Invoices & receipts
 Refund management
 =======================================================
-new pages
--------------
-My Courses 
-Wishlist
-Orders / Payments
-Messages

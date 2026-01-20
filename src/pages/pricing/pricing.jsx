@@ -45,7 +45,7 @@ const Pricing = () => {
             <span className="lms-pricing-badge">Most Popular</span>
             <h3>Pro Plan</h3>
             <p className="lms-pricing-price">
-              ₹1,999 <span>/ year</span>
+              ₹1999 <span>/ year</span>
             </p>
             <ul>
               <li>✔ Unlimited courses</li>
@@ -71,7 +71,7 @@ const Pricing = () => {
             </ul>
             <button
               className="lms-pricing-btn-outline"
-              onClick={() => openModal("Custom Plan")}
+              onClick={() => navigate("/contact-sales")}
             >
               Contact Sales
             </button>

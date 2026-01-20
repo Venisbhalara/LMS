@@ -9,14 +9,41 @@ const Contact = () => {
     message: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert("Message sent! We'll get back to you soon.");
-    setFormData({ name: "", email: "", subject: "", message: "" });
+    setLoading(true);
+
+    try {
+      const response = await fetch("http://localhost:5000/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert("Message sent successfully! We'll get back to you soon.");
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      } else {
+        alert(data.message || "Failed to send message. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error sending message:", error);
+      alert(
+        "Something went wrong. Please check your connection and try again."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -58,6 +85,7 @@ const Contact = () => {
             value={formData.name}
             onChange={handleChange}
             required
+            disabled={loading}
           />
           <input
             type="email"
@@ -66,6 +94,7 @@ const Contact = () => {
             value={formData.email}
             onChange={handleChange}
             required
+            disabled={loading}
           />
           <input
             type="text"
@@ -74,6 +103,7 @@ const Contact = () => {
             value={formData.subject}
             onChange={handleChange}
             required
+            disabled={loading}
           />
           <textarea
             name="message"
@@ -82,9 +112,10 @@ const Contact = () => {
             value={formData.message}
             onChange={handleChange}
             required
+            disabled={loading}
           />
-          <button type="submit" className="contact-btn">
-            Send Message
+          <button type="submit" className="contact-btn" disabled={loading}>
+            {loading ? "Sending..." : "Send Message"}
           </button>
         </form>
       </section>

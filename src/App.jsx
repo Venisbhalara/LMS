@@ -20,7 +20,16 @@ import Quiz from "./pages/Quiz/Quiz";
 import QuizResult from "./pages/Quiz/QuizResult";
 import InstructorDashboard from "./pages/InstructorDashboard/InstructorDashboard";
 import PaymentPage from "./pages/Payment/PaymentPage";
-import "./App.css"; 
+import AdminUsers from "./pages/Admin/AdminUsers";
+import Privacy from "./pages/Privacy/Privacy";
+import Terms from "./pages/Terms/Terms";
+import Cookies from "./pages/Cookies/Cookies";
+import ContactSales from "./pages/ContactSales/ContactSales";
+// import ContactSales from "./pages/ContactSales/ContactSales";
+import CertificateVerification from "./pages/CertificateVerification/CertificateVerification";
+import MyCertificates from "./pages/MyCertificates/MyCertificates";
+import Apply from "./pages/Apply/Apply";
+import "./App.css";
 
 function App() {
   return (
@@ -43,16 +52,28 @@ function App() {
           <Route path="blog" element={<Blog />} />
           <Route path="contact" element={<Contact />} />
           <Route path="pricing" element={<Pricing />} />
+          <Route path="/contact-sales" element={<ContactSales />} />
           <Route path="quiz" element={<Quiz />} />
           <Route path="quiz/result" element={<QuizResult />} />
           <Route path="/course/:courseId/quiz/:quizId" element={<Quiz />} />
           <Route path="/course/:courseId/quiz/:quizId" element={<Quiz />} />
-          <Route path="/course/:courseId/quiz/:quizId/result" element={<QuizResult />} />
+          <Route
+            path="/course/:courseId/quiz/:quizId/result"
+            element={<QuizResult />}
+          />
           <Route path="/payment" element={<PaymentPage />} />
-          <Route path="/instructor/dashboard" element={<InstructorDashboard />} />
-          
-          
-        </Route>
+          <Route
+            path="/instructor/dashboard"
+            element={<InstructorDashboard />}
+          />
+          <Route path="/admin/users" element={<AdminUsers />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/cookies" element={<Cookies />} />
+          <Route path="/my-certificates" element={<MyCertificates />} />
+          <Route path="/verify/:code" element={<CertificateVerification />} />
+          <Route path="/apply" element={<Apply />} />
+        </Route>  
       </Routes>
       {/* Help Widget: Appears on all pages */}
       <HelpWidget />

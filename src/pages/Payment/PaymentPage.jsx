@@ -17,7 +17,7 @@ const PaymentPage = () => {
   
   // Get plan details from navigation state (or default to Pro)
   const selectedPlan = location.state?.plan || "Pro Plan";
-  const planPrice = location.state?.price || 1999;
+  const planPrice = location.state?.price || 1;
   const tax = Math.round(planPrice * 0.18); // 18% GST
   const totalAmount = planPrice + tax;
 

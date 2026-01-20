@@ -169,9 +169,11 @@ const Navbar = () => {
 
           {/* User Actions */}
           <div className="navbar-actions">
-            <Link to="/pricing" className="btn btn-text">
-              Pricing
-            </Link>
+            {(!user || user.role === ROLES.STUDENT) && (
+              <Link to="/pricing" className="btn btn-text">
+                Pricing
+              </Link>
+            )}
 
             {isAuthenticated ? (
               <>
@@ -179,12 +181,12 @@ const Navbar = () => {
                   Dashboard
                 </Link>
                 {user?.role === ROLES.INSTRUCTOR && (
-                  <Link to="/instructor/courses" className="btn btn-text">
+                  <Link to="/instructor/dashboard" className="btn btn-text">
                     My Courses
                   </Link>
                 )}
                 {user?.role === ROLES.ADMIN && (
-                  <Link to="/admin" className="btn btn-text">
+                  <Link to="/admin/users" className="btn btn-text">
                     Admin
                   </Link>
                 )}
@@ -278,12 +280,12 @@ const Navbar = () => {
               Dashboard
             </Link>
             {user?.role === ROLES.INSTRUCTOR && (
-              <Link to="/instructor/courses" className="mobile-menu-item">
+              <Link to="/instructor/dashboard" className="mobile-menu-item">
                 My Courses
               </Link>
             )}
             {user?.role === ROLES.ADMIN && (
-              <Link to="/admin" className="mobile-menu-item">
+              <Link to="/admin/users" className="mobile-menu-item">
                 Admin
               </Link>
             )}

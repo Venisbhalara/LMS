@@ -313,7 +313,9 @@ export const coursesData = [
               ]
           }
       ]
-  }
+  }    
+                
+
 ].map(course => ({
     ...course,
     rating: course.rating || 4.7,

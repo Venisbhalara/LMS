@@ -71,17 +71,23 @@
   border-left: 3px solid #4f46e5;
 }
 
-.dashboard-content {
+.dashboard-content, .container {
   flex: 1;
-  padding: 3rem 1.5rem;
+  padding: 2rem 1rem;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
 }
 
 @media (min-width: 768px) {
-  .dashboard-content {
-    padding: 4rem 2rem;
+  .dashboard-content, .container {
+    padding: 3rem 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .dashboard-content, .container {
+    padding: 4rem 2.5rem;
   }
 }
 
@@ -522,3 +528,203 @@
   color: #9ca3af;
   margin-top: 0.5rem;
 }
+
+/* ================================
+   ADMIN & INSTRUCTOR ADDITIONS
+   ================================ */
+
+/* Admin Table */
+.admin-table-container {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  margin-top: 1rem;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.admin-table th {
+  padding: 1rem 1.5rem;
+  background: #f9fafb;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #4b5563;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.admin-table td {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 0.9375rem;
+  color: #111827;
+}
+
+.admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Quick Actions */
+.quick-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.action-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.action-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  border-color: #6366f1;
+}
+
+.action-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.action-title {
+  font-weight: 600;
+  color: #111827;
+}
+
+/* Activity List */
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.activity-item {
+  display: flex;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  align-items: center;
+}
+
+.activity-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3f4f6;
+  border-radius: 10px;
+  font-size: 1.25rem;
+}
+
+.activity-content {
+  flex: 1;
+}
+
+.activity-title {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #111827;
+  margin-bottom: 0.25rem;
+}
+
+.activity-time {
+  font-size: 0.8125rem;
+  color: #6b7280;
+}
+
+/* Status Badges */
+.status-badge, .role-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status-published, .role-instructor {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.status-pending, .role-admin {
+  background: #fff7ed;
+  color: #d97706;
+}
+
+.status-draft, .role-student {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+/* Buttons */
+.btn-link {
+  background: none;
+  border: none;
+  color: #6366f1;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+
+.btn-link:hover {
+  text-decoration: underline;
+}
+
+/* Instructor Dashboard specific */
+.instructor-course-card .course-emoji {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.instructor-course-stats {
+  display: flex;
+  gap: 1.5rem;
+  margin: 1rem 0;
+  padding-top: 1rem;
+  border-top: 1px solid #f3f4f6;
+}
+
+.instructor-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.instructor-stat .stat-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.instructor-stat .stat-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.course-status {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.course-status-published { color: #059669; }
+.course-status-draft { color: #6b7280; }

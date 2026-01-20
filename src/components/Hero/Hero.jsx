@@ -9,50 +9,76 @@ import {
   BriefcaseIcon,
 } from "../Icons/Icons";
 import "./Hero.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 const formatValue = (value) => {
   if (value >= 1000) return `${Math.floor(value / 1000)}K`;
   return value.toString();
 };
 
-const SmoothCount = ({ end, duration = 2600, delay = 300, suffix = "+" }) => {
-  const [count, setCount] = useState(0);
+const SmoothCount = ({ end, duration = 2000, delay = 0, suffix = "+" }) => {
+  const countRef = useRef(null);
+  const [inView, setInView] = useState(false);
 
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 },
+    );
+
+    if (countRef.current) {
+      observer.observe(countRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!inView) return;
+
     let startTime = null;
+    let animationFrameId;
 
     const animate = (timestamp) => {
       if (!startTime) startTime = timestamp;
       const elapsed = timestamp - startTime;
-
       const progress = Math.min(elapsed / duration, 1);
 
-      // Premium easing (very smooth)
-      const easeOut = 1 - Math.pow(1 - progress, 3.8);
+      // Easing function: easeOutExpo
+      const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
 
-      const currentValue = Math.floor(easeOut * end);
-      setCount(currentValue);
+      const current = Math.floor(ease * end);
+
+      if (countRef.current) {
+        countRef.current.textContent = formatValue(current) + suffix;
+      }
 
       if (progress < 1) {
-        requestAnimationFrame(animate);
+        animationFrameId = requestAnimationFrame(animate);
+      } else {
+        // Ensure final value is exact
+        if (countRef.current) {
+          countRef.current.textContent = formatValue(end) + suffix;
+        }
       }
     };
 
-    const timeout = setTimeout(() => {
-      requestAnimationFrame(animate);
+    const timeoutId = setTimeout(() => {
+      animationFrameId = requestAnimationFrame(animate);
     }, delay);
 
-    
-    return () => clearTimeout(timeout);
-  }, [end, duration, delay]);
+    return () => {
+      clearTimeout(timeoutId);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, [end, duration, delay, inView, suffix]);
 
-  return (
-    <span>
-      {formatValue(count)}
-      {suffix}
-    </span>
-  );
+  return <span ref={countRef}>0{suffix}</span>;
 };
 
 const Hero = () => {
@@ -68,9 +94,11 @@ const Hero = () => {
             transition={{ duration: 0.7, ease: "easeOut" }}
           >
             {/* Value Proposition */}
-            <div className="hero-badge">
-              <AwardIcon size={16} />
-              <span>Premium Online Learning Platform</span>
+            <div className="hero-badge premium-badge">
+              <AwardIcon size={14} className="badge-inline-icon" />
+              <span className="badge-text">
+                Premium Online Learning Platform
+              </span>
             </div>
 
             <h1 className="hero-title">
@@ -124,19 +152,22 @@ const Hero = () => {
                   icon: UsersIcon,
                   value: 50000,
                   label: "Active Learners",
-                  delay: 400,
+                  delay: 200,
+                  colorClass: "stat-primary",
                 },
                 {
                   icon: BookIcon,
                   value: 1000,
                   label: "Premium Courses",
-                  delay: 550,
+                  delay: 400,
+                  colorClass: "stat-secondary",
                 },
                 {
                   icon: GraduationIcon,
                   value: 500,
                   label: "Expert Instructors",
-                  delay: 700,
+                  delay: 600,
+                  colorClass: "stat-tertiary",
                 },
               ].map((item, index) => {
                 const Icon = item.icon;
@@ -144,24 +175,33 @@ const Hero = () => {
                 return (
                   <motion.div
                     key={index}
-                    className="trust-stat premium-stat"
-                    initial={{ opacity: 0, y: 18 }}
+                    className={`trust-stat premium-card ${item.colorClass}`}
+                    initial={{ opacity: 0, y: 28 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{
-                      duration: 0.8,
+                      duration: 0.9,
                       delay: item.delay / 1000,
-                      ease: [0.22, 1, 0.36, 1], // premium easing
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                    whileHover={{
+                      y: -6,
+                      boxShadow: "0 20px 40px rgba(79, 110, 247, 0.15)",
                     }}
                   >
-                    <div className="trust-stat-icon">
-                      <Icon size={24} />
+                    <div className="stat-icon">
+                      <Icon size={22} />
                     </div>
 
-                    <div className="trust-stat-content">
-                      <div className="trust-stat-number premium-number">
-                        <SmoothCount end={item.value} delay={item.delay} />
+                    <div className="stat-content">
+                      <div className="stat-number">
+                        <SmoothCount
+                          end={item.value}
+                          duration={2000}
+                          delay={item.delay + 300}
+                        />
+                        <span className="stat-plus">+</span>
                       </div>
-                      <div className="trust-stat-label">{item.label}</div>
+                      <div className="stat-label">{item.label}</div>
                     </div>
                   </motion.div>
                 );

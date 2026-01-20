@@ -26,3 +26,11 @@ dist-ssr
 
 # Local Netlify folder
 .netlify
+
+# Sensitive and Project Files
+admin id pass.txt
+db details.txt
+overall and pending details.xlsx
+project progress and overview.txt
+improvements.txt
+overview and pending details.xlsx

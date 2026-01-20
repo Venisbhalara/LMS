@@ -1,7 +1,7 @@
 /* ================================
-   PREMIUM COLOR SYSTEM
-================================ */
-:root {
+   PREMIUM COLOR SYSTEM (Scoped to Profile)
+   ================================ */
+.profile-page {
   --blue-main: #3f6fdc;
   --blue-soft: #6b93e8;
   --blue-bg: #f3f6ff;
@@ -10,12 +10,7 @@
   --border-soft: rgba(0, 0, 0, 0.06);
   --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.08);
   --shadow-hover: 0 28px 65px rgba(63, 111, 220, 0.25);
-}
 
-/* ================================
-   PAGE BASE
-================================ */
-.profile-page {
   background: linear-gradient(180deg, #f7f9ff, #ffffff);
   min-height: 100vh;
   padding: 60px 0;
@@ -30,26 +25,27 @@
 
 /* ================================
    HEADER
-================================ */
-.profile-header {
+   ================================ */
+.profile-page .profile-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 40px;
 }
 
-.profile-header h2 {
+.profile-page .profile-header h2 {
   font-size: 30px;
   font-weight: 700;
   background: linear-gradient(135deg, var(--blue-main), var(--blue-soft));
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 /* ================================
-   GRID LAYOUT (FIXED)
-================================ */
-.profile-content {
+   GRID LAYOUT
+   ================================ */
+.profile-page .profile-content {
   display: grid;
   grid-template-columns: 380px 1fr;
   gap: 40px;
@@ -57,9 +53,9 @@
 }
 
 /* ================================
-   PROFILE CARD (FIXED HEIGHT)
-================================ */
-.profile-card {
+   PROFILE CARD
+   ================================ */
+.profile-page .profile-card {
   background: #ffffff;
   border-radius: 22px;
   padding: 35px 30px;
@@ -72,12 +68,12 @@
   transition: all 0.35s ease;
 }
 
-.profile-card:hover {
+.profile-page .profile-card:hover {
   transform: translateY(-5px);
   box-shadow: var(--shadow-hover);
 }
 
-.profile-avatar-large {
+.profile-page .profile-avatar-large {
   width: 88px;
   height: 88px;
   margin: 0 auto 18px;
@@ -92,24 +88,24 @@
   box-shadow: 0 14px 30px rgba(63, 111, 220, 0.45);
 }
 
-.profile-card h2 {
+.profile-page .profile-card h2 {
   font-size: 22px;
   margin-bottom: 4px;
   color: var(--text-dark);
 }
 
-.profile-email {
+.profile-page .profile-email {
   font-size: 14px;
   color: var(--text-muted);
   margin-bottom: 14px;
 }
 
-.profile-role {
+.profile-page .profile-role {
   font-size: 14px;
   margin-bottom: 12px;
 }
 
-.role-badge {
+.profile-page .role-badge {
   padding: 5px 14px;
   border-radius: 20px;
   font-weight: 600;
@@ -117,22 +113,22 @@
   color: var(--blue-main);
 }
 
-.profile-join-date {
+.profile-page .profile-join-date {
   font-size: 13px;
   color: var(--text-muted);
 }
 
 /* ================================
-   STATS GRID (EQUAL SIZE)
-================================ */
-.profile-stats {
+   STATS GRID
+   ================================ */
+.profile-page .profile-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 22px;
   height: 100%;
 }
 
-.profile-stat {
+.profile-page .profile-stat {
   background: #ffffff;
   padding: 26px 20px;
   border-radius: 20px;
@@ -145,20 +141,21 @@
   transition: all 0.35s ease;
 }
 
-.profile-stat:hover {
+.profile-page .profile-stat:hover {
   transform: translateY(-6px);
   box-shadow: var(--shadow-hover);
 }
 
-.stat-value {
+.profile-page .profile-stat .stat-value {
   font-size: 28px;
   font-weight: 700;
   background: linear-gradient(135deg, var(--blue-main), var(--blue-soft));
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.stat-label {
+.profile-page .profile-stat .stat-label {
   font-size: 14px;
   margin-top: 6px;
   color: var(--text-muted);
@@ -166,8 +163,8 @@
 
 /* ================================
    SWITCH PROFILE BUTTON
-================================ */
-.profile-switch-btn {
+   ================================ */
+.profile-page .profile-switch-btn {
   margin-top: 25px;
   background: linear-gradient(135deg, var(--blue-main), var(--blue-soft));
   color: #ffffff;
@@ -180,16 +177,15 @@
   transition: all 0.35s ease;
 }
 
-.profile-switch-btn:hover {
+.profile-page .profile-switch-btn:hover {
   transform: translateY(-3px);
   box-shadow: 0 20px 45px rgba(63, 111, 220, 0.45);
 }
 
 /* ================================
-   SWITCH MODAL
-================================ */
-/* Overlay */
-.profile-switch-overlay {
+   SWITCH MODAL (Scoped)
+   ================================ */
+.profile-page .profile-switch-overlay {
   position: fixed;
   inset: 0;
   background: rgba(10, 20, 40, 0.55);
@@ -200,18 +196,16 @@
   z-index: 1000;
 }
 
-/* Modal */
-.profile-switch-modal {
-  width: 420px;
+.profile-page .profile-switch-modal {
+  width: 520px;
   background: linear-gradient(180deg, #ffffff, #f8fafc);
   border-radius: 20px;
-  padding: 28px 26px;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.18),
+  padding: 32px 30px;
+  box-shadow: 0 35px 70px rgba(0, 0, 0, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.6);
-  animation: modalFadeIn 0.35s ease;
+  animation: modalFadeIn 0.35s ease-out;
 }
 
-/* Animation */
 @keyframes modalFadeIn {
   from {
     opacity: 0;
@@ -223,8 +217,7 @@
   }
 }
 
-/* Header */
-.profile-switch-modal h3 {
+.profile-page .profile-switch-modal h3 {
   font-size: 22px;
   font-weight: 700;
   color: #0f172a;
@@ -232,22 +225,20 @@
   margin-bottom: 6px;
 }
 
-.profile-switch-modal p {
+.profile-page .profile-switch-modal p {
   font-size: 14px;
   color: #64748b;
   text-align: center;
   margin-bottom: 24px;
 }
 
-/* Options */
-.profile-switch-options {
+.profile-page .profile-switch-options {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
 }
 
-/* Cards */
-.switch-card {
+.profile-page .switch-card {
   border-radius: 16px;
   padding: 22px 18px;
   background: linear-gradient(145deg, #f8fafc, #ffffff);
@@ -258,43 +249,44 @@
   box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
 }
 
-/* Icon */
-.switch-card .icon {
+.profile-page .switch-card .icon {
   font-size: 32px;
   margin-bottom: 10px;
   display: inline-block;
 }
 
-/* Title */
-.switch-card h4 {
+.profile-page .switch-card h4 {
   font-size: 16px;
   font-weight: 600;
   color: #0f172a;
   margin-bottom: 4px;
 }
 
-/* Description */
-.switch-card p {
-  font-size: 13px;
+.profile-page .switch-card p {
+  font-size: 11px;
   color: #64748b;
   margin: 0;
+  line-height: 1.4;
 }
 
-/* Hover Effect */
-.switch-card:hover {
+.profile-page .admin-switch:hover {
+  border-color: #ef4444;
+  background: linear-gradient(145deg, #fff5f5, #ffffff);
+  box-shadow: 0 18px 40px rgba(239, 68, 68, 0.18);
+}
+
+.profile-page .switch-card:hover {
   transform: translateY(-4px);
   border-color: #3b82f6;
   background: linear-gradient(145deg, #eef6ff, #ffffff);
   box-shadow: 0 18px 40px rgba(59, 130, 246, 0.25);
 }
 
-/* Active Click */
-.switch-card:active {
+.profile-page .switch-card:active {
   transform: scale(0.98);
 }
 
-/* Cancel Button */
-.switch-close-btn {
+.profile-page .switch-close-btn {
   width: 100%;
   margin-top: 24px;
   padding: 12px;
@@ -307,14 +299,133 @@
   transition: all 0.25s ease;
 }
 
-.switch-close-btn:hover {
+.profile-page .switch-close-btn:hover {
   background: linear-gradient(135deg, #dbeafe, #bfdbfe);
   color: #1d4ed8;
 }
 
+/* ================================
+   ADMIN VERIFY FORM
+   ================================ */
+.profile-page .admin-verify-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-top: 5px;
+}
+
+.profile-page .admin-login-error {
+  padding: 10px 14px;
+  background: #fff5f5;
+  border: 1px solid #feb2b2;
+  border-radius: 12px;
+  color: #c53030;
+  font-size: 13px;
+  text-align: center;
+  font-weight: 500;
+  animation: profileShake 0.4s ease;
+}
+
+@keyframes profileShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
+}
+
+.profile-page .admin-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.profile-page .admin-form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+  padding-left: 4px;
+}
+
+.profile-page .admin-form-group input {
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1.6px solid #e2e8f0;
+  font-size: 14px;
+  transition: all 0.25s ease;
+  background: #fdfdfe;
+}
+
+.profile-page .admin-form-group input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+  background: #ffffff;
+}
+
+.profile-page .admin-verify-actions {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.profile-page .admin-back-btn {
+  padding: 12px;
+  border-radius: 12px;
+  border: 1.6px solid #e2e8f0;
+  background: white;
+  color: #64748b;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.profile-page .admin-back-btn:hover {
+  background: #f8fafc;
+  color: #1e293b;
+}
+
+.profile-page .admin-confirm-btn {
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #1e293b, #334155);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(30, 41, 59, 0.25);
+  transition: all 0.25s ease;
+}
+
+.profile-page .admin-confirm-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 35px rgba(30, 41, 59, 0.35);
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+}
+
+.profile-page .admin-confirm-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
 /* Mobile */
-@media (max-width: 480px) {
-  .profile-switch-modal {
-    width: 90%;
+@media (max-width: 580px) {
+  .profile-page .profile-switch-modal {
+    width: 95%;
+    padding: 24px 20px;
+  }
+
+  .profile-page .profile-switch-options {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-page .profile-content {
+    grid-template-columns: 1fr;
   }
 }

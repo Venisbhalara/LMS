@@ -9,7 +9,7 @@ const AdminDashboard = () => {
     { label: 'Total Users', value: '45,230', icon: '👥', trend: '+12%' },
     { label: 'Total Courses', value: '1,245', icon: '📚', trend: '+5%' },
     { label: 'Active Instructors', value: '342', icon: '👨‍🏫', trend: '+8%' },
-    { label: 'Monthly Revenue', value: '$124,500', icon: '💰', trend: '+15%' }
+    { label: 'Monthly Revenue', value: '124,500', icon: '💰', trend: '+15%' }
   ]
 
   const recentUsers = [
@@ -111,7 +111,7 @@ const AdminDashboard = () => {
                         </span>
                       </td>
                       <td>
-                        <button className="btn-link">Review</button>
+                        <button className="btn-link">Review</button>  
                       </td>
                     </tr>
                   ))}

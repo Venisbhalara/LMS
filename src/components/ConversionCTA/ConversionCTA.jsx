@@ -1,9 +1,19 @@
-import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import { ArrowRightIcon } from '../Icons/Icons'
-import './ConversionCTA.css'
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { ArrowRightIcon } from "../Icons/Icons";
+import { useAuth } from "../../context/AuthContext";
+import "./ConversionCTA.css";
 
 const ConversionCTA = () => {
+  const { isAuthenticated } = useAuth();
+
+  const handleSignupClick = (e) => {
+    if (isAuthenticated) {
+      e.preventDefault();
+      alert("You are already login in our website");
+    }
+  };
+
   return (
     <section className="conversion-cta">
       <div className="container">
@@ -16,23 +26,30 @@ const ConversionCTA = () => {
         >
           <h2 className="cta-title">Ready to Start Your Learning Journey?</h2>
           <p className="cta-description">
-            Join thousands of professionals who are already advancing their careers with EduMaster.
-            Start learning today and unlock your potential.
+            Join thousands of professionals who are already advancing their
+            careers with EduMaster. Start learning today and unlock your
+            potential.
           </p>
           <div className="cta-actions">
-            <Link to="/courses" className="btn btn-primary btn-large cta-button-primary">
+            <Link
+              to="/courses"
+              className="btn btn-primary btn-large cta-button-primary"
+            >
               Browse All Courses
               <ArrowRightIcon size={20} />
             </Link>
-            <Link to="/signup" className="btn btn-outline-white btn-large cta-button-secondary">
+            <Link
+              to="/signup"
+              className="btn btn-outline-white btn-large cta-button-secondary"
+              onClick={handleSignupClick}
+            >
               Sign Up Free
             </Link>
           </div>
         </motion.div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default ConversionCTA
-
+export default ConversionCTA;
