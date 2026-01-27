@@ -18,12 +18,10 @@ router.post("/sync-excel", adminMiddleware, async (req, res) => {
     if (result.success) {
       res.json({ success: true, message: "Excel file synced successfully" });
     } else {
-      res
-        .status(500)
-        .json({
-          success: false,
-          message: `Failed to sync Excel file: ${result.error}`,
-        });
+      res.status(500).json({
+        success: false,
+        message: `Failed to sync Excel file: ${result.error}`,
+      });
     }
   } catch (error) {
     console.error("Error syncing Excel:", error);
@@ -90,9 +88,17 @@ router.post("/", adminMiddleware, async (req, res) => {
 // Get all users (admin only)
 router.get("/", adminMiddleware, async (req, res) => {
   try {
-    const [users] = await db.query(
-      "SELECT id, name, email, role, created_at FROM users ORDER BY created_at DESC",
-    );
+    const { limit } = req.query;
+    let query =
+      "SELECT id, name, email, role, created_at FROM users ORDER BY created_at DESC";
+    const params = [];
+
+    if (limit) {
+      query += " LIMIT ?";
+      params.push(parseInt(limit));
+    }
+
+    const [users] = await db.query(query, params);
 
     res.json({
       success: true,

@@ -32,7 +32,7 @@ const authMiddleware = async (req, res, next) => {
       });
     }
 
-    req.user = decoded;
+    req.user = { ...decoded, role: users[0].role };
     next();
   } catch (error) {
     res.status(401).json({

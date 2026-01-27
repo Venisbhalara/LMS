@@ -221,7 +221,7 @@ const InstructorDashboard = () => {
                 <div key={course.id} className="course-card">
                   <div className="course-top">
                     <h3>{course.title}</h3>
-                    <span className="course-badge">Active</span>
+                    {/* <span className="course-badge">Active</span> */}
                   </div>
 
                   <div className="course-info">

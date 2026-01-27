@@ -162,21 +162,20 @@
   transform: translateY(-1px);
 }
 
-.course-badge {
+/* .course-badge {
   position: absolute;
   top: 0;
   right: 0;
-  left: auto; /* Reset left */
+  left: auto; 
   background: white;
   color: #3a7bd5;
   padding: 6px 14px;
   border-radius: 20px;
-  font-size: 0.75rem;
+  font-size: 0.20rem;
   font-weight: 700;
   box-shadow: 0 4px 15px rgba(58, 123, 213, 0.15);
   border: 1px solid rgba(58, 123, 213, 0.1);
   transition: all 0.3s ease;
-  letter-spacing: 0.5px;
 }
 
 .course-badge:hover {
@@ -184,7 +183,7 @@
   color: white;
   box-shadow: 0 6px 20px rgba(58, 123, 213, 0.3);
   transform: translateY(-2px);
-}
+} */
 
 .course-info {
   margin: 20px 0;

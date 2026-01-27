@@ -10,6 +10,7 @@ import {
 } from "../Icons/Icons";
 import "./Hero.css";
 import { useEffect, useState, useRef } from "react";
+import { useAuth } from "../../context/AuthContext";
 
 const formatValue = (value) => {
   if (value >= 1000) return `${Math.floor(value / 1000)}K`;
@@ -82,6 +83,8 @@ const SmoothCount = ({ end, duration = 2000, delay = 0, suffix = "+" }) => {
 };
 
 const Hero = () => {
+  const { user } = useAuth();
+
   return (
     <section id="hero-section" className="hero">
       <div className="container">
@@ -91,11 +94,10 @@ const Hero = () => {
             className="hero-content"
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
+            transition={{ duration: 0.7, ease:   "easeOut" }}
           >
             {/* Value Proposition */}
             <div className="hero-badge premium-badge">
-              <AwardIcon size={14} className="badge-inline-icon" />
               <span className="badge-text">
                 Premium Online Learning Platform
               </span>
@@ -138,10 +140,10 @@ const Hero = () => {
                 </svg>
               </Link>
               <Link
-                to="/signup"
+                to={user ? "/dashboard" : "/signup"}
                 className="btn btn-outline btn-large hero-cta-secondary"
               >
-                Start Learning Free
+                {user ? "Dashboard" : "Start Learning Free"}
               </Link>
             </div>
 

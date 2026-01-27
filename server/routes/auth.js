@@ -11,6 +11,8 @@ const router = express.Router();
 const JWT_SECRET =
   process.env.JWT_SECRET || "your-secret-key-change-this-in-production";
 
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+
 // Signup route
 router.post("/signup", async (req, res) => {
   try {
@@ -36,6 +38,21 @@ router.post("/signup", async (req, res) => {
       });
     }
 
+    // Determine role
+    let finalRole = "student";
+    // Check if they want to be admin and are authorized
+    if (role === "admin") {
+      if (email === ADMIN_EMAIL) {
+        finalRole = "admin";
+      } else {
+        // If unauthorized admin request, default to student
+        finalRole = "student";
+      }
+    } else if (role === "instructor") {
+      // Allow instructor signups (or add restriction if needed)
+      finalRole = "instructor";
+    }
+
     // Hash password
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -43,12 +60,12 @@ router.post("/signup", async (req, res) => {
     // Insert user into database
     const [result] = await db.query(
       "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
-      [name, email, hashedPassword, "student"], // Force role to student
+      [name, email, hashedPassword, finalRole],
     );
 
     // Generate JWT token
     const token = jwt.sign(
-      { id: result.insertId, email, role: "student" },
+      { id: result.insertId, email, role: finalRole },
       JWT_SECRET,
       { expiresIn: "7d" },
     );
@@ -58,7 +75,7 @@ router.post("/signup", async (req, res) => {
       id: result.insertId,
       name,
       email,
-      role: "student",
+      role: finalRole,
     });
 
     res.status(201).json({
@@ -68,7 +85,7 @@ router.post("/signup", async (req, res) => {
         id: result.insertId,
         name,
         email,
-        role: role || "student",
+        role: finalRole,
         token,
       },
     });

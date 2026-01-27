@@ -42,7 +42,16 @@ app.get("/api/health", (req, res) => {
 // Example: Get all courses
 app.get("/api/courses", async (req, res) => {
   try {
-    const [rows] = await db.query("SELECT * FROM courses");
+    const { limit } = req.query;
+    let query = "SELECT * FROM courses ORDER BY created_at DESC";
+    const params = [];
+
+    if (limit) {
+      query += " LIMIT ?";
+      params.push(parseInt(limit));
+    }
+
+    const [rows] = await db.query(query, params);
     res.json({ success: true, data: rows });
   } catch (error) {
     console.error("Error fetching courses:", error);

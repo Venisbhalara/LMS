@@ -15,8 +15,8 @@ const Settings = () => {
   const [notification, setNotification] = useState("");
 
   const [settings, setSettings] = useState({
-    fullName: "John Doe",
-    email: "john@example.com",
+    fullName: "Vasu",
+    email: "vasu12@gmail.com",
     bio: "Passionate learner and software enthusiast.",
     notifications: {
       email: true,
@@ -51,12 +51,11 @@ const Settings = () => {
               <h1>Account Settings</h1>
               <p>Manage your public profile and personal details</p>
             </div>
-
             <div className="settings-body">
               <form onSubmit={handleSave}>
                 <div className="profile-upload-section">
                   <div className="current-avatar">
-                    {settings.fullName.charAt(0)}
+                    {settings.fullName.charAt()}
                   </div>
                   <div className="upload-actions">
                     <button type="button" className="btn-secondary">
@@ -67,25 +66,23 @@ const Settings = () => {
                     </span>
                   </div>
                 </div>
-
                 <div className="settings-form-group">
                   <label>Full Name</label>
                   <input
                     type="text"
                     className="settings-input"
-                    value={settings.fullName}
+                    // value={settings.fullName}
                     onChange={(e) =>
                       setSettings({ ...settings, fullName: e.target.value })
                     }
                   />
                 </div>
-
                 <div className="settings-form-group">
                   <label>Email Address</label>
                   <input
                     type="email"
                     className="settings-input"
-                    value={settings.email}
+                    // value={settings.email}
                     onChange={(e) =>
                       setSettings({ ...settings, email: e.target.value })
                     }
@@ -97,7 +94,7 @@ const Settings = () => {
                   <textarea
                     className="settings-textarea"
                     rows="4"
-                    value={settings.bio}
+                    // value={settings.bio}
                     onChange={(e) =>
                       setSettings({ ...settings, bio: e.target.value })
                     }

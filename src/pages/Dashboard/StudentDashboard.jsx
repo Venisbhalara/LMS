@@ -17,18 +17,22 @@ const StudentDashboard = () => {
   const navigate = useNavigate();
 
   // Get enrolled courses from centralized data using user's enrolled IDs
-  const enrolledCourses = user?.enrolledCourses?.map(id => {
-    const course = coursesData.find(c => c.id === parseInt(id));
-    if (course) {
-        return {
+  const enrolledCourses =
+    user?.enrolledCourses
+      ?.map((id) => {
+        const course = coursesData.find((c) => c.id === parseInt(id));
+        if (course) {
+          return {
             ...course,
             progress: 0, // In a real app, this would come from a progress tracker
             lastAccessed: "Just now",
-            currentLesson: course.curriculum[0]?.lessons[0]?.title || "Introduction"
-        };
-    }
-    return null;
-  }).filter(Boolean) || [];
+            currentLesson:
+              course.curriculum[0]?.lessons[0]?.title || "Introduction",
+          };
+        }
+        return null;
+      })
+      .filter(Boolean) || [];
 
   const lastAccessedCourse = enrolledCourses[0];
 
@@ -171,7 +175,7 @@ const StudentDashboard = () => {
                     src={getCourseImage(
                       lastAccessedCourse.id,
                       lastAccessedCourse.category,
-                      lastAccessedCourse.title
+                      lastAccessedCourse.title,
                     )}
                     alt={lastAccessedCourse.title}
                     className="continue-course-image"
@@ -231,7 +235,7 @@ const StudentDashboard = () => {
                       src={getCourseImage(
                         course.id,
                         course.category,
-                        course.title
+                        course.title,
                       )}
                       alt={course.title}
                       className="course-image"
@@ -258,15 +262,23 @@ const StudentDashboard = () => {
                     </div>
                     <div className="course-card-footer">
                       <span className="continue-link">Continue Learning →</span>
-                      <button 
+                      <button
                         className="btn-text-danger"
                         onClick={(e) => {
                           e.preventDefault();
-                          if(window.confirm('Are you sure you want to remove this course?')) {
+                          if (
+                            window.confirm(
+                              "Are you sure you want to remove this course?",
+                            )
+                          ) {
                             unenrollFromCourse(course.id);
                           }
                         }}
-                        style={{ fontSize: '0.8rem', color: '#ef4444', padding: '4px 8px' }}
+                        style={{
+                          fontSize: "0.8rem",
+                          color: "#ef4444",
+                          padding: "4px 8px",
+                        }}
                       >
                         Remove
                       </button>

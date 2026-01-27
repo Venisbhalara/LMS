@@ -17,6 +17,16 @@ router.post("/", authMiddleware, async (req, res) => {
       });
     }
 
+    // Check if user is a student
+    if (req.user.role !== "student") {
+      return res.status(403).json({
+        success: false,
+        message:
+          "Only students can enroll in courses. Admins and instructors cannot enroll.",
+      });
+    }
+    
+
     // Check if course exists
     const [courses] = await db.query("SELECT * FROM courses WHERE id = ?", [
       courseId,
