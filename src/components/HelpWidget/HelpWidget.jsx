@@ -40,7 +40,7 @@ const HelpWidget = () => {
     setErrorMessage("");
 
     try {
-      const response = await fetch("http://localhost:5000/api/help", {
+      const response = await fetch("/api/help", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

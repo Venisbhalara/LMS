@@ -39,7 +39,7 @@ const Lesson = () => {
         const token = localStorage.getItem("token");
         if (token) {
           const response = await fetch(
-            `http://localhost:5000/api/enrollments/${id}/progress`,
+            `/api/enrollments/${id}/progress`,
             {
               method: "PATCH",
               headers: {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+wimport React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./CertificateVerification.css";
 
@@ -12,7 +12,7 @@ const CertificateVerification = () => {
     const fetchCertificate = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/certificates/verify/${code}`,
+          `/api/certificates/verify/${code}`,
         );
         const data = await response.json();
 
@@ -69,7 +69,7 @@ const CertificateVerification = () => {
         <div className="actions">
           {/* If we have a download route that works publicly or we can just link to it */}
           <a
-            href={`http://localhost:5000/api/certificates/download/${code}`}
+            href={`/api/certificates/download/${code}`}
             target="_blank"
             rel="noopener noreferrer"
             className="download-btn"

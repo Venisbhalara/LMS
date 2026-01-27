@@ -55,7 +55,7 @@ const Apply = () => {
     data.append("resume", formData.resume);
 
     try {
-      const response = await fetch("http://localhost:5000/api/careers/apply", {
+      const response = await fetch("/api/careers/apply", {
         method: "POST",
         body: data,
       });

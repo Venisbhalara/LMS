@@ -9,7 +9,7 @@ const BadgesList = () => {
     const fetchBadges = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch("http://localhost:5000/api/badges/mine", {
+        const response = await fetch("/api/badges/mine", {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await response.json();

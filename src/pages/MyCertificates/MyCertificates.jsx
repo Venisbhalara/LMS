@@ -12,7 +12,7 @@ const MyCertificates = () => {
         // Assuming token is stored in localStorage as 'token'
         const token = localStorage.getItem("token");
         const response = await fetch(
-          "http://localhost:5000/api/certificates/my-certificates",
+          "/api/certificates/my-certificates",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -66,7 +66,7 @@ const MyCertificates = () => {
                     View
                   </Link>
                   <a
-                    href={`http://localhost:5000/api/certificates/download/${cert.certificate_code}`}
+                    href={`/api/certificates/download/${cert.certificate_code}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="download-icon-btn"
