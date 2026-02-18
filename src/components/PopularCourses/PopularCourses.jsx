@@ -29,7 +29,7 @@ const PopularCourses = () => {
       try {
         // Fetch top 4 courses
         const response = await fetch(
-          "http://localhost:5000/api/courses?limit=4",
+          `${import.meta.env.VITE_API_URL || ""}/api/courses?limit=4`,
         );
         if (!response.ok) {
           throw new Error("Failed to fetch courses");
