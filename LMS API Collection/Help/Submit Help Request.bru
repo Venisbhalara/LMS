@@ -1,0 +1,27 @@
+meta {
+  name: Submit Help Request
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:5000/api/help
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "name": "John Doe",
+    "email": "john@example.com",
+    "message": "I need help with my account."
+  }
+}
+
+settings {
+  encodeUrl: true
+}

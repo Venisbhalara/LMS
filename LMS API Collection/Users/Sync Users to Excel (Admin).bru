@@ -1,0 +1,19 @@
+meta {
+  name: Sync Users to Excel (Admin)
+  type: http
+  seq: 6
+}
+
+post {
+  url: http://localhost:5000/api/users/sync-excel
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+settings {
+  encodeUrl: true
+}

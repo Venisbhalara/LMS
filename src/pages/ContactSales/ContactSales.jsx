@@ -24,7 +24,7 @@ const ContactSales = () => {
     e.preventDefault();
     // Here you would typically send the data to your backend
     alert(
-      "Thank you for contacting our sales team! We will get back to you shortly."
+      "Thank you for contacting our sales team! We will get back to you shortly.",
     );
     console.log("Sales Form Data:", formData);
     setFormData({
@@ -96,7 +96,7 @@ const ContactSales = () => {
                 onChange={handleChange}
                 required
                 className="form-input"
-                placeholder="John Doe"
+                placeholder="Jhon Doe"
               />
             </div>
 

@@ -1,0 +1,26 @@
+meta {
+  name: Enroll in Course
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:5000/api/enrollments
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "courseId": 1
+  }
+}
+
+settings {
+  encodeUrl: true
+}

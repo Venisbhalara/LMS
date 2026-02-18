@@ -43,14 +43,13 @@ const Testimonials = () => {
 
   const prevTestimonial = () => {
     setCurrentIndex(
-      (prev) => (prev - 1 + testimonials.length) % testimonials.length
+      (prev) => (prev - 1 + testimonials.length) % testimonials.length,
     );
   };
 
   const goToTestimonial = (index) => {
     setCurrentIndex(index);
   };
-
 
   return (
     <section className="testimonials">
@@ -77,44 +76,44 @@ const Testimonials = () => {
             ←
           </button>
 
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentIndex}
-                className="testimonial-card"
-                initial={{ opacity: 0, x: 100 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -100 }}
-                transition={{
-                  type: "smooth",
-                  duration: 0.3,
-                  stiffness: 120, // how "bouncy" the slide is
-                  damping: 20, // smoothness of the slide
-                  mass: 0.5,
-                }}
-              >
-                <div className="testimonial-rating">
-                  {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
-                    <StarIcon key={i} size={24} className="testimonial-star" />
-                  ))}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentIndex}
+              className="testimonial-card"
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -100 }}
+              transition={{
+                type: "smooth",
+                duration: 0.3,
+                stiffness: 120, // how "bouncy" the slide is
+                damping: 20, // smoothness of the slide
+                mass: 0.5,
+              }}
+            >
+              <div className="testimonial-rating">
+                {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
+                  <StarIcon key={i} size={24} className="testimonial-star" />
+                ))}
+              </div>
+              <p className="testimonial-text">
+                "{testimonials[currentIndex].text}"
+              </p>
+              <div className="testimonial-author">
+                <div className="testimonial-avatar">
+                  {testimonials[currentIndex].image}
                 </div>
-                <p className="testimonial-text">
-                  "{testimonials[currentIndex].text}"
-                </p>
-                <div className="testimonial-author">
-                  <div className="testimonial-avatar">
-                    {testimonials[currentIndex].image}
+                <div className="testimonial-info">
+                  <div className="testimonial-name">
+                    {testimonials[currentIndex].name}
                   </div>
-                  <div className="testimonial-info">
-                    <div className="testimonial-name">
-                      {testimonials[currentIndex].name}
-                    </div>
-                    <div className="testimonial-role">
-                      {testimonials[currentIndex].role}
-                    </div>
+                  <div className="testimonial-role">
+                    {testimonials[currentIndex].role}
                   </div>
                 </div>
-              </motion.div>
-            </AnimatePresence>
+              </div>
+            </motion.div>
+          </AnimatePresence>
 
           <button
             className="testimonials-nav-btn testimonials-nav-next"

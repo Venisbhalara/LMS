@@ -94,7 +94,7 @@ const Hero = () => {
             className="hero-content"
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease:   "easeOut" }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
           >
             {/* Value Proposition */}
             <div className="hero-badge premium-badge">
@@ -201,7 +201,7 @@ const Hero = () => {
                           duration={2000}
                           delay={item.delay + 300}
                         />
-                        <span className="stat-plus">+</span>
+                        {/* <span className="stat-plus">+</span> */}
                       </div>
                       <div className="stat-label">{item.label}</div>
                     </div>

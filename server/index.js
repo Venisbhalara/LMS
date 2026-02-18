@@ -22,8 +22,6 @@ app.use("/api/users", usersRoutes);
 app.use("/api/enrollments", enrollmentRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/help", helpRoutes);
-app.use("/api/certificates", require("./routes/certificates"));
-app.use("/api/badges", require("./routes/badges"));
 app.use("/api/careers", require("./routes/careers"));
 
 // Serve uploaded files
@@ -66,15 +64,55 @@ app.get("/api/courses", async (req, res) => {
 // Example: Get course by ID
 app.get("/api/courses/:id", async (req, res) => {
   try {
-    const [rows] = await db.query("SELECT * FROM courses WHERE id = ?", [
-      req.params.id,
+    const courseId = req.params.id;
+    // 1. Fetch Course
+    const [courses] = await db.query("SELECT * FROM courses WHERE id = ?", [
+      courseId,
     ]);
-    if (rows.length === 0) {
+    if (courses.length === 0) {
       return res
         .status(404)
         .json({ success: false, message: "Course not found" });
     }
-    res.json({ success: true, data: rows[0] });
+    const course = courses[0];
+
+    // 2. Fetch Sections
+    const [sections] = await db.query(
+      "SELECT * FROM sections WHERE course_id = ? ORDER BY order_index ASC",
+      [courseId],
+    );
+
+    // 3. Fetch Lessons for each section
+    // Optimization: Fetch all lessons for these sections in one go
+    if (sections.length > 0) {
+      const sectionIds = sections.map((s) => s.id);
+      const [lessons] = await db.query(
+        `SELECT * FROM lessons WHERE section_id IN (?) ORDER BY order_index ASC`,
+        [sectionIds],
+      );
+
+      // Map lessons to sections
+      course.curriculum = sections.map((section) => ({
+        id: section.id,
+        title: section.title,
+        lessons: lessons
+          .filter((l) => l.section_id === section.id)
+          .map((l) => ({
+            id: l.id,
+            title: l.title,
+            duration: l.duration,
+            type: l.type,
+            preview: l.is_preview === 1, // Convert DB boolean/tinyint to JS boolean
+            description: l.content ? "Check content for details." : "", // Simplified for now
+            content: l.content,
+            videoUrl: l.video_url,
+          })),
+      }));
+    } else {
+      course.curriculum = [];
+    }
+
+    res.json({ success: true, data: course });
   } catch (error) {
     console.error("Error fetching course:", error);
     res.status(500).json({

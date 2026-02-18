@@ -34,6 +34,7 @@ const adminMiddleware = (req, res, next) => {
       message: 'Invalid token.' 
     });
   }
+  
 };
 
 module.exports = adminMiddleware;

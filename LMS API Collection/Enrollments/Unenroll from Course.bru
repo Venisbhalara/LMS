@@ -1,0 +1,19 @@
+meta {
+  name: Unenroll from Course
+  type: http
+  seq: 5
+}
+
+delete {
+  url: http://localhost:5000/api/enrollments/1
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+settings {
+  encodeUrl: true
+}

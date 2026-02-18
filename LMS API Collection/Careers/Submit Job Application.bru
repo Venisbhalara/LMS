@@ -1,0 +1,22 @@
+meta {
+  name: Submit Job Application
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:5000/api/careers/apply
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  name: John Doe
+  email: john@example.com
+  role: Software Developer
+  resume: @file()
+}
+
+settings {
+  encodeUrl: true
+}

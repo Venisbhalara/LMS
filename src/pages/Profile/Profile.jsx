@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import BadgesList from "../../components/BadgesList";
 import "./Profile.css";
 
 const Profile = () => {
@@ -23,7 +22,7 @@ const Profile = () => {
           <p>Please login to view your profile.</p>
         </div>
       </div>
-    );  
+    );
   }
 
   const handleSwitch = (role) => {
@@ -157,33 +156,7 @@ const Profile = () => {
               </div>
               <div className="stat-label">Completed</div>
             </div>
-            <div className="profile-stat">
-              <div className="stat-value">{user.certificates?.length || 0}</div>
-              <div className="stat-label" >Certificates</div>
-              <button
-                style={{
-                  marginTop: "6px",
-                  fontSize: "0.85rem",
-                  padding: "6px 14px",
-                  borderRadius: "8px",
-                  background: "linear-gradient(135deg, #4F6EF7, #6A85F8)",
-                  color: "#ffffff",
-                  border: "1px solid rgba(255, 255, 255, 0.25)",
-                  cursor: "pointer",
-                  fontWeight: 500,
-                  letterSpacing: "0.02em",
-                  boxShadow: "0 4px 12px rgba(79, 110, 247, 0.25)",
-                  transition: "all 0.25s ease-in-out",
-                }}
-                onClick={() => navigate("/my-certificates")}
-              >
-                View All
-              </button>
-            </div>
           </div>
-
-          {/* Badges Section */}
-          <BadgesList />
         </div>
       </div>
 

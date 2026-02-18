@@ -1,33 +1,68 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { coursesData } from "../../data/coursesData";
+// import { coursesData } from "../../data/coursesData"; // Removed static data reliance
 import "./Lesson.css";
-
-import { useRef } from "react";
 import CourseCompletionModal from "../../components/CourseCompletionModal";
 
 const Lesson = () => {
   const { id, lessonId } = useParams();
   const navigate = useNavigate();
+  const [course, setCourse] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [isComplete, setIsComplete] = useState(false);
   const [showCompletionModal, setShowCompletionModal] = useState(false);
 
-  // Fetch course and lesson data
-  const course = coursesData.find((c) => c.id === parseInt(id));
+  useEffect(() => {
+    const fetchCourseData = async () => {
+      try {
+        const response = await fetch(`/api/courses/${id}`);
+        const data = await response.json();
 
-  if (!course) return <div>Course not found</div>;
+        if (data.success) {
+          setCourse(data.data);
+        } else {
+          setError(data.message);
+        }
+      } catch (err) {
+        console.error("Error fetching course:", err);
+        setError("Failed to load course content.");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  // Flatten lessons to find the current one easily
-  const allLessons = course.curriculum.flatMap((section) => section.lessons);
-  const currentLesson = allLessons.find((l) => l.id === parseInt(lessonId));
-
-  // If lesson not found, default to first or show error
-  const lesson = currentLesson || allLessons[0];
+    fetchCourseData();
+  }, [id]);
 
   useEffect(() => {
     // Reset state on lesson change if needed
     setIsComplete(false);
   }, [id, lessonId]);
+
+  if (loading)
+    return <div className="loading-state">Loading lesson content...</div>;
+  if (error) return <div className="error-state">Error: {error}</div>;
+  if (!course) return <div className="error-state">Course not found</div>;
+
+  // Flatten lessons to find the current one easily
+  // Handle case where curriculum might be empty
+  const allLessons = course.curriculum
+    ? course.curriculum.flatMap((section) => section.lessons)
+    : [];
+
+  if (allLessons.length === 0) {
+    return (
+      <div className="container" style={{ padding: "50px" }}>
+        No lessons available for this course yet.
+      </div>
+    );
+  }
+
+  const currentLesson = allLessons.find((l) => l.id === parseInt(lessonId));
+
+  // If lesson not found, default to first or show error
+  const lesson = currentLesson || allLessons[0];
 
   const handleComplete = async () => {
     const newState = !isComplete;
@@ -38,20 +73,17 @@ const Lesson = () => {
       try {
         const token = localStorage.getItem("token");
         if (token) {
-          const response = await fetch(
-            `/api/enrollments/${id}/progress`,
-            {
-              method: "PATCH",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-              body: JSON.stringify({
-                progress: 100,
-                status: "completed",
-              }),
+          const response = await fetch(`/api/enrollments/${id}/progress`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
-          );
+            body: JSON.stringify({
+              progress: 100,
+              status: "completed",
+            }),
+          });
           const data = await response.json();
           if (!data.success) {
             console.error("Failed to update progress:", data.message);
@@ -162,39 +194,40 @@ const Lesson = () => {
             <div className="lesson-navigation">
               <h3>{course.title} Content</h3>
               <div className="nav-lessons">
-                {course.curriculum.map((section) => (
-                  <div key={section.id} className="nav-section">
-                    <h4
-                      style={{
-                        padding: "0 15px",
-                        color: "#64748b",
-                        fontSize: "0.9rem",
-                      }}
-                    >
-                      {section.title}
-                    </h4>
-                    {section.lessons.map((l) => (
-                      <Link
-                        key={l.id}
-                        to={`/courses/${id}/lessons/${l.id}`}
-                        className={`nav-lesson ${l.id === lesson.id ? "active" : ""}`}
+                {course.curriculum &&
+                  course.curriculum.map((section) => (
+                    <div key={section.id} className="nav-section">
+                      <h4
+                        style={{
+                          padding: "0 15px",
+                          color: "#64748b",
+                          fontSize: "0.9rem",
+                        }}
                       >
-                        <span className="nav-lesson-number">{l.id}</span>
-                        <span className="nav-lesson-title">{l.title}</span>
-                        <span
-                          className="nav-lesson-duration"
-                          style={{
-                            marginLeft: "auto",
-                            fontSize: "0.8rem",
-                            color: "#94a3b8",
-                          }}
+                        {section.title}
+                      </h4>
+                      {section.lessons.map((l) => (
+                        <Link
+                          key={l.id}
+                          to={`/courses/${id}/lessons/${l.id}`}
+                          className={`nav-lesson ${l.id === lesson.id ? "active" : ""}`}
                         >
-                          {l.duration}
-                        </span>
-                      </Link>
-                    ))}
-                  </div>
-                ))}
+                          <span className="nav-lesson-number">{l.id}</span>
+                          <span className="nav-lesson-title">{l.title}</span>
+                          <span
+                            className="nav-lesson-duration"
+                            style={{
+                              marginLeft: "auto",
+                              fontSize: "0.8rem",
+                              color: "#94a3b8",
+                            }}
+                          >
+                            {l.duration}
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
+                  ))}
               </div>
             </div>
           </aside>

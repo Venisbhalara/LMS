@@ -159,7 +159,7 @@ const Apply = () => {
                     <input
                       type="text"
                       name="name"
-                      placeholder="Jane Doe"
+                      placeholder="Vasu"
                       value={formData.name}
                       onChange={handleInputChange}
                       required
@@ -171,7 +171,7 @@ const Apply = () => {
                     <input
                       type="email"
                       name="email"
-                      placeholder="jane@example.com"
+                      placeholder="Vasu@gmail.com"
                       value={formData.email}
                       onChange={handleInputChange}
                       required

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAuth } from "../../context/AuthContext";
@@ -19,18 +19,90 @@ const CourseDetail = () => {
   const navigate = useNavigate();
   const { user, enrollInCourse, isEnrolled, isAuthenticated } = useAuth();
 
-  const course = coursesData.find((c) => c.id === parseInt(id));
+  const [course, setCourse] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isWishlisted, setIsWishlisted] = useState(false);
+  const [expandedSections, setExpandedSections] = useState({});
 
-  // const [course, setCourse] = useState(null);
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState(null);
+  useEffect(() => {
+    const fetchCourse = async () => {
+      console.log("CourseDetail: Starting fetch for ID:", id);
+      try {
+        setLoading(true);
+        // 1. Fetch real course data from API (database)
+        const response = await fetch(`/api/courses/${id}`);
+        const data = await response.json();
+        console.log("CourseDetail: API Response:", data);
 
-  // useEffect(() => {
-  //   const fetchCourse = async () => {
-  //     // ... API call code ...
-  //   }
-  //   if (id) fetchCourse();
-  // }, [id]);
+        if (data.success) {
+          const apiCourse = data.data;
+
+          // 2. Find matching static data for rich content (curriculum, reviews, etc.)
+          // We match by TITLE because DB IDs might differ from static IDs
+          let staticCourseData = null;
+          if (coursesData && Array.isArray(coursesData)) {
+            staticCourseData = coursesData.find(
+              (c) => c.title === apiCourse.title,
+            );
+            console.log(
+              "CourseDetail: Static Data Found:",
+              staticCourseData ? "Yes" : "No",
+            );
+          } else {
+            console.error("CourseDetail: coursesData is missing or invalid");
+          }
+
+          // 3. Merge data: API data takes precedence for core info, static for rich details
+          const mergedCourse = {
+            ...apiCourse,
+            // Enforce types for numeric fields from API
+            price: parseFloat(apiCourse.price) || 0,
+            rating:
+              parseFloat(apiCourse.rating) || staticCourseData?.rating || 4.5,
+            students: apiCourse.students || staticCourseData?.students || 0,
+
+            // Rich content from static file (fallback to defaults if not found)
+            curriculum: staticCourseData?.curriculum || [],
+            reviews: staticCourseData?.reviews || [],
+            whatYouWillLearn: staticCourseData?.whatYouWillLearn || [],
+            totalRatings: staticCourseData?.totalRatings || 0,
+
+            // Handled nested objects if API returns flat strings
+            instructor:
+              typeof apiCourse.instructor === "string"
+                ? {
+                    name: apiCourse.instructor,
+                    // Try to get extra instructor details from static data
+                    ...(staticCourseData?.instructor || {}),
+                  }
+                : apiCourse.instructor || { name: "Instructor" },
+
+            // Image handling: API url > Static detailed image > Placeholder
+            image:
+              apiCourse.image_url ||
+              staticCourseData?.image ||
+              "/images/placeholder.png",
+          };
+
+          console.log("CourseDetail: Merged Course:", mergedCourse);
+          setCourse(mergedCourse);
+        } else {
+          console.error("CourseDetail: API returned error:", data.message);
+          setError("Course not found");
+        }
+      } catch (err) {
+        console.error("Error fetching course:", err);
+        setError("Failed to load course details");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchCourse();
+    }
+  }, [id]);
 
   const handleEnroll = async () => {
     if (!user) {
@@ -49,17 +121,14 @@ const CourseDetail = () => {
   const handleDownload = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(
-        `/api/enrollments/${id}/download`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ courseData: course }),
-        }
-      );
+      const response = await fetch(`/api/enrollments/${id}/download`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ courseData: course }),
+      });
 
       if (!response.ok) {
         const error = await response.json();
@@ -81,18 +150,29 @@ const CourseDetail = () => {
     }
   };
 
+  // derived state
   const courseId = parseInt(id);
   const enrolled = isEnrolled(courseId);
-  const [isWishlisted, setIsWishlisted] = useState(false);
-  const [expandedSections, setExpandedSections] = useState({});
 
-  if (!course) {
+  if (loading) {
+    return (
+      <div
+        className="course-detail-loading"
+        style={{ textAlign: "center", padding: "100px" }}
+      >
+        <div className="loading-spinner"></div>
+        <p>Loading course details...</p>
+      </div>
+    );
+  }
+
+  if (error || !course) {
     return (
       <div
         className="course-detail-error"
         style={{ textAlign: "center", padding: "100px" }}
       >
-        <h2>Course not found</h2>
+        <h2>{error || "Course not found"}</h2>
         <Link
           to="/courses"
           className="btn btn-primary"
@@ -114,11 +194,11 @@ const CourseDetail = () => {
   const totalLessons =
     course.curriculum?.reduce(
       (sum, section) => sum + (section.lessons?.length || 0),
-      0
+      0,
     ) || 0;
   const previewLessons =
     course.curriculum?.flatMap(
-      (section) => section.lessons?.filter((lesson) => lesson.preview) || []
+      (section) => section.lessons?.filter((lesson) => lesson.preview) || [],
     ) || [];
 
   return (
@@ -151,13 +231,14 @@ const CourseDetail = () => {
                       fill: "#fbbf24",
                     }}
                   />
-                  {course.rating} ({course.totalRatings.toLocaleString()})
+                  {course.rating} ({(course.totalRatings || 0).toLocaleString()}
+                  )
                 </span>
               </div>
               <div className="course-meta-item">
                 <span className="meta-label">Students</span>
                 <span className="meta-value">
-                  👥 {course.students.toLocaleString()}
+                  👥 {(course.students || 0).toLocaleString()}
                 </span>
               </div>
               <div className="course-meta-item">
@@ -166,7 +247,7 @@ const CourseDetail = () => {
               </div>
               <div className="course-meta-item">
                 <span className="meta-label">Level</span>
-                <span className="meta-value">{course.level}</span>
+                <span className="meta-value">{course.level || "Beginner"}</span>
               </div>
             </div>
 
@@ -263,7 +344,9 @@ const CourseDetail = () => {
                   <div className="instructor-stats">
                     <div className="instructor-stat-item">
                       <StarIcon size={16} style={{ fill: "#fbbf24" }} />
-                      <span>{course.instructor.rating} Instructor Rating</span>
+                      <span>
+                        {course.instructor?.rating || 4.5} Instructor Rating
+                      </span>
                     </div>
                     <div className="instructor-stat-item">
                       <UsersIcon size={16} />
@@ -274,10 +357,13 @@ const CourseDetail = () => {
                     </div>
                     <div className="instructor-stat-item">
                       <BookIcon size={16} />
-                      <span>{course.instructor.courses} Courses</span>
+                      <span>{course.instructor?.courses || 1} Courses</span>
                     </div>
                   </div>
-                  <p className="instructor-bio">{course.instructor.bio}</p>
+                  <p className="instructor-bio">
+                    {course.instructor?.bio ||
+                      "Experienced instructor in this field."}
+                  </p>
                   <div className="instructor-credentials">
                     <h4>Credentials</h4>
                     <ul>
@@ -377,6 +463,11 @@ const CourseDetail = () => {
                     )}
                   </div>
                 ))}
+                {course.curriculum.length === 0 && (
+                  <p className="no-curriculum">
+                    Curriculum details coming soon.
+                  </p>
+                )}
               </div>
             </section>
 
@@ -403,7 +494,7 @@ const CourseDetail = () => {
                         ))}
                       </div>
                       <span className="rating-count">
-                        ({course.totalRatings.toLocaleString()} ratings)
+                        ({(course.totalRatings || 0).toLocaleString()} ratings)
                       </span>
                     </div>
                   </div>
@@ -441,6 +532,7 @@ const CourseDetail = () => {
                     <p className="review-comment">{review.comment}</p>
                   </div>
                 ))}
+                {course.reviews.length === 0 && <p>No reviews yet.</p>}
               </div>
             </section>
           </div>

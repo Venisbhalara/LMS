@@ -1,0 +1,46 @@
+meta {
+  name: Download Course PDF
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:5000/api/enrollments/1/download
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "courseData": {
+      "title": "JavaScript Basics",
+      "instructor": {
+        "name": "Jane Smith"
+      },
+      "duration": "8 weeks",
+      "price": 2999,
+      "description": "Learn JavaScript from scratch",
+      "curriculum": [
+        {
+          "title": "Introduction",
+          "lessons": [
+            {
+              "title": "Getting Started",
+              "duration": "30 min",
+              "description": "Introduction to JavaScript"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
+
+settings {
+  encodeUrl: true
+}

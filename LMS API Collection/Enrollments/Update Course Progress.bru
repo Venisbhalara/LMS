@@ -1,0 +1,27 @@
+meta {
+  name: Update Course Progress
+  type: http
+  seq: 3
+}
+
+patch {
+  url: http://localhost:5000/api/enrollments/1/progress
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "progress": 50,
+    "status": "in_progress"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

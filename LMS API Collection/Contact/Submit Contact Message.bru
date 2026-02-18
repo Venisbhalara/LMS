@@ -1,0 +1,28 @@
+meta {
+  name: Submit Contact Message
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:5000/api/contact
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "name": "John Doe",
+    "email": "john@example.com",
+    "subject": "General Inquiry",
+    "message": "I have a question about your courses."
+  }
+}
+
+settings {
+  encodeUrl: true
+}

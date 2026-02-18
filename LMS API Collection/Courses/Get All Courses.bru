@@ -1,0 +1,19 @@
+meta {
+  name: Get All Courses
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:5000/api/courses?limit=10
+  body: none
+  auth: inherit
+}
+
+params:query {
+  limit: 10
+}
+
+settings {
+  encodeUrl: true
+}

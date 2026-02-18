@@ -116,7 +116,6 @@ export const AuthProvider = ({ children }) => {
           }),
           enrolledCourses: [],
           completedCourses: [],
-          certificates: [],
         };
 
         setUser(userData);
@@ -158,7 +157,6 @@ export const AuthProvider = ({ children }) => {
           }),
           enrolledCourses: [],
           completedCourses: [],
-          certificates: [],
         };
 
         setUser(userData);

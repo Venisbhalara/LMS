@@ -15,8 +15,8 @@ const Settings = () => {
   const [notification, setNotification] = useState("");
 
   const [settings, setSettings] = useState({
-    fullName: "Vasu",
-    email: "vasu12@gmail.com",
+    fullName: "Jhon Doe",
+    email: "John doe12@gmail.com",
     bio: "Passionate learner and software enthusiast.",
     notifications: {
       email: true,

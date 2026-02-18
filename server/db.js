@@ -1,5 +1,5 @@
-const mysql = require('mysql2');
-require('dotenv').config();
+const mysql = require("mysql2");
+require("dotenv").config();
 
 // Create a connection pool
 const pool = mysql.createPool({
@@ -10,7 +10,7 @@ const pool = mysql.createPool({
   port: process.env.DB_PORT,
   waitForConnections: true,
   connectionLimit: 10,
-  queueLimit: 0
+  queueLimit: 0,
 });
 
 // Get promise-based version
@@ -19,10 +19,10 @@ const promisePool = pool.promise();
 // Test connection
 pool.getConnection((err, connection) => {
   if (err) {
-    console.error('Error connecting to MySQL database:', err.message);
+    console.error("Error connecting to MySQL database:", err.message);
     return;
   }
-  console.log('✓ MySQL database connected successfully');
+  console.log("✓ MySQL database connected successfully");
   connection.release();
 });
 

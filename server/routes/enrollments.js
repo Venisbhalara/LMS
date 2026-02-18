@@ -25,7 +25,6 @@ router.post("/", authMiddleware, async (req, res) => {
           "Only students can enroll in courses. Admins and instructors cannot enroll.",
       });
     }
-    
 
     // Check if course exists
     const [courses] = await db.query("SELECT * FROM courses WHERE id = ?", [
@@ -157,7 +156,7 @@ router.get("/my-enrollments", authMiddleware, async (req, res) => {
 
     const [enrollments] = await db.query(
       `SELECT e.id, e.enrolled_at, e.progress, e.status, 
-              c.id as course_id, c.title, c.description, c.instructor, c.duration, c.price 
+              c.id as course_id, c.title, c.description, c.instructor, c.duration, c.price, c.image_url, c.category 
        FROM enrollments e 
        JOIN courses c ON e.course_id = c.id 
        WHERE e.user_id = ?`,

@@ -1,83 +1,74 @@
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { coursesData } from "../../data/coursesData";
+// import { coursesData } from "../../data/coursesData"; // Removed static data reliance
 
-import {
-  ClockIcon,
-  AwardIcon,
-  CertificateIcon,
-  BookIcon,
-  PlayIcon,
-} from "../../components/Icons/Icons";
+import { ClockIcon, BookIcon, PlayIcon } from "../../components/Icons/Icons";
 import { getCourseImage } from "../../utils/images";
 import "./Dashboard.css";
 
 const StudentDashboard = () => {
   const { user, unenrollFromCourse } = useAuth();
   const navigate = useNavigate();
+  const [enrolledCourses, setEnrolledCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Get enrolled courses from centralized data using user's enrolled IDs
-  const enrolledCourses =
-    user?.enrolledCourses
-      ?.map((id) => {
-        const course = coursesData.find((c) => c.id === parseInt(id));
-        if (course) {
-          return {
-            ...course,
-            progress: 0, // In a real app, this would come from a progress tracker
-            lastAccessed: "Just now",
-            currentLesson:
-              course.curriculum[0]?.lessons[0]?.title || "Introduction",
-          };
+  // Fetch enrolled courses from API
+  useEffect(() => {
+    const fetchEnrollments = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch("/api/enrollments/my-enrollments", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await response.json();
+
+        if (data.success) {
+          // Map backend data to frontend structure
+          const mappedCourses = data.data.map((enrollment) => ({
+            id: enrollment.course_id, // Use course_id as the main ID for navigation
+            enrollment_id: enrollment.id,
+            title: enrollment.title,
+            instructor: { name: enrollment.instructor || "Instructor" },
+            category: enrollment.category || "General",
+            image: enrollment.image_url, // Direct image URL from DB
+            progress: enrollment.progress || 0,
+            lastAccessed: enrollment.enrolled_at
+              ? new Date(enrollment.enrolled_at).toLocaleDateString()
+              : "Just now",
+            currentLesson: "Introduction", // Placeholder as DB doesn't track exact lesson yet
+            totalLessons: 10, // Placeholder
+            duration: enrollment.duration || "Self-paced",
+            status: enrollment.status,
+          }));
+          setEnrolledCourses(mappedCourses);
         }
-        return null;
-      })
-      .filter(Boolean) || [];
+      } catch (error) {
+        console.error("Failed to fetch enrollments", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const lastAccessedCourse = enrolledCourses[0];
+    if (user) {
+      fetchEnrollments();
+    }
+  }, [user]);
 
-  const achievements = [
-    {
-      id: 1,
-      type: "certificate",
-      title: "React Mastery Certificate",
-      course: "Complete React Mastery",
-      date: "2024-01-15",
-      icon: "🎓",
-    },
-    {
-      id: 2,
-      type: "badge",
-      title: "10 Day Streak",
-      description: "Learned for 10 consecutive days",
-      date: "2024-01-20",
-      icon: "🔥",
-    },
-    {
-      id: 3,
-      type: "certificate",
-      title: "Data Science Fundamentals",
-      course: "Python for Data Science",
-      date: "2024-01-10",
-      icon: "📜",
-    },
-    {
-      id: 4,
-      type: "badge",
-      title: "Quick Learner",
-      description: "Completed 5 courses in a month",
-      date: "2024-01-18",
-      icon: "⚡",
-    },
-  ];
+  const lastAccessedCourse =
+    enrolledCourses.length > 0 ? enrolledCourses[0] : null;
 
   const learningStats = {
-    totalHours: 120,
-    coursesCompleted: 3,
+    totalHours:
+      enrolledCourses.reduce(
+        (acc, curr) => acc + (parseInt(curr.duration) || 0),
+        0,
+      ) || 0, // Rough estimate
+    coursesCompleted: enrolledCourses.filter(
+      (c) => c.status === "completed" || c.progress === 100,
+    ).length,
     coursesEnrolled: enrolledCourses.length,
-    certificatesEarned: achievements.filter((a) => a.type === "certificate")
-      .length,
-    currentStreak: 7,
+    currentStreak: 0, // Placeholder
   };
 
   const handleStartQuiz = () => {
@@ -89,6 +80,19 @@ const StudentDashboard = () => {
       navigate(`/course/${courseId}/quiz/${quizId}`);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="dashboard">
+        <div
+          className="container"
+          style={{ textAlign: "center", padding: "50px" }}
+        >
+          Loading your dashboard...
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="dashboard">
@@ -145,17 +149,6 @@ const StudentDashboard = () => {
               <div className="stat-label">Learning Hours</div>
             </div>
           </div>
-          <div className="stat-card">
-            <div className="stat-icon">
-              <CertificateIcon size={32} />
-            </div>
-            <div className="stat-content">
-              <div className="stat-value">
-                {learningStats.certificatesEarned}
-              </div>
-              <div className="stat-label">Certificates Earned</div>
-            </div>
-          </div>
         </div>
 
         {/* Continue Learning - Last Accessed Course */}
@@ -172,11 +165,14 @@ const StudentDashboard = () => {
               <div className="continue-learning-content">
                 <div className="continue-course-icon">
                   <img
-                    src={getCourseImage(
-                      lastAccessedCourse.id,
-                      lastAccessedCourse.category,
-                      lastAccessedCourse.title,
-                    )}
+                    src={
+                      lastAccessedCourse.image ||
+                      getCourseImage(
+                        lastAccessedCourse.id,
+                        lastAccessedCourse.category,
+                        lastAccessedCourse.title,
+                      )
+                    }
                     alt={lastAccessedCourse.title}
                     className="continue-course-image"
                   />
@@ -203,7 +199,7 @@ const StudentDashboard = () => {
                 </div>
               </div>
               <Link
-                to={`/courses/${lastAccessedCourse.id}`}
+                to={`/courses/${lastAccessedCourse.id}/lessons/1`}
                 className="btn btn-primary resume-btn"
               >
                 <PlayIcon size={20} />
@@ -232,11 +228,10 @@ const StudentDashboard = () => {
                 >
                   <div className="course-card-image">
                     <img
-                      src={getCourseImage(
-                        course.id,
-                        course.category,
-                        course.title,
-                      )}
+                      src={
+                        course.image ||
+                        getCourseImage(course.id, course.category, course.title)
+                      }
                       alt={course.title}
                       className="course-image"
                     />
@@ -247,7 +242,7 @@ const StudentDashboard = () => {
                       by {course.instructor.name}
                     </p>
                     <p className="course-last-accessed">
-                      Last accessed: {course.lastAccessed}
+                      Enrolled: {course.lastAccessed}
                     </p>
                     <div className="course-progress">
                       <div className="progress-bar">
@@ -271,7 +266,13 @@ const StudentDashboard = () => {
                               "Are you sure you want to remove this course?",
                             )
                           ) {
-                            unenrollFromCourse(course.id);
+                            // Calls context unenroll, which calls API
+                            // Optimistically remove from UI or re-fetch
+                            unenrollFromCourse(course.id).then(() => {
+                              setEnrolledCourses((current) =>
+                                current.filter((c) => c.id !== course.id),
+                              );
+                            });
                           }
                         }}
                         style={{
@@ -293,60 +294,6 @@ const StudentDashboard = () => {
               <Link to="/courses" className="btn btn-primary">
                 Browse Courses
               </Link>
-            </div>
-          )}
-        </section>
-
-        {/* Achievements */}
-        <section className="dashboard-section">
-          <div className="section-header">
-            <h2>Achievements</h2>
-          </div>
-
-          {achievements.length > 0 ? (
-            <div className="achievements-grid">
-              {achievements.map((achievement) => (
-                <div
-                  key={achievement.id}
-                  className={`achievement-card ${achievement.type}`}
-                >
-                  <div className="achievement-icon-wrapper">
-                    {achievement.type === "certificate" ? (
-                      <CertificateIcon
-                        size={48}
-                        className="achievement-icon certificate-icon"
-                      />
-                    ) : (
-                      <AwardIcon
-                        size={48}
-                        className="achievement-icon badge-icon"
-                      />
-                    )}
-                  </div>
-                  <div className="achievement-info">
-                    <h4 className="achievement-title">{achievement.title}</h4>
-                    {achievement.course && (
-                      <p className="achievement-course">{achievement.course}</p>
-                    )}
-                    {achievement.description && (
-                      <p className="achievement-description">
-                        {achievement.description}
-                      </p>
-                    )}
-                    <p className="achievement-date">
-                      {new Date(achievement.date).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                      })}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="empty-state">
-              <p>You haven’t earned any achievements yet.</p>
             </div>
           )}
         </section>

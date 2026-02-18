@@ -1,0 +1,33 @@
+meta {
+  name: Create Course
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:5000/api/courses
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "title": "Introduction to JavaScript",
+    "description": "Learn JavaScript from scratch",
+    "instructor": "Jane Smith",
+    "duration": "8 weeks",
+    "price": 2999,
+    "image_url": "https://example.com/image.jpg",
+    "lessons_count": 40,
+    "quizzes_count": 8,
+    "category": "Programming"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

@@ -404,7 +404,7 @@ const AdminUsers = () => {
                     name="name"
                     value={newUserData.name}
                     onChange={handleNewUserChange}
-                    placeholder="e.g. John Doe"
+                    placeholder="e.g. Jhon Doe"
                     required
                   />
                 </div>

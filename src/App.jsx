@@ -26,8 +26,6 @@ import Terms from "./pages/Terms/Terms";
 import Cookies from "./pages/Cookies/Cookies";
 import ContactSales from "./pages/ContactSales/ContactSales";
 // import ContactSales from "./pages/ContactSales/ContactSales";
-import CertificateVerification from "./pages/CertificateVerification/CertificateVerification";
-import MyCertificates from "./pages/MyCertificates/MyCertificates";
 import Apply from "./pages/Apply/Apply";
 import "./App.css";
 
@@ -70,10 +68,8 @@ function App() {
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/cookies" element={<Cookies />} />
-          <Route path="/my-certificates" element={<MyCertificates />} />
-          <Route path="/verify/:code" element={<CertificateVerification />} />
           <Route path="/apply" element={<Apply />} />
-        </Route>  
+        </Route>
       </Routes>
       {/* Help Widget: Appears on all pages */}
       <HelpWidget />

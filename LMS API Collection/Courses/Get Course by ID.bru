@@ -1,0 +1,15 @@
+meta {
+  name: Get Course by ID
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:5000/api/courses/1
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

@@ -7,10 +7,10 @@ const AdminDashboard = () => {
   // Removed redundant user declaration
 
   const stats = [
-    { label: "Total Users", value: "45,230", icon: "👥", trend: "+12%" },
-    { label: "Total Courses", value: "1,245", icon: "📚", trend: "+5%" },
-    { label: "Active Instructors", value: "342", icon: "👨‍🏫", trend: "+8%" },
-    { label: "Monthly Revenue", value: "124,500", icon: "💰", trend: "+15%" },
+    { label: "Total Users", value: "100+", icon: "👥", trend: "+12%" },
+    { label: "Total Courses", value: "20+", icon: "📚", trend: "+5%" },
+    { label: "Active Instructors", value: "50+", icon: "👨‍🏫", trend: "+8%" },
+    { label: "Monthly Revenue", value: "135650+", icon: "💰", trend: "+15%" },
   ];
 
   const [recentUsers, setRecentUsers] = useState([]);

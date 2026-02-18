@@ -1,43 +1,51 @@
 import { useState, useEffect } from "react";
 import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { coursesData } from "../../data/coursesData";
+// import { coursesData } from "../../data/coursesData";
 import { getCourseImage } from "../../utils/images";
-import { FiLock, FiSearch } from "react-icons/fi";
+import {
+  FiLock,
+  FiSearch,
+  FiChevronLeft,
+  FiChevronRight,
+} from "react-icons/fi";
 import "./Courses.css";
 
 const Courses = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const [lockedCourseIds, setLockedCourseIds] = useState(new Set());
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Fetch real course data to check lock status
+  // Fetch real course data
   useEffect(() => {
-    const fetchCoursesStatus = async () => {
+    const fetchCourses = async () => {
       try {
         const response = await fetch("/api/courses");
         const data = await response.json();
         if (data.success) {
-          const lockedIds = new Set(
-            data.data.filter((c) => c.is_locked).map((c) => c.id)
-          );
-          setLockedCourseIds(lockedIds);
+          // Check for lock status (can be merged if API returns everything)
+          // For now, we'll just use the efficient approach of using the data directly
+          // The previous lock logic is redundant if we trust this fetch
+          setCourses(data.data);
         }
       } catch (error) {
-        console.error("Failed to fetch course status", error);
+        console.error("Failed to fetch courses", error);
+      } finally {
+        setLoading(false);
       }
     };
-    fetchCoursesStatus();
+    fetchCourses();
   }, []);
 
   const [selectedCategory, setSelectedCategory] = useState(
-    searchParams.get("category") || "all"
+    searchParams.get("category") || "all",
   );
   const [selectedLevel, setSelectedLevel] = useState("all");
   const [selectedDuration, setSelectedDuration] = useState("all");
   const [selectedRating, setSelectedRating] = useState("all");
   const [searchQuery, setSearchQuery] = useState(
-    searchParams.get("search") || ""
+    searchParams.get("search") || "",
   );
   const [currentPage, setCurrentPage] = useState(1);
   const coursesPerPage = 9;
@@ -83,48 +91,21 @@ const Courses = () => {
     { id: "3.5", name: "3.5+ Stars" },
   ];
 
-  // const [courses, setCourses] = useState([]);
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState(null);
-
-  // useEffect(() => {
-  //   const fetchCourses = async () => {
-  //     try {
-  //       const response = await fetch("/api/courses");
-  //       const data = await response.json();
-  //
-  //       if (data.success) {
-  //         // Map API data to UI structure
-  //         const mappedCourses = data.data.map((course) => ({
-  //           ...course,
-  //           image:
-  //             course.image_url ||
-  //             getCourseImage(course.id, course.category, course.title),
-  //           instructor: { name: course.instructor || "Instructor" }, // Map string to object
-  //           rating: 4.7, // Default as not in DB yet
-  //           students: 120, // Default as not in DB yet
-  //           level: "Beginner", // Default
-  //           enrolled: false, // Default, handled by separate logic or check
-  //         }));
-  //         setCourses(mappedCourses);
-  //       } else {
-  //         setError("Failed to fetch courses");
-  //       }
-  //     } catch (err) {
-  //       console.error("Error fetching courses:", err);
-  //       setError("Error connecting to server");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //
-  //   fetchCourses();
-  // }, []);
-
-  // Use fetched courses
-  const allCourses = coursesData.map((course) => ({
+  // Map backend data to frontend structure
+  const allCourses = courses.map((course) => ({
     ...course,
-    is_locked: lockedCourseIds.has(course.id),
+    instructor:
+      typeof course.instructor === "string"
+        ? { name: course.instructor }
+        : course.instructor || { name: "Instructor" },
+    price: parseFloat(course.price) || 0,
+    rating: course.rating || 4.5, // Default if missing in DB
+    students: course.students || 0, // Default if missing in DB
+    level: course.level || "Beginner", // Default if missing in DB
+    // Use stored image_url or fallback
+    // Note: getCourseImage helper might need adjustment or we bypass it if we have a direct URL
+    // For now, let's keep getCourseImage usage if possible or prefer the DB url
+    image_url: course.image_url,
   }));
 
   const getDurationCategory = (duration) => {
@@ -161,7 +142,7 @@ const Courses = () => {
   const startIndex = (currentPage - 1) * coursesPerPage;
   const paginatedCourses = filteredCourses.slice(
     startIndex,
-    startIndex + coursesPerPage
+    startIndex + coursesPerPage,
   );
 
   useEffect(() => {
@@ -197,7 +178,7 @@ const Courses = () => {
                       .includes(searchQuery.toLowerCase()) ||
                     course.instructor.name
                       .toLowerCase()
-                      .includes(searchQuery.toLowerCase())
+                      .includes(searchQuery.toLowerCase()),
                 );
                 if (results.length > 0) {
                   navigate(`/courses/${results[0].id}`);
@@ -216,7 +197,7 @@ const Courses = () => {
                     .includes(searchQuery.toLowerCase()) ||
                   course.instructor.name
                     .toLowerCase()
-                    .includes(searchQuery.toLowerCase())
+                    .includes(searchQuery.toLowerCase()),
               );
               if (results.length > 0) {
                 navigate(`/courses/${results[0].id}`);
@@ -313,7 +294,7 @@ const Courses = () => {
                       if (course.is_locked) {
                         e.preventDefault();
                         alert(
-                          "This course is currently locked by the instructor."
+                          "This course is currently locked by the instructor.",
                         );
                       } else {
                         navigate(`/courses/${course.id}`);
@@ -328,20 +309,23 @@ const Courses = () => {
                   >
                     <div className="course-card-image">
                       <img
-                        src={getCourseImage(
-                          course.id,
-                          course.category,
-                          course.title
-                        )}
+                        src={
+                          course.image_url ||
+                          getCourseImage(
+                            course.id,
+                            course.category,
+                            course.title,
+                          )
+                        }
                         alt={course.title}
                         className="course-image"
                         loading="lazy"
                       />
-                      {course.enrolled && !course.is_locked && (
+                      {!!course.enrolled && !course.is_locked && (
                         <div className="enrollment-badge">Enrolled</div>
                       )}
 
-                      {course.is_locked && (
+                      {!!course.is_locked && (
                         <div className="lock-overlay">
                           <FiLock className="lock-icon-3d" />
                           <div className="lock-text"> Locked</div>
@@ -420,8 +404,9 @@ const Courses = () => {
                   className="pagination-btn"
                   onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                   disabled={currentPage === 1}
+                  aria-label="Previous Page"
                 >
-                  Previous
+                  <FiChevronLeft />
                 </button>
                 <div className="pagination-pages">
                   {Array.from({ length: totalPages }, (_, i) => i + 1).map(
@@ -435,7 +420,7 @@ const Courses = () => {
                       >
                         {page}
                       </button>
-                    )
+                    ),
                   )}
                 </div>
                 <button
@@ -444,8 +429,9 @@ const Courses = () => {
                     setCurrentPage((p) => Math.min(totalPages, p + 1))
                   }
                   disabled={currentPage === totalPages}
+                  aria-label="Next Page"
                 >
-                  Next
+                  <FiChevronRight />
                 </button>
               </div>
             )}
