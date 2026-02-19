@@ -3,6 +3,7 @@ import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 // import { coursesData } from "../../data/coursesData";
 import { getCourseImage } from "../../utils/images";
+import { formatPrice } from "../../utils/format";
 import {
   FiLock,
   FiSearch,
@@ -387,7 +388,9 @@ const Courses = () => {
                       </div>
                       <div className="course-level">Level: {course.level}</div>
                       <div className="course-card-footer">
-                        <span className="course-price">₹{course.price}</span>
+                        <span className="course-price">
+                          {formatPrice(course.price)}
+                        </span>
                         <span className="course-card-link">
                           {course.is_locked ? "Locked" : "View Course →"}
                         </span>

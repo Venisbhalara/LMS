@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { StarIcon, UsersIcon, ClockIcon, ArrowRightIcon } from "../Icons/Icons";
+import { getCourseImage } from "../../utils/images";
+import { formatPrice } from "../../utils/format";
 import "./PopularCourses.css";
 
 /* =========================
@@ -17,7 +19,7 @@ const CATEGORY_MAP = {
 };
 
 /* =========================
-   COMPONENT
+   COMPONENTfix th
 ========================= */
 const PopularCourses = () => {
   const [courses, setCourses] = useState([]);
@@ -47,7 +49,7 @@ const PopularCourses = () => {
             students: 1200 + Math.floor(Math.random() * 5000), // Randomize students count
             price: course.price || "Free",
             duration: course.duration || "Unknown",
-            thumbnail: course.image_url || "/images/courses/default.png", // Fallback image
+            thumbnail: getCourseImage(course.id, course.category, course.title),
             badge: getBadge(course.created_at),
           }));
           setCourses(formattedCourses);
@@ -136,8 +138,7 @@ const PopularCourses = () => {
                     loading="lazy"
                     onError={(e) => {
                       e.target.onerror = null;
-                      e.target.src =
-                        "https://placehold.co/600x400?text=Course+Image";
+                      e.target.src = "";
                     }}
                   />
 
@@ -175,7 +176,9 @@ const PopularCourses = () => {
 
                   <div className="course-card-footer">
                     <div className="course-price">
-                      <span className="price-current">{course.price}</span>
+                      <span className="price-current">
+                        {formatPrice(course.price)}
+                      </span>
                     </div>
 
                     <span className="course-link">

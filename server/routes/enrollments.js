@@ -60,28 +60,33 @@ router.post("/", authMiddleware, async (req, res) => {
 
     // --- NEW: Log detailed enrollment info to student_enrollments ---
     // Fetch course details
-    const [courseDetails] = await db.query(
-      "SELECT title, price FROM courses WHERE id = ?",
-      [courseId],
-    );
-
-    // Fetch user details
-    const [userDetails] = await db.query(
-      "SELECT name, email FROM users WHERE id = ?",
-      [userId],
-    );
-
-    if (courseDetails.length > 0 && userDetails.length > 0) {
-      await db.query(
-        "INSERT INTO student_enrollments (student_name, student_email, course_title, course_price, enrollment_id) VALUES (?, ?, ?, ?, ?)",
-        [
-          userDetails[0].name,
-          userDetails[0].email,
-          courseDetails[0].title,
-          courseDetails[0].price,
-          enrollmentId,
-        ],
+    try {
+      const [courseDetails] = await db.query(
+        "SELECT title, price FROM courses WHERE id = ?",
+        [courseId],
       );
+
+      // Fetch user details
+      const [userDetails] = await db.query(
+        "SELECT name, email FROM users WHERE id = ?",
+        [userId],
+      );
+
+      if (courseDetails.length > 0 && userDetails.length > 0) {
+        await db.query(
+          "INSERT INTO student_enrollments (student_name, student_email, course_title, course_price, enrollment_id) VALUES (?, ?, ?, ?, ?)",
+          [
+            userDetails[0].name,
+            userDetails[0].email,
+            courseDetails[0].title,
+            courseDetails[0].price || 0.0, // Default to 0 if price is null
+            enrollmentId,
+          ],
+        );
+      }
+    } catch (logError) {
+      // Don't fail the enrollment if logging fails
+      console.error("Failed to log student enrollment:", logError);
     }
     // -----------------------------------------------------------------
 

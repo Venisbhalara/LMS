@@ -1,4 +1,5 @@
 import "./PaymentModal.css";
+import { formatPrice } from "../../utils/format";
 import { useNavigate } from "react-router-dom";
 
 const PaymentModal = ({ isOpen, onClose, plan }) => {
@@ -6,17 +7,16 @@ const PaymentModal = ({ isOpen, onClose, plan }) => {
 
   const handleProceed = () => {
     onClose();
-    navigate("/payment", { state: { plan, price: plan === "Pro Plan" ? 1999 : 5000 } });
+    navigate("/payment", {
+      state: { plan, price: plan === "Pro Plan" ? 1999 : 5000 },
+    });
   };
 
   if (!isOpen) return null;
 
   return (
     <div className="lms-payment-overlay" onClick={onClose}>
-      <div
-        className="lms-payment-modal"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="lms-payment-modal" onClick={(e) => e.stopPropagation()}>
         <h2>Complete Your Purchase</h2>
         <p className="lms-payment-plan">
           Selected Plan: <strong>{plan}</strong>
@@ -28,7 +28,7 @@ const PaymentModal = ({ isOpen, onClose, plan }) => {
               <p>✔ Unlimited Courses</p>
               <p>✔ Certificates</p>
               <p>✔ Premium Content</p>
-              <h3>₹1999 / year</h3>
+              <h3>{formatPrice(1999)} / year</h3>
             </>
           )}
 
@@ -48,14 +48,9 @@ const PaymentModal = ({ isOpen, onClose, plan }) => {
               Proceed to Pay
             </button>
           ) : (
-            <button className="lms-payment-pay-btn">
-              Contact Sales
-            </button>
+            <button className="lms-payment-pay-btn">Contact Sales</button>
           )}
-          <button
-            className="lms-payment-cancel-btn"
-            onClick={onClose}
-          >
+          <button className="lms-payment-cancel-btn" onClick={onClose}>
             Cancel
           </button>
         </div>

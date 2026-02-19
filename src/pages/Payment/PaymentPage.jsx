@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAuth } from "../../context/AuthContext";
+import { formatPrice } from "../../utils/format";
 import "./PaymentPage.css";
 
-// Icons (You might want to import these from your icon library if available, 
+// Icons (You might want to import these from your icon library if available,
 // using emojis/svgs here for immediate visual feedback)
 const UpiIcon = () => <span className="payment-icon">📱</span>;
 const CardIcon = () => <span className="payment-icon">💳</span>;
@@ -14,7 +15,7 @@ const PaymentPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
-  
+
   // Get plan details from navigation state (or default to Pro)
   const selectedPlan = location.state?.plan || "Pro Plan";
   const planPrice = location.state?.price || 1;
@@ -42,14 +43,16 @@ const PaymentPage = () => {
   if (paymentStep === "success") {
     return (
       <div className="payment-page success-container">
-        <motion.div 
+        <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           className="payment-success-card"
         >
           <div className="success-icon">✅</div>
           <h2>Payment Successful!</h2>
-          <p>Thank you for enrolling in the <strong>{selectedPlan}</strong>.</p>
+          <p>
+            Thank you for enrolling in the <strong>{selectedPlan}</strong>.
+          </p>
           <p>Transaction ID: IND{Math.floor(Math.random() * 1000000000)}</p>
           <p className="redirect-note">Redirecting to Dashboard...</p>
         </motion.div>
@@ -60,7 +63,6 @@ const PaymentPage = () => {
   return (
     <div className="payment-page">
       <div className="payment-container">
-        
         {/* Left Side: Payment Methods */}
         <div className="payment-left">
           <div className="payment-header">
@@ -70,7 +72,7 @@ const PaymentPage = () => {
 
           <div className="payment-methods">
             {/* UPI Section */}
-            <div 
+            <div
               className={`payment-method-card ${paymentMethod === "upi" ? "active" : ""}`}
               onClick={() => setPaymentMethod("upi")}
             >
@@ -83,13 +85,17 @@ const PaymentPage = () => {
                 </div>
               </div>
               {paymentMethod === "upi" && (
-                <motion.div 
+                <motion.div
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: "auto", opacity: 1 }}
                   className="method-details"
                 >
                   <label>Enter UPI ID</label>
-                  <input type="text" placeholder="example@upi" className="payment-input" />
+                  <input
+                    type="text"
+                    placeholder="example@upi"
+                    className="payment-input"
+                  />
                   <div className="upi-apps">
                     <span className="upi-app gpay">GPay</span>
                     <span className="upi-app phonepe">PhonePe</span>
@@ -100,7 +106,7 @@ const PaymentPage = () => {
             </div>
 
             {/* Credit/Debit Card Section */}
-            <div 
+            <div
               className={`payment-method-card ${paymentMethod === "card" ? "active" : ""}`}
               onClick={() => setPaymentMethod("card")}
             >
@@ -113,25 +119,44 @@ const PaymentPage = () => {
                 </div>
               </div>
               {paymentMethod === "card" && (
-                <motion.div 
+                <motion.div
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: "auto", opacity: 1 }}
                   className="method-details"
                 >
                   <div className="card-form">
-                    <input type="text" placeholder="Card Number" className="payment-input card-number" maxLength="19" />
+                    <input
+                      type="text"
+                      placeholder="Card Number"
+                      className="payment-input card-number"
+                      maxLength="19"
+                    />
                     <div className="card-row">
-                      <input type="text" placeholder="MM / YY" className="payment-input" maxLength="5" />
-                      <input type="password" placeholder="CVV" className="payment-input" maxLength="3" />
+                      <input
+                        type="text"
+                        placeholder="MM / YY"
+                        className="payment-input"
+                        maxLength="5"
+                      />
+                      <input
+                        type="password"
+                        placeholder="CVV"
+                        className="payment-input"
+                        maxLength="3"
+                      />
                     </div>
-                    <input type="text" placeholder="Cardholder Name" className="payment-input" />
+                    <input
+                      type="text"
+                      placeholder="Cardholder Name"
+                      className="payment-input"
+                    />
                   </div>
                 </motion.div>
               )}
             </div>
 
             {/* Net Banking Section */}
-            <div 
+            <div
               className={`payment-method-card ${paymentMethod === "netbanking" ? "active" : ""}`}
               onClick={() => setPaymentMethod("netbanking")}
             >
@@ -144,10 +169,10 @@ const PaymentPage = () => {
                 </div>
               </div>
               {paymentMethod === "netbanking" && (
-                <motion.div 
-                   initial={{ height: 0, opacity: 0 }}
-                   animate={{ height: "auto", opacity: 1 }}
-                   className="method-details"
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  className="method-details"
                 >
                   <select className="payment-select">
                     <option>Select your Bank</option>
@@ -178,24 +203,24 @@ const PaymentPage = () => {
             <div className="summary-divider"></div>
             <div className="summary-item">
               <span>Subtotal</span>
-              <span>₹{planPrice.toLocaleString('en-IN')}</span>
+              <span>{formatPrice(planPrice)}</span>
             </div>
             <div className="summary-item">
               <span>GST (18%)</span>
-              <span>₹{tax.toLocaleString('en-IN')}</span>
+              <span>{formatPrice(tax)}</span>
             </div>
             <div className="summary-divider"></div>
             <div className="summary-total">
               <span>Total Amount</span>
-              <span>₹{totalAmount.toLocaleString('en-IN')}</span>
+              <span>{formatPrice(totalAmount)}</span>
             </div>
 
-            <button 
-              className="pay-btn" 
+            <button
+              className="pay-btn"
               onClick={handlePayment}
               disabled={processing}
             >
-              {processing ? "Processing..." : `Pay ₹${totalAmount.toLocaleString('en-IN')}`}
+              {processing ? "Processing..." : `Pay ${formatPrice(totalAmount)}`}
             </button>
 
             <div className="trust-badges">
@@ -204,7 +229,6 @@ const PaymentPage = () => {
             </div>
           </div>
         </div>
-
       </div>
     </div>
   );

@@ -11,6 +11,7 @@ import {
   CertificateIcon,
 } from "../../components/Icons/Icons";
 import { getCourseImage, getInstructorAvatar } from "../../utils/images";
+import { formatPrice } from "../../utils/format";
 import { coursesData } from "../../data/coursesData";
 import "./CourseDetail.css";
 
@@ -63,7 +64,10 @@ const CourseDetail = () => {
             students: apiCourse.students || staticCourseData?.students || 0,
 
             // Rich content from static file (fallback to defaults if not found)
-            curriculum: staticCourseData?.curriculum || [],
+            curriculum:
+              apiCourse.curriculum && apiCourse.curriculum.length > 0
+                ? apiCourse.curriculum
+                : staticCourseData?.curriculum || [],
             reviews: staticCourseData?.reviews || [],
             whatYouWillLearn: staticCourseData?.whatYouWillLearn || [],
             totalRatings: staticCourseData?.totalRatings || 0,
@@ -79,10 +83,11 @@ const CourseDetail = () => {
                 : apiCourse.instructor || { name: "Instructor" },
 
             // Image handling: API url > Static detailed image > Placeholder
-            image:
-              apiCourse.image_url ||
-              staticCourseData?.image ||
-              "/images/placeholder.png",
+            image: getCourseImage(
+              apiCourse.id,
+              apiCourse.category,
+              apiCourse.title,
+            ),
           };
 
           console.log("CourseDetail: Merged Course:", mergedCourse);
@@ -287,7 +292,7 @@ const CourseDetail = () => {
                     className="btn btn-primary btn-large"
                     onClick={handleEnroll}
                   >
-                    Enroll Now - ₹{course.price}
+                    Enroll Now - {formatPrice(course.price)}
                   </button>
                   <button
                     className={`btn btn-outline btn-large ${
@@ -541,7 +546,9 @@ const CourseDetail = () => {
           <aside className="course-sidebar">
             <div className="sidebar-card">
               {!enrolled && (
-                <div className="course-price-large">₹{course.price}</div>
+                <div className="course-price-large">
+                  {formatPrice(course.price)}
+                </div>
               )}
               {isAuthenticated && enrolled ? (
                 <Link
@@ -554,9 +561,13 @@ const CourseDetail = () => {
               ) : isAuthenticated ? (
                 <button
                   className="btn btn-primary btn-large btn-full"
-                  onClick={() => {
-                    enrollInCourse(courseId);
-                    navigate(`/courses/${id}/lessons/1`);
+                  onClick={async () => {
+                    const result = await enrollInCourse(course.id);
+                    if (result.success) {
+                      navigate(`/courses/${id}/lessons/1`);
+                    } else {
+                      alert("Failed to enroll: " + result.message);
+                    }
                   }}
                 >
                   Enroll in Course

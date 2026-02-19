@@ -71,7 +71,8 @@
   border-left: 3px solid #4f46e5;
 }
 
-.dashboard-content, .container {
+.dashboard-content,
+.container {
   flex: 1;
   padding: 2rem 1rem;
   max-width: 1200px;
@@ -80,13 +81,15 @@
 }
 
 @media (min-width: 768px) {
-  .dashboard-content, .container {
+  .dashboard-content,
+  .container {
     padding: 3rem 2rem;
   }
 }
 
 @media (min-width: 1024px) {
-  .dashboard-content, .container {
+  .dashboard-content,
+  .container {
     padding: 4rem 2.5rem;
   }
 }
@@ -133,7 +136,9 @@
   background: linear-gradient(135deg, #a0e9fd, #0c88ff);
   color: white;
 
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .start-quiz-btn:hover {
@@ -483,7 +488,9 @@
   border-radius: 1rem;
   padding: 1.5rem;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .achievement-card:hover {
@@ -646,7 +653,8 @@
 }
 
 /* Status Badges */
-.status-badge, .role-badge {
+.status-badge,
+.role-badge {
   padding: 0.25rem 0.75rem;
   border-radius: 9999px;
   font-size: 0.75rem;
@@ -654,17 +662,20 @@
   text-transform: capitalize;
 }
 
-.status-published, .role-instructor {
+.status-published,
+.role-instructor {
   background: #ecfdf5;
   color: #059669;
 }
 
-.status-pending, .role-admin {
+.status-pending,
+.role-admin {
   background: #fff7ed;
   color: #d97706;
 }
 
-.status-draft, .role-student {
+.status-draft,
+.role-student {
   background: #f3f4f6;
   color: #6b7280;
 }
@@ -723,8 +734,12 @@
   font-size: 0.75rem;
   font-weight: 600;
   background: white;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.course-status-published { color: #059669; }
-.course-status-draft { color: #6b7280; }
+.course-status-published {
+  color: #059669;
+}
+.course-status-draft {
+  color: #6b7280;
+}

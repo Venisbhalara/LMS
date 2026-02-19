@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { formatPrice } from "../../utils/format";
 import "./CoursesSection.css";
 
 /* =========================
@@ -33,7 +34,7 @@ const COURSES = [
     category: "web",
     rating: 4.8,
     students: 12500,
-    price: 89,
+    price: 4999,
     duration: "40 hours",
   },
   {
@@ -43,7 +44,7 @@ const COURSES = [
     category: "data",
     rating: 4.9,
     students: 8900,
-    price: 99,
+    price: 3499,
     duration: "50 hours",
   },
   {
@@ -53,7 +54,7 @@ const COURSES = [
     category: "design",
     rating: 4.7,
     students: 15200,
-    price: 79,
+    price: 2999,
     duration: "30 hours",
   },
   {
@@ -63,7 +64,7 @@ const COURSES = [
     category: "business",
     rating: 4.6,
     students: 6700,
-    price: 109,
+    price: 1999,
     duration: "45 hours",
   },
   {
@@ -73,7 +74,7 @@ const COURSES = [
     category: "mobile",
     rating: 4.8,
     students: 9800,
-    price: 94,
+    price: 3999,
     duration: "55 hours",
   },
   {
@@ -83,7 +84,7 @@ const COURSES = [
     category: "web",
     rating: 4.9,
     students: 11200,
-    price: 84,
+    price: 2499,
     duration: "35 hours",
   },
   {
@@ -93,7 +94,7 @@ const COURSES = [
     category: "web",
     rating: 4.8,
     students: 10200,
-    price: 89,
+    price: 2499,
     duration: "42 hours",
   },
   {
@@ -103,7 +104,7 @@ const COURSES = [
     category: "web",
     rating: 4.7,
     students: 8500,
-    price: 79,
+    price: 1999,
     duration: "38 hours",
   },
   {
@@ -113,7 +114,7 @@ const COURSES = [
     category: "web",
     rating: 4.6,
     students: 7200,
-    price: 94,
+    price: 3499,
     duration: "48 hours",
   },
   {
@@ -123,7 +124,7 @@ const COURSES = [
     category: "ai",
     rating: 4.9,
     students: 15600,
-    price: 119,
+    price: 5999,
     duration: "60 hours",
   },
   {
@@ -133,7 +134,7 @@ const COURSES = [
     category: "ai",
     rating: 4.8,
     students: 9800,
-    price: 129,
+    price: 6999,
     duration: "65 hours",
   },
   {
@@ -143,7 +144,7 @@ const COURSES = [
     category: "data",
     rating: 4.7,
     students: 11200,
-    price: 89,
+    price: 2999,
     duration: "35 hours",
   },
 ];
@@ -229,7 +230,9 @@ const CoursesSection = () => {
                   </div>
 
                   <div className="course-card-footer">
-                    <span className="course-price">${course.price}</span>
+                    <span className="course-price">
+                      {formatPrice(course.price)}
+                    </span>
                     <span className="course-card-link">View Course →</span>
                   </div>
                 </div>

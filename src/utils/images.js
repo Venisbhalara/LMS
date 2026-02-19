@@ -2,11 +2,11 @@
 // Users can add their own images to public/images/ directory
 
 export const getCourseImage = (courseId, category, title) => {
-  // Map course IDs to specific images
+  // 1. First check if we have an explicit mapping for this ID
   const courseImageMap = {
     1: "/images/courses/react.png",
     2: "/images/courses/python.png",
-    3: "/images/courses/design.png",
+    3: "/images/courses/uiux.png", // Fixed from design.png to match specific image
     4: "/images/courses/business.png",
     5: "/images/courses/flutter.png",
     6: "/images/courses/javascript.png",
@@ -16,45 +16,105 @@ export const getCourseImage = (courseId, category, title) => {
     10: "/images/courses/machine-learning.png",
     11: "/images/courses/deep-learning.png",
     12: "/images/courses/pandas.png",
-    13: "/images/courses/hadoop.png",
-    14: "/images/courses/tableau.png",
-    15: "/images/courses/aws.png",
-    16: "/images/courses/docker.png",
-    17: "/images/courses/azure.png",
+    13: "/images/courses/hadoop.png", // Note: Image might not exist, will fall back
+    14: "/images/courses/tableau.png", // Note: Image might not exist, will fall back
+    15: "/images/courses/aws.png", // Note: Image might not exist, will fall back
+    16: "/images/courses/docker.png", // Note: Image might not exist, will fall back
+    17: "/images/courses/azure.png", // Note: Image might not exist, will fall back
     18: "/images/courses/ethical-hacking.png",
     19: "/images/courses/cybersecurity.png",
     20: "/images/courses/ios.png",
-    21: "/images/courses/android.png",
-    22: "/images/courses/react-native.png",
+    21: "/images/courses/android.png", // Note: Image might not exist, will fall back
+    22: "/images/courses/react-native.png", // Note: Image might not exist, will fall back
     23: "/images/courses/figma.png",
     24: "/images/courses/adobe-xd.png",
-    25: "/images/courses/marketing.png",
-    26: "/images/courses/pmp.png",
-    27: "/images/courses/upsc.png",
-    28: "/images/courses/ssc.png",
-    29: "/images/courses/banking.png",
-    30: "/images/courses/railway.png",
-    31: "/images/courses/defense.png",
-    32: "/images/courses/teaching.png",
-    33: "/images/courses/blockchain.png",
-    34: "/images/courses/graphql.png",
+    25: "/images/courses/marketing.png", // Note: Image might not exist, will fall back
+    26: "/images/courses/pmp.png", // Note: Image might not exist, will fall back
+    27: "/images/courses/upsc.png", // Note: Image might not exist, will fall back
+    28: "/images/courses/ssc.png", // Note: Image might not exist, will fall back
+    29: "/images/courses/banking.png", // Note: Image might not exist, will fall back
+    30: "/images/courses/railway.png", // Note: Image might not exist, will fall back
+    31: "/images/courses/defense.png", // Note: Image might not exist, will fall back
+    32: "/images/courses/teaching.png", // Note: Image might not exist, will fall back
+    33: "/images/courses/blockchain.png", // Note: Image might not exist, will fall back
+    34: "/images/courses/graphql.png", // Note: Image might not exist, will fall back
     35: "/images/courses/typescript.png",
   };
 
-  // Fallback to category-based images
+  if (courseImageMap[courseId]) {
+    return courseImageMap[courseId];
+  }
+
+  // 2. Try to match by title (case-insensitive partial match)
+  if (title) {
+    const lowerTitle = title.toLowerCase();
+
+    const titleImageMap = [
+      { keywords: ["react", "native"], image: "/images/courses/react.png" }, // Priority logic
+      { keywords: ["react"], image: "/images/courses/react.png" },
+      { keywords: ["python"], image: "/images/courses/python.png" },
+      {
+        keywords: ["machine", "learning"],
+        image: "/images/courses/machine-learning.png",
+      },
+      {
+        keywords: ["deep", "learning"],
+        image: "/images/courses/deep-learning.png",
+      },
+      { keywords: ["node", "js"], image: "/images/courses/nodejs.png" },
+      {
+        keywords: ["javascript", "js"],
+        image: "/images/courses/javascript.png",
+      },
+      { keywords: ["type", "script"], image: "/images/courses/typescript.png" },
+      { keywords: ["angular"], image: "/images/courses/angular.png" },
+      { keywords: ["vue"], image: "/images/courses/vuejs.png" },
+      { keywords: ["design", "ui", "ux"], image: "/images/courses/uiux.png" },
+      { keywords: ["figma"], image: "/images/courses/figma.png" },
+      { keywords: ["adobe", "xd"], image: "/images/courses/adobe-xd.png" },
+      { keywords: ["flutter"], image: "/images/courses/flutter.png" },
+      { keywords: ["ios", "swift"], image: "/images/courses/ios.png" },
+      {
+        keywords: ["cyber", "security"],
+        image: "/images/courses/cybersecurity.png",
+      },
+      {
+        keywords: ["ethical", "hacking"],
+        image: "/images/courses/ethical-hacking.png",
+      },
+      {
+        keywords: ["pandas", "data", "analysis"],
+        image: "/images/courses/pandas.png",
+      },
+      { keywords: ["business"], image: "/images/courses/business.png" },
+    ];
+
+    for (const mapping of titleImageMap) {
+      if (mapping.keywords.some((keyword) => lowerTitle.includes(keyword))) {
+        return mapping.image;
+      }
+    }
+  }
+
+  // 3. Fallback to category-based images
   const categoryImageMap = {
-    web: "/images/categories/web-development.png",
-    data: "/images/categories/data-science.png",
-    design: "/images/categories/design.png",
-    business: "/images/categories/business.png",
-    mobile: "/images/categories/mobile-development.png",
-    cloud: "/images/categories/cloud.png",
-    cyber: "/images/categories/cybersecurity.png",
-    ai: "/images/categories/ai-ml.png",
-    gov: "/images/categories/government.png",
+    web: "/images/courses/react.png", // Fallback for web
+    data: "/images/courses/python.png", // Fallback for data
+    design: "/images/courses/design.png",
+    business: "/images/courses/business.png",
+    mobile: "/images/courses/flutter.png", // Fallback for mobile
+    cloud: "/images/courses/docker.png", // We don't have a generic cloud image, using docker if available or fallback
+    cyber: "/images/courses/cybersecurity.png",
+    ai: "/images/courses/machine-learning.png",
+    gov: "/images/courses/upsc.png", // Assuming we might have this
   };
 
-  // Use placeholder service as fallback
+  if (category && categoryImageMap[category]) {
+    return categoryImageMap[category];
+  }
+
+  // 4. Ultimate Fallback to absolute placeholder
+  // Use placeholder service as final fallback
   const placeholderService = "https://images.unsplash.com/photo-";
   const placeholderMap = {
     web: "1498050108023-52492575b24b",
@@ -68,11 +128,7 @@ export const getCourseImage = (courseId, category, title) => {
     gov: "1507003211169-0a1dd7228f2d",
   };
 
-  return (
-    courseImageMap[courseId] ||
-    categoryImageMap[category] ||
-    `${placeholderService}${placeholderMap[category] || "1498050108023-52492575b24b"}?w=400&h=300&fit=crop&auto=format`
-  );
+  return `${placeholderService}${placeholderMap[category] || "1498050108023-52492575b24b"}?w=400&h=300&fit=crop&auto=format`;
 };
 
 export const getCompanyImage = (companyName) => {
