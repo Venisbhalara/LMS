@@ -3,12 +3,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { quizzes } from "../../data/quizData";
 import { ClockIcon, CheckCircleIcon } from "@heroicons/react/24/outline";
-import "./Quiz.css";
+import "./quiz.css";
 
 const Quiz = () => {
   const navigate = useNavigate();
   const { courseId, quizId } = useParams(); // Should match route definition
-  
+
   // If we have params, we are in a specific quiz. Otherwise, show selection.
   const activeQuiz = courseId ? quizzes[courseId] : null;
 
@@ -45,12 +45,15 @@ const QuizSelection = ({ navigate }) => {
             transition={{ delay: index * 0.1 }}
           >
             <div className="quiz-card-content">
-               <div className="quiz-card-icon">
-                  <CheckCircleIcon className="w-8 h-8" style={{ width: '30px'}} />
-               </div>
+              <div className="quiz-card-icon">
+                <CheckCircleIcon
+                  className="w-8 h-8"
+                  style={{ width: "30px" }}
+                />
+              </div>
               <h3>{quiz.title}</h3>
               <p>{quiz.description}</p>
-              
+
               <div className="quiz-meta">
                 <span>⏱️ {Math.floor(quiz.duration / 60)} mins</span>
                 <span>❓ {quiz.totalQuestions} Questions</span>
@@ -72,7 +75,9 @@ const QuizSelection = ({ navigate }) => {
 
 const QuizPlayer = ({ quiz, navigate }) => {
   const [current, setCurrent] = useState(0);
-  const [answers, setAnswers] = useState(Array(quiz.questions.length).fill(null));
+  const [answers, setAnswers] = useState(
+    Array(quiz.questions.length).fill(null),
+  );
   const [timeLeft, setTimeLeft] = useState(quiz.duration);
 
   // Timer Logic
@@ -128,10 +133,12 @@ const QuizPlayer = ({ quiz, navigate }) => {
       <div className="quiz-header">
         <div>
           <h2 style={{ margin: 0 }}>{quiz.title}</h2>
-          <span style={{ color: "#64748b" }}>Question {current + 1} of {quiz.questions.length}</span>
+          <span style={{ color: "#64748b" }}>
+            Question {current + 1} of {quiz.questions.length}
+          </span>
         </div>
         <div className="timer-box">
-          <ClockIcon className="w-5 h-5" style={{width: '20px'}}/>
+          <ClockIcon className="w-5 h-5" style={{ width: "20px" }} />
           {formatTime(timeLeft)}
         </div>
       </div>
