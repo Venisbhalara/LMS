@@ -21,6 +21,12 @@ import QuizResult from "./pages/Quiz/QuizResult";
 import InstructorDashboard from "./pages/InstructorDashboard/InstructorDashboard";
 import PaymentPage from "./pages/Payment/PaymentPage";
 import AdminUsers from "./pages/Admin/AdminUsers";
+import AdminDashboard from "./pages/Admin/AdminDashboard";
+import AdminCourses from "./pages/Admin/AdminCourses";
+import AdminEnrollments from "./pages/Admin/AdminEnrollments";
+import AdminMessages from "./pages/Admin/AdminMessages";
+import AdminHelp from "./pages/Admin/AdminHelp";
+import AdminCareers from "./pages/Admin/AdminCareers";
 import Privacy from "./pages/Privacy/Privacy";
 import Terms from "./pages/Terms/Terms";
 import Cookies from "./pages/Cookies/Cookies";
@@ -35,6 +41,7 @@ function App() {
       <ScrollToTop /> {/* ✅ This fixes footer jump */}
       {/* Main Routes */}
       <Routes>
+        {/* ── Layout-wrapped routes (Navbar + Footer) ── */}
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="login" element={<Login />} />
@@ -54,7 +61,6 @@ function App() {
           <Route path="quiz" element={<Quiz />} />
           <Route path="quiz/result" element={<QuizResult />} />
           <Route path="/course/:courseId/quiz/:quizId" element={<Quiz />} />
-          <Route path="/course/:courseId/quiz/:quizId" element={<Quiz />} />
           <Route
             path="/course/:courseId/quiz/:quizId/result"
             element={<QuizResult />}
@@ -64,12 +70,20 @@ function App() {
             path="/instructor/dashboard"
             element={<InstructorDashboard />}
           />
-          <Route path="/admin/users" element={<AdminUsers />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/cookies" element={<Cookies />} />
           <Route path="/apply" element={<Apply />} />
         </Route>
+
+        {/* ── Admin routes — standalone, no Layout wrapper ── */}
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/users" element={<AdminUsers />} />
+        <Route path="/admin/courses" element={<AdminCourses />} />
+        <Route path="/admin/enrollments" element={<AdminEnrollments />} />
+        <Route path="/admin/messages" element={<AdminMessages />} />
+        <Route path="/admin/help" element={<AdminHelp />} />
+        <Route path="/admin/careers" element={<AdminCareers />} />
       </Routes>
       {/* Help Widget: Appears on all pages */}
       <HelpWidget />

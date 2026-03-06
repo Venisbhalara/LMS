@@ -7,6 +7,7 @@ const usersRoutes = require("./routes/users");
 const enrollmentRoutes = require("./routes/enrollments");
 const contactRoutes = require("./routes/contact");
 const helpRoutes = require("./routes/help");
+const adminRoutes = require("./routes/admin");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -23,6 +24,7 @@ app.use("/api/enrollments", enrollmentRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/help", helpRoutes);
 app.use("/api/careers", require("./routes/careers"));
+app.use("/api/admin", adminRoutes);
 
 // Serve uploaded files
 app.use("/uploads", express.static("uploads"));

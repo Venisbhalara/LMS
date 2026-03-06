@@ -7,16 +7,18 @@ const ScrollToTop = () => {
   const [scrollPercent, setScrollPercent] = useState(0);
   const { pathname } = useLocation();
 
-  // ✅ FIX: Reset scroll on route change
+  // Reset scroll position instantly on every route change.
+  // We tell Lenis to jump to 0 without animation so there's
+  // no "residual" momentum bleed from the previous page.
   useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "instant",
-    });
+    if (window.__lenis) {
+      window.__lenis.scrollTo(0, { immediate: true });
+    } else {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }
   }, [pathname]);
 
-  // Track scroll & progress
+  // Track scroll progress for the circular indicator
   const handleScroll = () => {
     const scrollTop = window.pageYOffset;
     const docHeight =
@@ -24,13 +26,16 @@ const ScrollToTop = () => {
 
     const scrolled = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
     setScrollPercent(scrolled);
-
     setVisible(scrollTop > 300);
   };
 
-  // Scroll smoothly to top (button click)
+  // Button click — let Lenis animate back to the top with its easing curve
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (window.__lenis) {
+      window.__lenis.scrollTo(0, { duration: 1.4 });
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
 
   useEffect(() => {

@@ -57,7 +57,9 @@
   overflow: hidden;
   aspect-ratio: 16 / 9;
   position: relative;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
 .video-placeholder {
@@ -70,7 +72,11 @@
   color: white;
   gap: var(--spacing-md);
   transition: all 0.3s ease;
-  background-image: radial-gradient(circle at center, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+  background-image: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.05) 0%,
+    transparent 70%
+  );
 }
 
 .video-placeholder:hover {
@@ -102,7 +108,7 @@
 .video-placeholder:hover .youtube-icon {
   filter: drop-shadow(0 15px 20px rgba(255, 0, 0, 0.4));
 }
-.video-placeholder p{
+.video-placeholder p {
   color: white;
 }
 .video-note {
@@ -222,7 +228,7 @@
 }
 
 .lesson-navigation h3 {
-  font-size: 1.20rem;
+  font-size: 1.2rem;
   margin-bottom: var(--spacing-lg);
   color: var(--gray-900);
   margin-left: 20px;
@@ -279,4 +285,3 @@
 .nav-lesson-title {
   flex: 1;
 }
-

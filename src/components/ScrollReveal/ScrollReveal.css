@@ -1,0 +1,51 @@
+/* ============================================================
+   ScrollReveal — scroll-triggered reveal animations
+   Only used on the Home (landing) page.
+   ============================================================ */
+
+/* ── Base hidden state ── */
+.sr-wrapper {
+  opacity: 0;
+  will-change: opacity, transform;
+  /* Spring-like expo easing — snappy entry, silky deceleration */
+  transition:
+    opacity var(--sr-duration, 0.85s) cubic-bezier(0.22, 1, 0.36, 1)
+      var(--sr-delay, 0s),
+    transform var(--sr-duration, 0.85s) cubic-bezier(0.22, 1, 0.36, 1)
+      var(--sr-delay, 0s);
+}
+
+/* ── Hidden positions (before reveal) — generous offset for drama ── */
+.sr-fade-up {
+  transform: translateY(60px);
+}
+.sr-fade-down {
+  transform: translateY(-60px);
+}
+.sr-fade-left {
+  transform: translateX(-90px);
+}
+.sr-fade-right {
+  transform: translateX(90px);
+}
+.sr-zoom-in {
+  transform: scale(0.88);
+}
+.sr-zoom-out {
+  transform: scale(1.1);
+}
+
+/* ── Visible / revealed state ── */
+.sr-wrapper.sr-visible {
+  opacity: 1;
+  transform: translate(0, 0) scale(1);
+}
+
+/* ── Respect user motion preferences ── */
+@media (prefers-reduced-motion: reduce) {
+  .sr-wrapper {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

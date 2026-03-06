@@ -1,0 +1,191 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+/* Overlay */
+.dcm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  padding: 1rem;
+  animation: dcm-fade-in 0.22s ease both;
+}
+
+/* Card */
+.dcm-card {
+  background: #ffffff;
+  border-radius: 28px;
+  box-shadow:
+    0 0 0 1px rgba(239, 68, 68, 0.08),
+    0 8px 32px rgba(0, 0, 0, 0.14),
+    0 32px 80px rgba(239, 68, 68, 0.1);
+  width: 100%;
+  max-width: 400px;
+  padding: 2.25rem 2rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4rem;
+  animation: dcm-pop 0.36s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+/* Warning icon */
+.dcm-icon-wrap {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dcm-icon-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(239, 68, 68, 0.25);
+  animation: dcm-ring-pulse 1.8s ease-in-out infinite;
+}
+
+.dcm-icon-inner {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  border: 1.5px solid rgba(239, 68, 68, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #dc2626;
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.18);
+}
+
+/* Body text */
+.dcm-body {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.dcm-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #1e1b4b;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.dcm-desc {
+  font-size: 0.9rem;
+  color: #6b7280;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.dcm-name {
+  color: #1e1b4b;
+  font-weight: 700;
+}
+
+.dcm-emphasis {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+/* Divider */
+.dcm-card::before {
+  content: none;
+}
+
+/* Actions */
+.dcm-actions {
+  display: flex;
+  gap: 0.75rem;
+  width: 100%;
+  padding-top: 0.25rem;
+}
+
+.dcm-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: all 230ms cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: -0.01em;
+}
+
+.dcm-btn-cancel {
+  background: #f3f4f6;
+  color: #374151;
+  border: 1.5px solid #e5e7eb;
+}
+
+.dcm-btn-cancel:hover {
+  background: #e9e8f0;
+  border-color: #d1d5db;
+  color: #111827;
+}
+
+.dcm-btn-delete {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.32);
+}
+
+.dcm-btn-delete:hover {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  box-shadow: 0 8px 22px rgba(239, 68, 68, 0.45);
+  transform: translateY(-2px);
+}
+
+.dcm-btn-delete:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Animations */
+@keyframes dcm-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes dcm-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.88) translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes dcm-ring-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.18);
+    opacity: 1;
+  }
+}
