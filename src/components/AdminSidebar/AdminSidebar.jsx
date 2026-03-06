@@ -25,8 +25,10 @@ const AdminSidebar = () => {
     <aside className="adm-sidebar">
       {/* Brand */}
       <div className="adm-sidebar-brand">
-        <div className="adm-sidebar-brand-icon">⚡</div>
-        <div>
+        <div className="adm-sidebar-brand-icon" onClick={() => navigate("/")}>
+          ⚡
+        </div>
+        <div className="pointer" onClick={() => navigate("/")}>
           <p className="adm-sidebar-brand-title">Admin Panel</p>
           <p className="adm-sidebar-brand-sub">LMS Control Center</p>
         </div>

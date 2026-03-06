@@ -36,6 +36,7 @@
 .adm-sidebar-brand-icon {
   width: 42px;
   height: 42px;
+  cursor: pointer;
   border-radius: 12px;
   background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
   display: flex;
@@ -45,7 +46,9 @@
   box-shadow: 0 6px 16px rgba(79, 70, 229, 0.28);
   flex-shrink: 0;
 }
-
+.pointer {
+  cursor: pointer;
+}
 .adm-sidebar-brand-title {
   font-size: 0.9375rem;
   font-weight: 800;

@@ -161,7 +161,9 @@
 
 /* Base Styles */
 html {
-  scroll-behavior: smooth;
+  /* NOTE: scroll-behavior: smooth is intentionally NOT set here.
+     Lenis handles all smooth scrolling. Setting it here causes
+     double-smooth stuttering / lag conflicts. */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -399,6 +401,7 @@ a:hover {
   position: relative;
   overflow: hidden;
   transform: translateY(0);
+  will-change: transform; /* GPU layer for smooth hover transforms */
 }
 
 .card::before {
@@ -631,12 +634,7 @@ img {
   border: 1px solid var(--info);
 }
 
-/* Smooth Scroll */
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
-}
+/* Smooth Scroll is handled by Lenis — no CSS scroll-behavior needed */
 
 /* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import "./scrolltop.css";
 
@@ -6,10 +6,9 @@ const ScrollToTop = () => {
   const [visible, setVisible] = useState(false);
   const [scrollPercent, setScrollPercent] = useState(0);
   const { pathname } = useLocation();
+  const rafPending = useRef(false); // rAF throttle gate
 
   // Reset scroll position instantly on every route change.
-  // We tell Lenis to jump to 0 without animation so there's
-  // no "residual" momentum bleed from the previous page.
   useEffect(() => {
     if (window.__lenis) {
       window.__lenis.scrollTo(0, { immediate: true });
@@ -18,30 +17,37 @@ const ScrollToTop = () => {
     }
   }, [pathname]);
 
-  // Track scroll progress for the circular indicator
-  const handleScroll = () => {
-    const scrollTop = window.pageYOffset;
-    const docHeight =
-      document.documentElement.scrollHeight - window.innerHeight;
+  // rAF-throttled scroll handler — fires at most once per animation frame
+  // instead of potentially 100s of times per second, eliminating scroll jank.
+  useEffect(() => {
+    const onScroll = () => {
+      if (rafPending.current) return; // skip if frame already queued
+      rafPending.current = true;
 
-    const scrolled = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-    setScrollPercent(scrolled);
-    setVisible(scrollTop > 300);
-  };
+      requestAnimationFrame(() => {
+        const scrollTop = window.pageYOffset;
+        const docHeight =
+          document.documentElement.scrollHeight - window.innerHeight;
+        const scrolled = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
 
-  // Button click — let Lenis animate back to the top with its easing curve
+        setScrollPercent(scrolled);
+        setVisible(scrollTop > 300);
+        rafPending.current = false;
+      });
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Button click — let Lenis animate back to top
   const scrollToTop = () => {
     if (window.__lenis) {
-      window.__lenis.scrollTo(0, { duration: 1.4 });
+      window.__lenis.scrollTo(0, { duration: 1.2 });
     } else {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const radius = 22;
   const circumference = 2 * Math.PI * radius;
