@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Contact.css";
+import "./contact.css";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -39,7 +39,7 @@ const Contact = () => {
     } catch (error) {
       console.error("Error sending message:", error);
       alert(
-        "Something went wrong. Please check your connection and try again."
+        "Something went wrong. Please check your connection and try again.",
       );
     } finally {
       setLoading(false);
