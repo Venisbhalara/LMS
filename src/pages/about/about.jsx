@@ -1,9 +1,8 @@
-import "./About.css";
+import "./about.css";
 
 const About = () => {
   return (
     <div className="about-page">
-
       {/* HERO */}
       <section className="about-hero">
         <div className="hero-content">
@@ -22,8 +21,8 @@ const About = () => {
         <p className="about-text">
           EduMaster is a modern online learning platform built for learners who
           value practical knowledge and real-world relevance. We focus on
-          delivering structured, high-quality courses that help individuals
-          grow professionally and stay competitive in an evolving job market.
+          delivering structured, high-quality courses that help individuals grow
+          professionally and stay competitive in an evolving job market.
         </p>
       </section>
 
