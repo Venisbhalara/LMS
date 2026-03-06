@@ -56,14 +56,14 @@ const AdminSidebar = () => {
       <div className="adm-sidebar-spacer" />
 
       {/* Visit Website */}
-      <button className="adm-sidebar-home" onClick={() => navigate("/")}>
-        <span className="adm-sidebar-home-icon">🌐</span>
-        <div className="adm-sidebar-home-text">
-          <span className="adm-sidebar-home-label">Visit Website</span>
-          <span className="adm-sidebar-home-sub">Go to home page</span>
-        </div>
-        <span className="adm-sidebar-home-arrow">↗</span>
-      </button>
+      {/* <button className="adm-sidebar-home" onClick={() => navigate("/")}>
+          <span className="adm-sidebar-home-icon">🌐</span>
+          <div className="adm-sidebar-home-text">
+            <span className="adm-sidebar-home-label">Visit Website</span>
+            <span className="adm-sidebar-home-sub">Go to home page</span>
+          </div>
+          <span className="adm-sidebar-home-arrow">↗</span>
+        </button> */}
 
       {/* Logout */}
       <button className="adm-sidebar-logout" onClick={handleLogout}>
