@@ -4,6 +4,7 @@
     "description": "Backend for LMS Website",
     "main": "index.js",
     "scripts": {
+        "prestart": "node scripts/init-db.js",
         "start": "node index.js",
         "dev": "nodemon index.js"
     },
