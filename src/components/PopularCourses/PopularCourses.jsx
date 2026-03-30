@@ -19,7 +19,7 @@ const CATEGORY_MAP = {
 };
 
 /* =========================
-   COMPONENTfix th
+   COMPONENT
 ========================= */
 const PopularCourses = () => {
   const [courses, setCourses] = useState([]);
@@ -30,9 +30,7 @@ const PopularCourses = () => {
     const fetchCourses = async () => {
       try {
         // Fetch top 4 courses
-        const response = await fetch(
-          `${import.meta.env.VITE_API_URL || ""}/api/courses?limit=4`,
-        );
+        const response = await fetch("/api/courses?limit=4");
         if (!response.ok) {
           throw new Error("Failed to fetch courses");
         }
@@ -138,7 +136,7 @@ const PopularCourses = () => {
                     loading="lazy"
                     onError={(e) => {
                       e.target.onerror = null;
-                      e.target.src = "";
+                      e.target.src = "https://images.unsplash.com/photo-1498050108023-52492575b24b?w=400&h=300&fit=crop&auto=format";
                     }}
                   />
 

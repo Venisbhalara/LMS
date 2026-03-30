@@ -83,10 +83,12 @@ export const getCourseImage = (courseId, category, title) => {
         image: "/images/courses/ethical-hacking.png",
       },
       {
-        keywords: ["pandas", "data", "analysis"],
+        keywords: ["pandas", "data", "analysis", "science"],
         image: "/images/courses/pandas.png",
       },
-      { keywords: ["business"], image: "/images/courses/business.png" },
+      { keywords: ["business", "marketing"], image: "/images/courses/business.png" },
+      { keywords: ["programming", "coding", "development"], image: "/images/courses/javascript.png" },
+      { keywords: ["general", "introduction", "basics"], image: "/images/courses/react.png" },
     ];
 
     for (const mapping of titleImageMap) {
@@ -98,19 +100,22 @@ export const getCourseImage = (courseId, category, title) => {
 
   // 3. Fallback to category-based images
   const categoryImageMap = {
-    web: "/images/courses/react.png", // Fallback for web
-    data: "/images/courses/python.png", // Fallback for data
-    design: "/images/courses/design.png",
+    web: "/images/courses/react.png",
+    data: "/images/courses/python.png",
+    design: "/images/courses/uiux.png",
     business: "/images/courses/business.png",
-    mobile: "/images/courses/flutter.png", // Fallback for mobile
-    cloud: "/images/courses/docker.png", // We don't have a generic cloud image, using docker if available or fallback
+    mobile: "/images/courses/flutter.png",
+    cloud: "/images/courses/nodejs.png",
     cyber: "/images/courses/cybersecurity.png",
     ai: "/images/courses/machine-learning.png",
-    gov: "/images/courses/upsc.png", // Assuming we might have this
+    gov: "/images/courses/upsc.png",
+    programming: "/images/courses/javascript.png",
+    general: "/images/courses/react.png",
   };
 
-  if (category && categoryImageMap[category]) {
-    return categoryImageMap[category];
+  const lowerCategory = category ? category.toLowerCase() : "general";
+  if (categoryImageMap[lowerCategory]) {
+    return categoryImageMap[lowerCategory];
   }
 
   // 4. Ultimate Fallback to absolute placeholder

@@ -311,16 +311,26 @@ const Courses = () => {
                     <div className="course-card-image">
                       <img
                         src={
-                          course.image_url ||
-                          getCourseImage(
-                            course.id,
-                            course.category,
-                            course.title,
-                          )
+                          !course.image_url ||
+                          course.image_url.includes("example.com")
+                            ? getCourseImage(
+                                course.id,
+                                course.category,
+                                course.title,
+                              )
+                            : course.image_url
                         }
                         alt={course.title}
                         className="course-image"
                         loading="lazy"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = getCourseImage(
+                            course.id,
+                            course.category,
+                            course.title,
+                          );
+                        }}
                       />
                       {!!course.enrolled && !course.is_locked && (
                         <div className="enrollment-badge">Enrolled</div>

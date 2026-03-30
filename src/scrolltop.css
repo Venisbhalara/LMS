@@ -50,5 +50,5 @@
   fill: none;
   stroke: rgba(255, 255, 255, 0.85);
   stroke-width: 3.5;
-  transition: stroke-dashoffset 0.25s ease;
+  /* No transition here! This eliminates the "lag" behind scroll */
 }
