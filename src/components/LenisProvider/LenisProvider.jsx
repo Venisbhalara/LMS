@@ -31,13 +31,15 @@ export default function LenisProvider({ children }) {
     // Expose globally so ScrollToTop / anchor links can call lenis.scrollTo()
     window.__lenis = lenis;
 
+    let rafId;
+
     // Drive Lenis with the browser's native rAF loop for zero-lag rendering
     function raf(time) {
       lenis.raf(time);
       rafId = requestAnimationFrame(raf);
     }
 
-    let rafId = requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
 
     return () => {
       cancelAnimationFrame(rafId);
