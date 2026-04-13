@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://lms-tmp2.onrender.com/api/$1"
+      "destination": "https://lms-sd0u.onrender.com/api/$1"
     },
     {
       "source": "/(.*)",
