@@ -2,12 +2,55 @@
 // Users can add their own images to public/images/ directory
 
 export const getCourseImage = (courseId, category, title) => {
-  // 1. Try to match by title (case-insensitive partial match)
+  // 1. First check if we have an explicit mapping for this ID
+  const courseImageMap = {
+    1: "/images/courses/react.png",
+    2: "/images/courses/python.png",
+    3: "/images/courses/uiux.png", // Fixed from design.png to match specific image
+    4: "/images/courses/business.png",
+    5: "/images/courses/flutter.png",
+    6: "/images/courses/javascript.png",
+    7: "/images/courses/nodejs.png",
+    8: "/images/courses/vuejs.png",
+    9: "/images/courses/angular.png",
+    10: "/images/courses/machine-learning.png",
+    11: "/images/courses/deep-learning.png",
+    12: "/images/courses/pandas.png",
+    13: "/images/courses/hadoop.png", // Note: Image might not exist, will fall back
+    14: "/images/courses/tableau.png", // Note: Image might not exist, will fall back
+    15: "/images/courses/aws.png", // Note: Image might not exist, will fall back
+    16: "/images/courses/docker.png", // Note: Image might not exist, will fall back
+    17: "/images/courses/azure.png", // Note: Image might not exist, will fall back
+    18: "/images/courses/ethical-hacking.png",
+    19: "/images/courses/cybersecurity.png",
+    20: "/images/courses/ios.png",
+    21: "/images/courses/android.png", // Note: Image might not exist, will fall back
+    22: "/images/courses/react-native.png", // Note: Image might not exist, will fall back
+    23: "/images/courses/figma.png",
+    24: "/images/courses/adobe-xd.png",
+    25: "/images/courses/marketing.png", // Note: Image might not exist, will fall back
+    26: "/images/courses/pmp.png", // Note: Image might not exist, will fall back
+    27: "/images/courses/upsc.png", // Note: Image might not exist, will fall back
+    28: "/images/courses/ssc.png", // Note: Image might not exist, will fall back
+    29: "/images/courses/banking.png", // Note: Image might not exist, will fall back
+    30: "/images/courses/railway.png", // Note: Image might not exist, will fall back
+    31: "/images/courses/defense.png", // Note: Image might not exist, will fall back
+    32: "/images/courses/teaching.png", // Note: Image might not exist, will fall back
+    33: "/images/courses/blockchain.png", // Note: Image might not exist, will fall back
+    34: "/images/courses/graphql.png", // Note: Image might not exist, will fall back
+    35: "/images/courses/typescript.png",
+  };
+
+  if (courseImageMap[courseId]) {
+    return courseImageMap[courseId];
+  }
+
+  // 2. Try to match by title (case-insensitive partial match)
   if (title) {
     const lowerTitle = title.toLowerCase();
 
     const titleImageMap = [
-      { keywords: ["react", "native"], image: "/images/courses/react-native.png" }, // Added proper mapping
+      { keywords: ["react", "native"], image: "/images/courses/react.png" }, // Priority logic
       { keywords: ["react"], image: "/images/courses/react.png" },
       { keywords: ["python"], image: "/images/courses/python.png" },
       {
@@ -19,8 +62,6 @@ export const getCourseImage = (courseId, category, title) => {
         image: "/images/courses/deep-learning.png",
       },
       { keywords: ["node", "js"], image: "/images/courses/nodejs.png" },
-      { keywords: ["node.js"], image: "/images/courses/nodejs.png" },
-      { keywords: ["mysql", "sql", "database"], image: "/images/courses/database.png" }, // Added database
       {
         keywords: ["javascript", "js"],
         image: "/images/courses/javascript.png",
@@ -28,8 +69,6 @@ export const getCourseImage = (courseId, category, title) => {
       { keywords: ["type", "script"], image: "/images/courses/typescript.png" },
       { keywords: ["angular"], image: "/images/courses/angular.png" },
       { keywords: ["vue"], image: "/images/courses/vuejs.png" },
-      { keywords: ["aws", "cloud"], image: "/images/courses/aws.png" },
-      { keywords: ["docker"], image: "/images/courses/docker.png" },
       { keywords: ["design", "ui", "ux"], image: "/images/courses/uiux.png" },
       { keywords: ["figma"], image: "/images/courses/figma.png" },
       { keywords: ["adobe", "xd"], image: "/images/courses/adobe-xd.png" },
@@ -57,49 +96,6 @@ export const getCourseImage = (courseId, category, title) => {
         return mapping.image;
       }
     }
-  }
-
-  // 2. Check if we have an explicit mapping for this ID (as fallback)
-  const courseImageMap = {
-    1: "/images/courses/react.png",
-    2: "/images/courses/python.png",
-    3: "/images/courses/uiux.png", 
-    4: "/images/courses/business.png",
-    5: "/images/courses/flutter.png",
-    6: "/images/courses/javascript.png",
-    7: "/images/courses/nodejs.png",
-    8: "/images/courses/vuejs.png",
-    9: "/images/courses/angular.png",
-    10: "/images/courses/machine-learning.png",
-    11: "/images/courses/deep-learning.png",
-    12: "/images/courses/pandas.png",
-    13: "/images/courses/hadoop.png",
-    14: "/images/courses/tableau.png",
-    15: "/images/courses/aws.png", 
-    16: "/images/courses/docker.png",
-    17: "/images/courses/azure.png",
-    18: "/images/courses/ethical-hacking.png",
-    19: "/images/courses/cybersecurity.png",
-    20: "/images/courses/ios.png",
-    21: "/images/courses/android.png",
-    22: "/images/courses/react-native.png",
-    23: "/images/courses/figma.png",
-    24: "/images/courses/adobe-xd.png",
-    25: "/images/courses/marketing.png",
-    26: "/images/courses/pmp.png",
-    27: "/images/courses/upsc.png",
-    28: "/images/courses/ssc.png",
-    29: "/images/courses/banking.png",
-    30: "/images/courses/railway.png",
-    31: "/images/courses/defense.png",
-    32: "/images/courses/teaching.png",
-    33: "/images/courses/blockchain.png",
-    34: "/images/courses/graphql.png",
-    35: "/images/courses/typescript.png",
-  };
-
-  if (courseId && courseImageMap[courseId]) {
-    return courseImageMap[courseId];
   }
 
   // 3. Fallback to category-based images
