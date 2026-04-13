@@ -1,12 +1,12 @@
 {
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "https://lms-sd0u.onrender.com/api/$1"
+       "source": "/api/:path*",
+       "destination": "https://lms-sd0u.onrender.com/api/:path*"
     },
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+       "source": "/:path*",
+       "destination": "/index.html"
     }
   ]
 }
