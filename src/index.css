@@ -166,7 +166,7 @@ html {
      double-smooth stuttering / lag conflicts. */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
+  /* text-rendering: optimizeLegibility removed as it causes significant performance lag on heavy pages */
 }
 
 body {

@@ -38,18 +38,24 @@ const PopularCourses = () => {
 
         if (data.success) {
           // Map API data to component format
-          const formattedCourses = data.data.map((course) => ({
-            id: course.id,
-            title: course.title,
-            instructor: course.instructor || "Unknown Instructor",
-            category: course.category || "general",
-            rating: 4.8, // Default rating as not in DB
-            students: 1200 + Math.floor(Math.random() * 5000), // Randomize students count
-            price: course.price || "Free",
-            duration: course.duration || "Unknown",
-            thumbnail: getCourseImage(course.id, course.category, course.title),
-            badge: getBadge(course.created_at),
-          }));
+          const formattedCourses = data.data.map((course) => {
+            // Create a stable pseudo-random students count based on ID
+            const stableStudents =
+              1200 + (parseInt(course.id.toString().slice(-4), 16) % 5000 || 0);
+
+            return {
+              id: course.id,
+              title: course.title,
+              instructor: course.instructor || "Unknown Instructor",
+              category: course.category || "general",
+              rating: 4.8, // Default rating as not in DB
+              students: stableStudents,
+              price: course.price || "Free",
+              duration: course.duration || "Unknown",
+              thumbnail: getCourseImage(course.id, course.category, course.title),
+              badge: getBadge(course.created_at),
+            };
+          });
           setCourses(formattedCourses);
         } else {
           setError("Failed to load courses");

@@ -35,7 +35,7 @@ const ScrollReveal = ({
       className={className}
       initial={hidden}
       whileInView={visible}
-      viewport={{ once, margin }}
+      viewport={{ once, margin, amount: 0.2 }}
       transition={{
         type: "spring",
         stiffness: 60, // lower = slower, smoother spring

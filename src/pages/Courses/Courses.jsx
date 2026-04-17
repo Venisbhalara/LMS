@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 // import { coursesData } from "../../data/coursesData";
@@ -51,12 +51,18 @@ const Courses = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const coursesPerPage = 9;
 
+  // Sync filters from URL search params with stability checks
   useEffect(() => {
     const category = searchParams.get("category");
     const search = searchParams.get("search");
-    if (category) setSelectedCategory(category);
-    if (search) setSearchQuery(search);
-  }, [searchParams]);
+
+    if (category && category !== selectedCategory) {
+      setSelectedCategory(category);
+    }
+    if (search && search !== searchQuery) {
+      setSearchQuery(search);
+    }
+  }, [searchParams, selectedCategory, searchQuery]);
 
   const categories = [
     { id: "all", name: "All Courses" },
@@ -92,22 +98,21 @@ const Courses = () => {
     { id: "3.5", name: "3.5+ Stars" },
   ];
 
-  // Map backend data to frontend structure
-  const allCourses = courses.map((course) => ({
-    ...course,
-    instructor:
-      typeof course.instructor === "string"
-        ? { name: course.instructor }
-        : course.instructor || { name: "Instructor" },
-    price: parseFloat(course.price) || 0,
-    rating: course.rating || 4.5, // Default if missing in DB
-    students: course.students || 0, // Default if missing in DB
-    level: course.level || "Beginner", // Default if missing in DB
-    // Use stored image_url or fallback
-    // Note: getCourseImage helper might need adjustment or we bypass it if we have a direct URL
-    // For now, let's keep getCourseImage usage if possible or prefer the DB url
-    image_url: course.image_url,
-  }));
+  // Map backend data to frontend structure (Memoized)
+  const allCourses = useMemo(() => {
+    return courses.map((course) => ({
+      ...course,
+      instructor:
+        typeof course.instructor === "string"
+          ? { name: course.instructor }
+          : course.instructor || { name: "Instructor" },
+      price: parseFloat(course.price) || 0,
+      rating: course.rating || 4.5,
+      students: course.students || 0,
+      level: course.level || "Beginner",
+      image_url: course.image_url,
+    }));
+  }, [courses]);
 
   const getDurationCategory = (duration) => {
     const hours = parseInt(duration);
@@ -116,35 +121,48 @@ const Courses = () => {
     return "long";
   };
 
-  const filteredCourses = allCourses.filter((course) => {
-    const matchesCategory =
-      selectedCategory === "all" || course.category === selectedCategory;
-    const matchesLevel =
-      selectedLevel === "all" || course.level.toLowerCase() === selectedLevel;
-    const matchesDuration =
-      selectedDuration === "all" ||
-      getDurationCategory(course.duration) === selectedDuration;
-    const matchesRating =
-      selectedRating === "all" || course.rating >= parseFloat(selectedRating);
-    const matchesSearch =
-      searchQuery === "" ||
-      course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      course.instructor.name.toLowerCase().includes(searchQuery.toLowerCase());
-    return (
-      matchesCategory &&
-      matchesLevel &&
-      matchesDuration &&
-      matchesRating &&
-      matchesSearch
-    );
-  });
+  // Memoize filteredCourses
+  const filteredCourses = useMemo(() => {
+    return allCourses.filter((course) => {
+      const matchesCategory =
+        selectedCategory === "all" || course.category === selectedCategory;
+      const matchesLevel =
+        selectedLevel === "all" || course.level.toLowerCase() === selectedLevel;
+      const matchesDuration =
+        selectedDuration === "all" ||
+        getDurationCategory(course.duration) === selectedDuration;
+      const matchesRating =
+        selectedRating === "all" || course.rating >= parseFloat(selectedRating);
+      const matchesSearch =
+        searchQuery === "" ||
+        course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        course.instructor.name
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase());
+      return (
+        matchesCategory &&
+        matchesLevel &&
+        matchesDuration &&
+        matchesRating &&
+        matchesSearch
+      );
+    });
+  }, [
+    allCourses,
+    selectedCategory,
+    selectedLevel,
+    selectedDuration,
+    selectedRating,
+    searchQuery,
+  ]);
 
   const totalPages = Math.ceil(filteredCourses.length / coursesPerPage);
   const startIndex = (currentPage - 1) * coursesPerPage;
-  const paginatedCourses = filteredCourses.slice(
-    startIndex,
-    startIndex + coursesPerPage,
-  );
+
+  // Memoize paginatedCourses
+  const paginatedCourses = useMemo(() => {
+    return filteredCourses.slice(startIndex, startIndex + coursesPerPage);
+  }, [filteredCourses, startIndex, coursesPerPage]);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -287,8 +305,9 @@ const Courses = () => {
                 <motion.div
                   key={course.id}
                   initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: index * 0.05 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.4, delay: (index % 3) * 0.1 }}
                 >
                   <div
                     onClick={(e) => {
