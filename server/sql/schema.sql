@@ -13,6 +13,13 @@ CREATE TABLE IF NOT EXISTS courses (
     instructor VARCHAR(255),
     duration VARCHAR(100),
     price DECIMAL(10, 2),
+    image_url VARCHAR(255),
+    category VARCHAR(100) DEFAULT 'General',
+    lessons_count INT DEFAULT 0,
+    quizzes_count INT DEFAULT 0,
+    rating DECIMAL(3, 2) DEFAULT 4.5,
+    students INT DEFAULT 0,
+    level VARCHAR(50) DEFAULT 'Beginner',
     is_locked BOOLEAN DEFAULT FALSE,    
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -31,6 +38,31 @@ CREATE TABLE IF NOT EXISTS users (
     ) DEFAULT 'student',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Sections table
+CREATE TABLE IF NOT EXISTS sections (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    course_id INT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    order_index INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (course_id) REFERENCES courses (id) ON DELETE CASCADE
+);
+
+-- Lessons table
+CREATE TABLE IF NOT EXISTS lessons (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    section_id INT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    duration VARCHAR(50),
+    type ENUM('video', 'quiz', 'text') DEFAULT 'video',
+    content TEXT,
+    video_url VARCHAR(255),
+    is_preview BOOLEAN DEFAULT FALSE,
+    order_index INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (section_id) REFERENCES sections (id) ON DELETE CASCADE
 );
 
 -- Enrollments table
@@ -60,44 +92,6 @@ CREATE TABLE IF NOT EXISTS student_enrollments (
     enrollment_id INT, -- Optional reference to the main enrollment record
     branch VARCHAR(50) -- Optional: if you want to track branch/category
 );
-
--- Sample data for courses
-INSERT INTO
-    courses (
-        title,
-        description,
-        instructor,
-        duration,
-        price
-    )
-VALUES (
-        'Introduction to Web Development',
-        'Learn the basics of HTML, CSS, and JavaScript',
-        'Jhon Doe',
-        '8 weeks',
-        99.99
-    ),
-    (
-        'Advanced React Development',
-        'Master React with hooks, context, and advanced patterns',
-        'Jane Smith',
-        '10 weeks',
-        149.99
-    ),
-    (
-        'Node.js Backend Development',
-        'Build scalable backend applications with Node.js and Express',
-        'Mike Johnson',
-        '12 weeks',
-        129.99
-    ),
-    (
-        'Database Design with MySQL',
-        'Learn to design and optimize MySQL databases',
-        'Sarah Williams',
-        '6 weeks',
-        89.99
-    );
 
 -- VIEW for easy human-readable enrollment data
 CREATE OR REPLACE VIEW enrollment_summary AS

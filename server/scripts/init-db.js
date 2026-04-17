@@ -16,8 +16,9 @@ async function initializeDatabase() {
     // Remove comments to prevent parse issues
     schemaSql = schemaSql.replace(/--.*$/gm, '');
     
-    // Split by semicolon
-    const statements = schemaSql.split(';')
+    // Use a more robust split that handles semicolons properly (avoiding those in strings/ticks if possible)
+    // For this simple case, we'll split by semicolon followed by newline or end of string
+    const statements = schemaSql.split(/;\s*(?:\r?\n|$)/)
       .map(s => s.trim())
       .filter(s => s.length > 0);
 
